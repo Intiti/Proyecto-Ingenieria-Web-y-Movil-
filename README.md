@@ -1,7 +1,8 @@
 # Sistema de Gestión de Consultas y Lista de Espera Médica
 
 ## 1. Información del Proyecto
-* **Integrantes:** - Branco Gonzalez
+* **Integrantes:**
+    - Branco Gonzalez
     - Michelle Hernández
     - Inti Liberona
 * **Paralelo:** 2 
