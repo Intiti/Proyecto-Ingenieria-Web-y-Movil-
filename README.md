@@ -26,9 +26,9 @@ Los usuarios enfrentan meses de espera por falta de organización y sobredemanda
 | Dashboard analítico: Identificación de áreas saturadas y horas de alta demanda. | Admin |
 
 ### Requerimientos No Funcionales
-* **RNF1 (Usabilidad):** Diseño Mobile-First responsivo y coherencia visual multiplataforma.
-* **RNF2 (Seguridad):** Autenticación JWT, cifrado bcrypt y protección de datos clínicos.
-* **RNF3 (Rendimiento):** Consultas optimizadas con tiempos de respuesta bajo 2 segundos.
+* **Accesiblidad:** Diseño Mobile-First responsivo y coherencia visual multiplataforma, entre otros chamuyos.
+* **Seguridad:** Chamuyar seguridad de datos.
+* **Rendimiento:** Consultas optimizadas con tiempos de respuesta bajo 2 segundos.
 
 ## 4. Análisis de Usuarios
 * **Paciente:** Busca agilidad en el agendamiento y acceso centralizado a su información médica.
