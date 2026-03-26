@@ -32,7 +32,7 @@ Los usuarios enfrentan meses de espera por falta de organización y sobredemanda
 
 ## 4. Análisis de Usuarios
 * **Paciente:** Busca agilidad en el agendamiento y acceso centralizado a su información médica.
-* **Administrador:** Busca optimizar la logística médica y reducir la tasa de inasistencia (no-show).
+* **Administrador:** Busca optimizar la logística médica y reducir la tasa de inasistencia.
 
 ## 5. Instrucciones de Ejecución
 
