@@ -5,19 +5,18 @@
 * Michelle Hernández
 * Branco González
 
-## 1. Justificación y Problema (EP 1.2)
+## 1. Justificación y Problema
 Los centros de salud municipal presentan esperas de meses debido a la sobredemanda, mala gestión de agendas y falta de comunicación.
 * **Impacto:** Pérdida de horas médicas por inasistencia e ineficiencia del sistema público.
 * **Solución:** Implementación de una plataforma web/móvil para la transformación digital municipal que optimice tiempos y mejore la satisfacción ciudadana.
 
-## 2. Análisis del Usuario Objetivo (EP 1.2)
+## 2. Análisis del Usuario Objetivo
 * **Paciente:** Usuario que requiere solicitar horas, consultar su lugar en la lista de espera, recibir notificaciones de disponibilidad y gestionar sus cancelaciones de forma autónoma.
 * **Administrador (Municipalidad/CESFAM):** Personal encargado de la logística que debe gestionar listas, asignar horas según prioridad (triaje), y analizar estadísticas para la toma de decisiones.
 
-## 3. Requerimientos del Sistema (EP 1.1)
+## 3. Requerimientos del Sistema
 
 ### Requerimientos Funcionales (RF)
-*Fuera de los procesos de Registro e Inicio de Sesión:*
 
 1. **Solicitud de Hora Médica:** Selección de especialidad, profesional y centro de salud por parte del paciente.
 2. **Gestión de Lista de Espera:** Registro y visualización del estado y posición del paciente en la fila de espera.
