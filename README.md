@@ -1,38 +1,38 @@
-# Sistema de Gestión de Consultas y Lista de Espera Médica
+# SaludMunicipal - Gestión de Listas de Espera
 
-## 1. Información del Proyecto
-* **Integrantes:**
-    - Branco Gonzalez
-    - Michelle Hernández
-    - Inti Liberona
-* **Paralelo:** 2 
-* **Framework Frontend:** Ionic + React
-* **Backend:** Node.js con Express
+## Integrantes (Paralelo 2)
+* Inti Liberona
+* Michelle Hernández
+* Branco González
 
-## 2. Descripción del Problema
-Los usuarios enfrentan meses de espera por falta de organización y sobredemanda. Este sistema implementa una lista de espera inteligente y triaje digital para optimizar la carga médica y reducir tiempos de atención.
+## 1. Justificación y Problema (EP 1.2)
+Los centros de salud municipal presentan esperas de meses debido a la sobredemanda, mala gestión de agendas y falta de comunicación.
+* **Impacto:** Pérdida de horas médicas por inasistencia e ineficiencia del sistema público.
+* **Solución:** Implementación de una plataforma web/móvil para la transformación digital municipal que optimice tiempos y mejore la satisfacción ciudadana.
 
-## 3. Definición de Requerimientos
+## 2. Análisis del Usuario Objetivo (EP 1.2)
+* **Paciente:** Usuario que requiere solicitar horas, consultar su lugar en la lista de espera, recibir notificaciones de disponibilidad y gestionar sus cancelaciones de forma autónoma.
+* **Administrador (Municipalidad/CESFAM):** Personal encargado de la logística que debe gestionar listas, asignar horas según prioridad (triaje), y analizar estadísticas para la toma de decisiones.
 
-### Requerimientos Funcionales
-| Descripción | Rol |
-|-------------|-----|
-| Gestión de disponibilidad: Bloques horarios, boxes y turnos médicos. | Admin |
-| Reserva de citas con filtros de especialidad, centro y profesional. | Paciente |
-| Lista de espera: Notificación y reasignación de cupos en tiempo real. | Paciente |
-| Triaje digital: Categorización de pacientes y priorización por gravedad. | Paciente |
-| Repositorio clínico: Visualización y descarga de resultados de exámenes. | Paciente |
-| Cancelación dinámica: Liberación inmediata de cupos y actualización de agenda. | Paciente/Admin |
-| Dashboard analítico: Identificación de áreas saturadas y horas de alta demanda. | Admin |
+## 3. Requerimientos del Sistema (EP 1.1)
 
-### Requerimientos No Funcionales
-* **Accesiblidad:** Diseño Mobile-First responsivo y coherencia visual multiplataforma, entre otros chamuyos.
-* **Seguridad:** Chamuyar seguridad de datos.
-* **Rendimiento:** Consultas optimizadas con tiempos de respuesta bajo 2 segundos.
+### Requerimientos Funcionales (RF)
+*Fuera de los procesos de Registro e Inicio de Sesión:*
 
-## 4. Análisis de Usuarios
-* **Paciente:** Busca agilidad en el agendamiento y acceso centralizado a su información médica.
-* **Administrador:** Busca optimizar la logística médica y reducir la tasa de inasistencia.
+1. **Solicitud de Hora Médica:** Selección de especialidad, profesional y centro de salud por parte del paciente.
+2. **Gestión de Lista de Espera:** Registro y visualización del estado y posición del paciente en la fila de espera.
+3. **Priorización de Pacientes:** Herramienta para que el Admin asigne niveles de urgencia a los pacientes en lista.
+4. **Asignación Automática:** Algoritmo que vincula cupos liberados con pacientes en lista de espera según su prioridad.
+5. **Notificaciones de Atención:** Envío de alertas automáticas al paciente cuando se libera un cupo o se aproxima su cita.
+6. **Cancelación de Hora:** Función para liberar cupos médicos inmediatamente, actualizando la agenda global.
+7. **Panel de Control Administrativo:** Gestión integral de la disponibilidad médica y visualización de reportes de atención.
 
-## 5. Instrucciones de Ejecución
+### Requerimientos No Funcionales (RNF)
+* **Seguridad:** Encriptación de datos personales y clínicos bajo protocolos de seguridad vigentes.
+* **Rendimiento:** Tiempos de respuesta del sistema inferiores a 2 segundos en todas las consultas.
+* **Disponibilidad/Usabilidad:** Aplicación responsiva (Web y Móvil) con diseño centrado en el usuario (UX/UI).
 
+## 4. Estructura Técnica
+* **Frontend:** Ionic + React (Arquitectura modular).
+* **Backend:** Node.js / Express (API RESTful).
+* **Base de Datos:** Relacional (PostgreSQL/MySQL).
