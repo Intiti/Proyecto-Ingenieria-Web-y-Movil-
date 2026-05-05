@@ -23,7 +23,7 @@ export function App() {
         </IonHeader>
         <IonContent className="ion-text-center ion-padding">
           <h1>Hola Mundo</h1>
-          <p>Bienvenido a la plataforma SaludMunicipal</p>
+          <p>Bienvenido a la plataforma SaludMunicipal WUAJAJAJAJAJAJAJJA</p>
         </IonContent>
       </IonPage>
     </IonApp>
