@@ -1,4 +1,4 @@
-# SaludMunicipal - Gestión de Listas de Espera
+# MuniSalud - Gestión de Listas de Espera
 
 ## Integrantes (Paralelo 2)
 * Inti Liberona
