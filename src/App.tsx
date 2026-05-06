@@ -5,6 +5,7 @@ import { Route, Redirect } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
+import ForgotPassword from "./pages/ForgotPassword";
 
 import "@ionic/react/css/core.css";
 import "@ionic/react/css/normalize.css";
@@ -25,6 +26,10 @@ export function App() {
 
           <Route exact path="/register">
             <Register />
+          </Route>
+
+          <Route exact path="/forgot-password">
+            <ForgotPassword />
           </Route>
 
           <Route exact path="/home">
