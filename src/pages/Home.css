@@ -139,6 +139,17 @@
   font-weight: 800;
   text-transform: none;
 }
+.header-help-btn {
+  --color: #ffffff;
+  font-weight: 800;
+  text-transform: none;
+}
+
+.help-feature-card {
+  border: 1px solid #dbeafe;
+}
+
+
 
 @media (max-width: 760px) {
   .home-shell {
