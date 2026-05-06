@@ -198,14 +198,18 @@ const Login: React.FC = () => {
         </main>
       </IonContent>
 
-      <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)} className="cu-modal">
+      <IonModal
+        isOpen={showModal}
+        onDidDismiss={() => setShowModal(false)}
+        className="cu-modal"
+      >
         <IonHeader>
           <IonToolbar>
             <IonTitle style={{ display: "flex", alignItems: "center" }}>
-              <img 
-                src="/Assets/ClaveUnica.png" 
-                alt="ClaveÚnica" 
-                style={{ height: "90px", width: "auto" }} 
+              <img
+                src="/Assets/ClaveUnica.png"
+                alt="ClaveÚnica"
+                style={{ height: "90px", width: "auto" }}
               />
             </IonTitle>
             <IonButtons slot="end">
@@ -216,55 +220,97 @@ const Login: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
-          <div style={{ maxWidth: "400px", margin: "24px auto", textAlign: "center" }}>
-            <h2 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "24px" }}>
+          <div
+            style={{
+              maxWidth: "400px",
+              margin: "24px auto",
+              textAlign: "center",
+            }}
+          >
+            <h2
+              style={{
+                fontSize: "20px",
+                fontWeight: "bold",
+                marginBottom: "24px",
+              }}
+            >
               Portal Ciudadano ClaveÚnica
             </h2>
 
             <div style={{ textAlign: "left", marginBottom: "16px" }}>
-              <label style={{ fontSize: "14px", fontWeight: "bold", marginBottom: "8px", display: "block" }}>
+              <label
+                style={{
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  marginBottom: "8px",
+                  display: "block",
+                }}
+              >
                 Ingresa tu RUN
               </label>
               <IonInput
                 placeholder="12.345.678-9"
                 fill="outline"
-                style={{ "--padding-start": "12px", "--border-radius": "8px" } as any}
+                className="claveunica-input"
               />
             </div>
 
             <div style={{ textAlign: "left", marginBottom: "20px" }}>
-              <label style={{ fontSize: "14px", fontWeight: "bold", marginBottom: "8px", display: "block" }}>
+              <label
+                style={{
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  marginBottom: "8px",
+                  display: "block",
+                }}
+              >
                 Ingresa tu ClaveÚnica
               </label>
               <IonInput
                 type="password"
                 placeholder="••••••••"
                 fill="outline"
-                style={{ "--padding-start": "12px", "--border-radius": "8px" } as any}
+                className="claveunica-input"
               >
-                <IonIcon icon={eyeOutline} slot="end" style={{ padding: "0 12px", cursor: "pointer" }} />
+                <IonIcon
+                  icon={eyeOutline}
+                  slot="end"
+                  className="claveunica-eye-icon"
+                />
               </IonInput>
             </div>
 
-            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", marginBottom: "24px" }}>
-              <a href="https://claveunica.gob.cl/recuperar" style={{ color: "#1a5fb4", textDecoration: "none" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                fontSize: "13px",
+                marginBottom: "24px",
+              }}
+            >
+              <a
+                href="https://claveunica.gob.cl/recuperar"
+                style={{ color: "#1a5fb4", textDecoration: "none" }}
+              >
                 Recupera tu ClaveÚnica
               </a>
-              <a href="https://claveunica.gob.cl/sucursales" style={{ color: "#1a5fb4", textDecoration: "none" }}>
+              <a
+                href="https://claveunica.gob.cl/sucursales"
+                style={{ color: "#1a5fb4", textDecoration: "none" }}
+              >
                 Solicita tu ClaveÚnica
               </a>
             </div>
 
-            <IonButton
-              expand="block"
-              className="btn-primary-login"
-              style={{ "--border-radius": "8px", height: "48px" } as any}
-            >
+            <IonButton expand="block" className="btn-claveunica-submit">
               INGRESA
             </IonButton>
 
             <div style={{ marginTop: "32px", fontSize: "14px" }}>
-              <a href="https://claveunica.gob.cl/preguntas-frecuentes" style={{ color: "#666", textDecoration: "none" }}>
+              <a
+                href="https://claveunica.gob.cl/preguntas-frecuentes"
+                style={{ color: "#666", textDecoration: "none" }}
+              >
                 ¿Necesitas ayuda?
               </a>
             </div>

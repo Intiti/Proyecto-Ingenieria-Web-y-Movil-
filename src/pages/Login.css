@@ -22,6 +22,22 @@
   flex-direction: column;
   padding: 24px 0;
 }
+.claveunica-input {
+  --padding-start: 12px;
+  --border-radius: 8px;
+}
+
+.claveunica-eye-icon {
+  padding: 0 12px;
+  cursor: pointer;
+}
+.btn-claveunica-submit {
+  height: 48px;
+  --border-radius: 8px;
+  --background: linear-gradient(135deg, #0b72d9, #0757a5);
+  font-weight: 850;
+  text-transform: none;
+}
 
 
 /* =========================
