@@ -23,7 +23,8 @@ En Chile, las listas de espera en el área de salud son un problema estructural 
 4. **Sistema de Notificaciones de Avance:** Envío automático de alertas (Push/In-app) cuando una lista de espera se mueva o cuando el paciente suba en la prioridad de atención.
 5. **Validación de Identidad con ClaveÚnica/RUT:** Integración (simulada) para asegurar que el usuario accede a su historial clínico personal y legal.
 
-**Rol administrador:**
+**Rol de Administrador:**
+
 6. **Generar Reportes:** El Administrador podrá generar reportes y analíticas.
 7. **Panel de Control de Disponibilidad:** El Administrador podrá visualizar la demanda en tiempo real por especialidad y cargar nuevos bloques de atención para reducir los cuellos de botella.
 8. **Reportabilidad de Tiempos de Espera:** Visualización de gráficos comparativos entre hospitales de la red para redistribuir pacientes de zonas saturadas a zonas con mayor vacancia.
