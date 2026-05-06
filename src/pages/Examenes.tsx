@@ -16,92 +16,76 @@ import {
 } from "@ionic/react";
 
 import {
-  documentTextOutline,
-  downloadOutline,
-  eyeOutline,
-  medkitOutline,
-  readerOutline,
   flaskOutline,
-  homeOutline,
+  timeOutline,
+  checkmarkCircleOutline,
+  alertCircleOutline,
 } from "ionicons/icons";
 
 import { useState } from "react";
 import "./PlaceholderPage.css";
 
-const Documents: React.FC = () => {
+const Examenes: React.FC = () => {
   const [filter, setFilter] = useState("Todos");
 
-  const documentsList = [
+  const examenesList = [
     {
       id: 1,
-      type: "Receta Médica",
-      name: "Receta_Paracetamol_500mg.pdf",
-      date: "2026-04-12",
+      name: "Perfil Bioquímico y Hemograma",
+      status: "Pendiente",
+      date: "2026-05-12",
+      location: "CESFAM Central, Viña del Mar",
+      schedule: "08:00 - 09:30",
+      instructions: "Ayuno estricto de 12 horas. Beber solo agua. No suspender tratamiento para la presión.",
+      statusColor: "#d97706",
+      statusBgColor: "#fffbeb",
+      icon: alertCircleOutline,
       doctor: "Dra. Ana Pérez",
       size: "150 KB",
-      icon: medkitOutline,
-      color: "#0b5cad",
-      bgColor: "#eef7ff",
     },
     {
       id: 2,
-      type: "Licencia Médica",
-      name: "Licencia_Medica_14d.pdf",
-      date: "2026-03-05",
+      name: "Radiografía de Tórax",
+      status: "En proceso",
+      date: "2026-05-05",
+      location: "Hospital Gustavo Fricke, Viña del Mar",
+      schedule: "-",
+      instructions: "Procedimiento realizado. Las imágenes se encuentran en etapa de análisis por el médico radiólogo.",
+      statusColor: "#0b5cad",
+      statusBgColor: "#eef7ff",
+      icon: timeOutline,
       doctor: "Dr. Juan Gómez",
       size: "420 KB",
-      icon: readerOutline,
-      color: "#2b8a3e",
-      bgColor: "#ebfbee",
     },
     {
       id: 3,
-      type: "Examen de Laboratorio",
       name: "Examen_Sangre_Completo.pdf",
+      status: "Completado",
       date: "2026-02-18",
+      location: "Laboratorio Municipal",
+      schedule: "-",
+      instructions: "Resultados validados y disponibles para el paciente.",
+      statusColor: "#2b8a3e",
+      statusBgColor: "#ebfbee",
+      icon: checkmarkCircleOutline,
       doctor: "Laboratorio Municipal",
       size: "1.2 MB",
-      icon: flaskOutline,
-      color: "#d97706",
-      bgColor: "#fffbeb",
-    },
-    {
-      id: 4,
-      type: "Receta Médica",
-      name: "Receta_Ibuprofeno_400mg.pdf",
-      date: "2026-04-20",
-      doctor: "Dr. Roberto Silva",
-      size: "160 KB",
-      icon: medkitOutline,
-      color: "#0b5cad",
-      bgColor: "#eef7ff",
     },
   ];
 
-  const filteredList = documentsList.filter((doc) => {
+  const filteredList = examenesList.filter((examen) => {
     if (filter === "Todos") return true;
-    return doc.type === filter;
+    return examen.status === filter;
   });
 
   return (
     <IonPage>
-      <IonHeader className="page-header">
+      <IonHeader className="placeholder-header">
         <IonToolbar>
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>Documentos</IonTitle>
-
-          <IonButtons slot="end">
-            <IonButton
-              routerLink="/home"
-              fill="clear"
-              className="header-home-btn"
-              style={{ color: "#ffffff" }}
-            >
-              <IonIcon icon={homeOutline} slot="icon-only" />
-            </IonButton>
-          </IonButtons>
+          <IonTitle>Exámenes</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -109,13 +93,13 @@ const Documents: React.FC = () => {
         <main className="placeholder-shell">
           <section className="placeholder-card" style={{ marginBottom: "24px" }}>
             <div className="placeholder-icon">
-              <IonIcon icon={documentTextOutline} />
+              <IonIcon icon={flaskOutline} />
             </div>
             <h1 style={{ fontSize: "32px", fontWeight: 850, color: "#10233f" }}>
-              Mis Documentos
+              Exámenes
             </h1>
             <p style={{ color: "#526179", fontSize: "17px", lineHeight: 1.55 }}>
-              Consulta, descarga y visualiza documentos asociados a tus solicitudes de salud.
+              Revisa el estado de tus exámenes, indicaciones previas y lugar asignado.
             </p>
           </section>
 
@@ -132,44 +116,44 @@ const Documents: React.FC = () => {
               Todos
             </IonButton>
             <IonButton
-              fill={filter === "Receta Médica" ? "solid" : "outline"}
-              onClick={() => setFilter("Receta Médica")}
+              fill={filter === "Pendiente" ? "solid" : "outline"}
+              onClick={() => setFilter("Pendiente")}
               style={{
                 "--border-radius": "12px",
                 textTransform: "none",
                 fontWeight: 800,
               }}
             >
-              Recetas Médicas
+              Pendientes
             </IonButton>
             <IonButton
-              fill={filter === "Licencia Médica" ? "solid" : "outline"}
-              onClick={() => setFilter("Licencia Médica")}
+              fill={filter === "En proceso" ? "solid" : "outline"}
+              onClick={() => setFilter("En proceso")}
               style={{
                 "--border-radius": "12px",
                 textTransform: "none",
                 fontWeight: 800,
               }}
             >
-              Licencias Médicas
+              En proceso
             </IonButton>
             <IonButton
-              fill={filter === "Examen de Laboratorio" ? "solid" : "outline"}
-              onClick={() => setFilter("Examen de Laboratorio")}
+              fill={filter === "Completado" ? "solid" : "outline"}
+              onClick={() => setFilter("Completado")}
               style={{
                 "--border-radius": "12px",
                 textTransform: "none",
                 fontWeight: 800,
               }}
             >
-              Exámenes
+              Completados
             </IonButton>
           </div>
 
           <IonGrid style={{ padding: 0 }}>
             <IonRow>
-              {filteredList.map((doc) => (
-                <IonCol size="12" sizeMd="6" sizeLg="4" key={doc.id}>
+              {filteredList.map((examen) => (
+                <IonCol size="12" sizeMd="6" sizeLg="4" key={examen.id}>
                   <IonCard
                     style={{
                       borderRadius: "20px",
@@ -195,11 +179,11 @@ const Documents: React.FC = () => {
                             borderRadius: "14px",
                             display: "grid",
                             placeItems: "center",
-                            background: doc.bgColor,
-                            color: doc.color,
+                            background: examen.statusBgColor,
+                            color: examen.statusColor,
                           }}
                         >
-                          <IonIcon icon={doc.icon} style={{ fontSize: "24px" }} />
+                          <IonIcon icon={examen.icon} style={{ fontSize: "24px" }} />
                         </div>
                         <div>
                           <span
@@ -207,15 +191,15 @@ const Documents: React.FC = () => {
                               display: "inline-block",
                               fontSize: "12px",
                               fontWeight: "800",
-                              color: doc.color,
-                              backgroundColor: doc.bgColor,
+                              color: examen.statusColor,
+                              backgroundColor: examen.statusBgColor,
                               padding: "4px 10px",
                               borderRadius: "8px",
                               textTransform: "uppercase",
                               marginBottom: "2px",
                             }}
                           >
-                            {doc.type}
+                            {examen.status}
                           </span>
                           <h2
                             style={{
@@ -225,59 +209,50 @@ const Documents: React.FC = () => {
                               color: "#10233f",
                             }}
                           >
-                            {doc.name}
+                            {examen.name}
                           </h2>
                         </div>
                       </div>
 
                       <div style={{ flex: 1, color: "#526179", fontSize: "16px", lineHeight: "1.6", marginBottom: "20px" }}>
-                        <p style={{ margin: "4px 0" }}>
-                          <strong>Fecha de emisión:</strong> {doc.date}
+                        <p style={{ margin: "6px 0" }}>
+                          <strong>Fecha de emisión:</strong> {examen.date}
                         </p>
-                        <p style={{ margin: "4px 0" }}>
-                          <strong>Emitido por:</strong> {doc.doctor}
+                        <p style={{ margin: "6px 0" }}>
+                          <strong>Emitido por:</strong> {examen.doctor}
                         </p>
-                        <p style={{ margin: "4px 0" }}>
-                          <strong>Tamaño:</strong> {doc.size}
+                        <p style={{ margin: "6px 0" }}>
+                          <strong>Lugar:</strong> {examen.location}
+                        </p>
+                        <p style={{ margin: "6px 0" }}>
+                          <strong>Instrucciones:</strong> {examen.instructions}
+                        </p>
+                        <p style={{ margin: "6px 0" }}>
+                          <strong>Tamaño:</strong> {examen.size}
                         </p>
                       </div>
 
-                      <div style={{ display: "flex", gap: "10px" }}>
-                        <IonButton
-                          expand="block"
-                          fill="outline"
-                          style={{
-                            flex: 1,
-                            height: "44px",
-                            "--border-radius": "12px",
-                            "--border-color": "#0b72d9",
-                            "--color": "#0b72d9",
-                            fontWeight: "800",
-                            textTransform: "none",
-                            margin: 0,
-                          } as any}
-                        >
-                          <IonIcon icon={eyeOutline} slot="start" />
-                          Visualizar
-                        </IonButton>
-
-                        <IonButton
-                          expand="block"
-                          style={{
-                            flex: 1,
-                            height: "44px",
-                            "--border-radius": "12px",
-                            "--background": "linear-gradient(135deg, #0b72d9, #0757a5)",
-                            "--color": "#ffffff",
-                            fontWeight: "800",
-                            textTransform: "none",
-                            margin: 0,
-                          } as any}
-                        >
-                          <IonIcon icon={downloadOutline} slot="start" />
-                          Descargar
-                        </IonButton>
-                      </div>
+                      {examen.status === "Completado" && (
+                        <div style={{ display: "flex", gap: "10px" }}>
+                          <IonButton
+                            expand="block"
+                            fill="solid"
+                            disabled
+                            style={{
+                              flex: 1,
+                              height: "44px",
+                              "--border-radius": "12px",
+                              "--background": "#f0f2f5",
+                              "--color": "#64748b",
+                              fontWeight: "800",
+                              textTransform: "none",
+                              margin: 0,
+                            } as any}
+                          >
+                            Se encuentra en documentos
+                          </IonButton>
+                        </div>
+                      )}
                     </IonCardContent>
                   </IonCard>
                 </IonCol>
@@ -290,4 +265,4 @@ const Documents: React.FC = () => {
   );
 };
 
-export default Documents;
+export default Examenes;

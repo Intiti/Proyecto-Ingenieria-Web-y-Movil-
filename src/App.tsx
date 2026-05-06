@@ -8,6 +8,7 @@ import Notificaciones from "./pages/Notifications";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import PatientMenu from "./components/PatientMenu";
 import Documents from "./pages/Documents";
+import Examenes from "./pages/Examenes";
 import Solicitudes from "./pages/Solicitudes";
 import Agenda from "./pages/Agenda";
 import Perfil from "./pages/Perfil";
@@ -48,10 +49,7 @@ export function App() {
           </Route>
 
           <Route exact path="/examenes">
-            <PlaceholderPage
-              title="Exámenes"
-              description="Consulta exámenes pendientes, resultados disponibles y documentos asociados."
-            />
+            <Examenes/>
           </Route>
 
           <Route exact path="/notificaciones">
