@@ -191,7 +191,13 @@ const Login: React.FC = () => {
       <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)} className="cu-modal">
         <IonHeader>
           <IonToolbar>
-            <IonTitle>ClaveÚnica</IonTitle>
+            <IonTitle style={{ display: "flex", alignItems: "center" }}>
+              <img 
+                src="/Assets/ClaveUnica.png" 
+                alt="ClaveÚnica" 
+                style={{ height: "90px", width: "auto" }} 
+              />
+            </IonTitle>
             <IonButtons slot="end">
               <IonButton onClick={() => setShowModal(false)}>
                 <IonIcon icon={closeOutline} />
@@ -212,7 +218,7 @@ const Login: React.FC = () => {
               <IonInput
                 placeholder="12.345.678-9"
                 fill="outline"
-                style={{ "--padding-start": "12px", "--border-radius": "8px" }}
+                style={{ "--padding-start": "12px", "--border-radius": "8px" } as any}
               />
             </div>
 
@@ -224,7 +230,7 @@ const Login: React.FC = () => {
                 type="password"
                 placeholder="••••••••"
                 fill="outline"
-                style={{ "--padding-start": "12px", "--border-radius": "8px" }}
+                style={{ "--padding-start": "12px", "--border-radius": "8px" } as any}
               >
                 <IonIcon icon={eyeOutline} slot="end" style={{ padding: "0 12px", cursor: "pointer" }} />
               </IonInput>
@@ -242,7 +248,7 @@ const Login: React.FC = () => {
             <IonButton
               expand="block"
               className="btn-primary-login"
-              style={{ "--border-radius": "8px", height: "48px" }}
+              style={{ "--border-radius": "8px", height: "48px" } as any}
             >
               INGRESA
             </IonButton>
