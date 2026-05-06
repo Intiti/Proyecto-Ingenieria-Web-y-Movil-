@@ -9,6 +9,8 @@ import Home from "./pages/Home";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import PatientMenu from "./components/PatientMenu";
 import Documents from "./pages/Documents";
+import Solicitudes from "./pages/Solicitudes";
+import Agenda from "./pages/Agenda";
 
 import "@ionic/react/css/core.css";
 import "@ionic/react/css/normalize.css";
@@ -45,17 +47,11 @@ export function App() {
           </Route>
 
           <Route exact path="/solicitudes">
-            <PlaceholderPage
-              title="Lista de espera"
-              description="Consulta el estado de tus solicitudes médicas y revisa el avance de tu atención."
-            />
+            <Solicitudes/>
           </Route>
 
           <Route exact path="/agenda">
-            <PlaceholderPage
-              title="Agenda médica"
-              description="Revisa tus próximas citas y solicitudes de atención municipal."
-            />
+            <Agenda/>
           </Route>
 
           <Route exact path="/examenes">
