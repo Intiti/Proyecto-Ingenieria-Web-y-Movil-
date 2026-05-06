@@ -3,9 +3,8 @@ import { IonReactRouter } from "@ionic/react-router";
 import { Route, Redirect } from "react-router-dom";
 
 import Login from "./pages/Login";
-import Register from "./pages/Register";
-import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
+import Notificaciones from "./pages/Notifications";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import PatientMenu from "./components/PatientMenu";
 import Documents from "./pages/Documents";
@@ -32,14 +31,6 @@ export function App() {
             <Login />
           </Route>
 
-          <Route exact path="/register">
-            <Register />
-          </Route>
-
-          <Route exact path="/forgot-password">
-            <ForgotPassword />
-          </Route>
-
           <Route exact path="/home">
             <Home />
           </Route>
@@ -64,10 +55,7 @@ export function App() {
           </Route>
 
           <Route exact path="/notificaciones">
-            <PlaceholderPage
-              title="Notificaciones"
-              description="Revisa avisos importantes sobre cambios de estado, citas o solicitudes."
-            />
+            <Notificaciones />
           </Route>
 
           <Route exact path="/perfil">
@@ -76,13 +64,6 @@ export function App() {
 
           <Route exact path="/ayuda">
             <Ayuda />
-          </Route>
-
-          <Route exact path="/admin/login">
-            <PlaceholderPage
-              title="Acceso funcionarios"
-              description="Ingreso reservado para funcionarios municipales y administradores del sistema."
-            />
           </Route>
 
           <Route exact path="/">
