@@ -1,0 +1,71 @@
+.patient-menu {
+  --background: #f4f7fb;
+}
+
+.menu-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 28px 22px 18px;
+  background: linear-gradient(135deg, #063970 0%, #0b5cad 55%, #1c7ed6 100%);
+  color: #ffffff;
+}
+
+.menu-logo {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.menu-header h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 850;
+  letter-spacing: -0.03em;
+}
+
+.menu-header ion-note {
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 14px;
+}
+
+.menu-list {
+  padding: 16px 12px;
+  background: transparent;
+}
+
+.menu-item {
+  --background: transparent;
+  --background-hover: #e8f2ff;
+  --background-activated: #dcecff;
+  --color: #1d2d44;
+  --border-radius: 14px;
+  margin-bottom: 6px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.menu-item ion-icon {
+  color: #0b5cad;
+  font-size: 22px;
+}
+
+.menu-footer {
+  margin-top: 20px;
+  padding: 12px;
+  border-top: 1px solid #d8e1ec;
+}
+
+.menu-item.logout {
+  --color: #b42318;
+}
+
+.menu-item.logout ion-icon {
+  color: #b42318;
+}

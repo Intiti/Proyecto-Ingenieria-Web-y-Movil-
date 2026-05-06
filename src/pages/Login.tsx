@@ -11,6 +11,7 @@ import {
   IonToolbar,
   IonTitle,
   IonButtons,
+  useIonRouter,
 } from "@ionic/react";
 
 import {
@@ -28,8 +29,13 @@ import { useState } from "react";
 import "./Login.css";
 
 const Login: React.FC = () => {
+  const router = useIonRouter();
   const [showModal, setShowModal] = useState(false);
 
+  const handleLogin = () => {
+    router.push("/home", "forward", "push");
+  };
+  
   return (
     <IonPage>
       <IonContent fullscreen className="login-page">
@@ -122,7 +128,11 @@ const Login: React.FC = () => {
                   </div>
                 </div>
 
-                <IonButton expand="block" className="btn-primary-login">
+                <IonButton
+                  expand="block"
+                  className="btn-primary-login"
+                  onClick={handleLogin}
+                >
                   Ingresar
                 </IonButton>
 
