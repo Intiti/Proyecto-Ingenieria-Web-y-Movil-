@@ -41,3 +41,40 @@ En Chile, las listas de espera en el área de salud son un problema estructural 
 * **Frontend:** Ionic + React (Arquitectura modular).
 * **Backend:** Node.js / Express (API RESTful).
 * **Base de Datos:** Relacional (PostgreSQL/MySQL).
+
+## 5. Arquitectura de navegación y experiencia de usuario
+
+### (a) Rutas Principales y Secundarias
+* **Principales:** `/login`, `/home`,  `/admin`
+* **Secundarias:** `/forgot-password`, `/registro`, `/solicitudes`, `/agenda`, `/examenes`, `/documentos`, `/perfil`..
+
+### (b) Relaciones Jerárquicas
+La estructura es de árbol con un nodo central:
+1. **Acceso:** Login / Registro.
+2. **Núcleo:** Home (Dashboard).
+3. **Servicios:** Secciones funcionales individuales.
+
+### (c) Flujo de Navegación
+Navegación híbrida: Radial desde el Home y Lineal mediante menú lateral (PatientMenu), permitiendo cambios de contexto rápidos sin pérdida de estado.
+
+### (d) Diferenciación de Roles
+* **Paciente:** Rutas de consulta y descarga de información personal.
+* **Administrador:** Acceso restringido a `/admin/*` para gestión de listas y analíticas.
+
+### (e) Task Flow: Consulta de Resultados
+1. Usuario accede a `Home`.
+2. Selecciona `Exámenes`.
+3. Identifica examen `Completado`.
+4. Acciona botón `Ver en documentos`.
+5. El sistema redirige a `Documentos` filtrando el resultado.
+
+### (f) Puntos Críticos de Interacción
+* Proceso de autenticación inicial.
+* Tiempo de respuesta en la carga de archivos PDF.
+* Claridad en los estados de la lista de espera (Pendiente/Agendada).
+
+### (g) Coherencia entre Dispositivos
+Uso de **Ionic Grid System**. En móviles, las tarjetas ocupan el 100% del ancho (`size="12"`); en tablets y escritorio, se redistribuyen en columnas (`sizeMd="6"`, `sizeLg="4"`) para optimizar el espacio visual.
+
+### (h) Justificación Técnica
+La arquitectura se basa en **React Router** por su capacidad de manejar estados complejos y escalabilidad. Se priorizó la usabilidad mediante componentes atómicos de Ionic, asegurando una experiencia nativa en web y móvil.
