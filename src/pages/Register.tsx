@@ -6,9 +6,7 @@ import {
   IonCard, 
   IonCardContent, 
   IonIcon, 
-  IonCheckbox,
-  IonSelect,
-  IonSelectOption 
+  IonCheckbox
 } from '@ionic/react';
 import { medkitOutline, shieldCheckmarkOutline } from 'ionicons/icons';
 import './Login.css';
@@ -31,63 +29,69 @@ const Register: React.FC = () => {
             </div>
           </header>
 
-          <main className="login-hero">
+          <main className="login-hero" style={{ gridTemplateColumns: 'minmax(0, 1fr) 680px' }}>
             <div className="hero-copy">
               <span className="eyebrow">Registro de Pacientes</span>
               <h1>Únete a MuniSalud</h1>
               <p>Crea tu cuenta para acceder a los servicios de salud municipal, agenda citas y gestiona tus exámenes médicos de forma rápida y segura.</p>
               
-              <div className="security-note">
-                <IonIcon icon={shieldCheckmarkOutline} />
-                <p style={{ margin: 0 }}>Tus datos están protegidos y encriptados según la ley de protección de datos de pacientes.</p>
-              </div>
             </div>
 
-            <IonCard className="login-card">
+            <IonCard className="login-card" style={{ maxWidth: '680px', width: '100%' }}>
               <IonCardContent>
                 <div className="card-title">
                   <h2>Crear cuenta</h2>
                   <p>Ingresa tus datos para registrarte en el sistema</p>
                 </div>
 
-                <div className="form-inputs">
-                  <div className="field-group">
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                  <div className="field-group" style={{ gridColumn: 'span 1' }}>
                     <label className="field-label">Nombre de usuario</label>
                     <IonInput className="clean-input" placeholder="Ej: juanperez" />
                   </div>
 
-                  <div className="field-group">
+                  <div className="field-group" style={{ gridColumn: 'span 1' }}>
                     <label className="field-label">RUT</label>
                     <IonInput className="clean-input" placeholder="12.345.678-9" />
                   </div>
 
-                  <div className="field-group">
+                  <div className="field-group" style={{ gridColumn: 'span 2' }}>
                     <label className="field-label">Correo Electrónico</label>
                     <IonInput className="clean-input" type="email" placeholder="correo@ejemplo.com" />
                   </div>
 
-                  <div className="field-group">
-                    <label className="field-label">Comuna</label>
-                    <IonSelect className="clean-input" placeholder="Seleccione comuna" mode="md">
-                      <IonSelectOption value="valparaiso">Valparaíso</IonSelectOption>
-                      <IonSelectOption value="vina">Viña del Mar</IonSelectOption>
-                      <IonSelectOption value="quilpue">Quilpué</IonSelectOption>
-                      <IonSelectOption value="villaAlemana">Villa Alemana</IonSelectOption>
-                      <IonSelectOption value="concon">Concón</IonSelectOption>
-                    </IonSelect>
+                  <div className="field-group" style={{ gridColumn: 'span 1' }}>
+                    <label className="field-label">Región</label>
+                    <select className="clean-input" style={{ width: '100%', height: '58px', borderRadius: '16px', border: '1.5px solid #c8d3e0', padding: '0 16px', backgroundColor: '#ffffff', color: '#172033', fontSize: '17px', outline: 'none' }}>
+                      <option value="" disabled selected>Seleccione región</option>
+                      <option value="valparaiso">Valparaíso</option>
+                      <option value="metropolitana">Metropolitana</option>
+                    </select>
                   </div>
 
-                  <div className="field-group">
+                  <div className="field-group" style={{ gridColumn: 'span 1' }}>
+                    <label className="field-label">Comuna</label>
+                    <select className="clean-input" style={{ width: '100%', height: '58px', borderRadius: '16px', border: '1.5px solid #c8d3e0', padding: '0 16px', backgroundColor: '#ffffff', color: '#172033', fontSize: '17px', outline: 'none' }}>
+                      <option value="" disabled selected>Seleccione comuna</option>
+                      <option value="valparaiso">Valparaíso</option>
+                      <option value="vina">Viña del Mar</option>
+                      <option value="quilpue">Quilpué</option>
+                      <option value="villaAlemana">Villa Alemana</option>
+                      <option value="concon">Concón</option>
+                    </select>
+                  </div>
+
+                  <div className="field-group" style={{ gridColumn: 'span 1' }}>
                     <label className="field-label">Contraseña</label>
                     <IonInput className="clean-input" type="password" placeholder="••••••••" />
                   </div>
 
-                  <div className="field-group">
+                  <div className="field-group" style={{ gridColumn: 'span 1' }}>
                     <label className="field-label">Confirmar Contraseña</label>
                     <IonInput className="clean-input" type="password" placeholder="••••••••" />
                   </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '12px' }}>
+                  <div style={{ gridColumn: 'span 2', display: 'flex', alignItems: 'center', gap: '10px', marginTop: '12px' }}>
                     <IonCheckbox mode="md" />
                     <span style={{ fontSize: '14px', color: '#1d2d44', fontWeight: 700 }}>
                       Acepto los términos y condiciones
@@ -95,11 +99,16 @@ const Register: React.FC = () => {
                   </div>
                 </div>
 
-                <IonButton expand="block" className="btn-primary-login">
+                <IonButton expand="block" className="btn-primary-login" style={{ marginTop: '20px' }}>
                   Registrarse
                 </IonButton>
 
-                <p className="register-link">¿Ya tienes cuenta? <a href="/login">Inicia sesión aquí</a></p>
+                <div className="security-note" style={{ marginTop: '20px' }}>
+                  <IonIcon icon={shieldCheckmarkOutline} />
+                  <span>Tus datos están protegidos y encriptados según la ley de protección de datos de pacientes.</span>
+                </div>
+
+                <p className="register-link" style={{ marginTop: '16px' }}>¿Ya tienes cuenta? <a href="/login">Inicia sesión aquí</a></p>
               </IonCardContent>
             </IonCard>
           </main>
