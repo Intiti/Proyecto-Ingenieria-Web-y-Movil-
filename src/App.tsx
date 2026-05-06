@@ -3,6 +3,8 @@ import { IonReactRouter } from "@ionic/react-router";
 import { Route, Redirect } from "react-router-dom";
 
 import Login from "./pages/Login";
+import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import PatientMenu from "./components/PatientMenu";
@@ -23,6 +25,14 @@ export function App() {
         <IonRouterOutlet id="main-content">
           <Route exact path="/login">
             <Login />
+          </Route>
+
+          <Route exact path="/register">
+            <Register />
+          </Route>
+
+          <Route exact path="/forgot-password">
+            <ForgotPassword />
           </Route>
 
           <Route exact path="/home">
@@ -75,6 +85,13 @@ export function App() {
             <PlaceholderPage
               title="Ayuda"
               description="Encuentra orientación sobre el uso del sistema y canales de contacto municipal."
+            />
+          </Route>
+
+          <Route exact path="/admin/login">
+            <PlaceholderPage
+              title="Acceso funcionarios"
+              description="Ingreso reservado para funcionarios municipales y administradores del sistema."
             />
           </Route>
 

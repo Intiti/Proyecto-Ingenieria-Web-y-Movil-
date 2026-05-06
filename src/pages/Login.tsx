@@ -6,6 +6,11 @@ import {
   IonCard,
   IonCardContent,
   IonIcon,
+  IonModal,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
   useIonRouter,
 } from "@ionic/react";
 
@@ -16,17 +21,21 @@ import {
   callOutline,
   mailOutline,
   briefcaseOutline,
+  closeOutline,
+  eyeOutline,
 } from "ionicons/icons";
 
+import { useState } from "react";
 import "./Login.css";
 
 const Login: React.FC = () => {
   const router = useIonRouter();
+  const [showModal, setShowModal] = useState(false);
 
   const handleLogin = () => {
     router.push("/home", "forward", "push");
   };
-
+  
   return (
     <IonPage>
       <IonContent fullscreen className="login-page">
@@ -141,6 +150,7 @@ const Login: React.FC = () => {
                   expand="block"
                   fill="outline"
                   className="btn-claveunica"
+                  onClick={() => setShowModal(true)}
                 >
                   Ingresar con ClaveÚnica
                 </IonButton>
@@ -187,6 +197,80 @@ const Login: React.FC = () => {
           </footer>
         </main>
       </IonContent>
+
+      <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)} className="cu-modal">
+        <IonHeader>
+          <IonToolbar>
+            <IonTitle style={{ display: "flex", alignItems: "center" }}>
+              <img 
+                src="/Assets/ClaveUnica.png" 
+                alt="ClaveÚnica" 
+                style={{ height: "90px", width: "auto" }} 
+              />
+            </IonTitle>
+            <IonButtons slot="end">
+              <IonButton onClick={() => setShowModal(false)}>
+                <IonIcon icon={closeOutline} />
+              </IonButton>
+            </IonButtons>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent className="ion-padding">
+          <div style={{ maxWidth: "400px", margin: "24px auto", textAlign: "center" }}>
+            <h2 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "24px" }}>
+              Portal Ciudadano ClaveÚnica
+            </h2>
+
+            <div style={{ textAlign: "left", marginBottom: "16px" }}>
+              <label style={{ fontSize: "14px", fontWeight: "bold", marginBottom: "8px", display: "block" }}>
+                Ingresa tu RUN
+              </label>
+              <IonInput
+                placeholder="12.345.678-9"
+                fill="outline"
+                style={{ "--padding-start": "12px", "--border-radius": "8px" } as any}
+              />
+            </div>
+
+            <div style={{ textAlign: "left", marginBottom: "20px" }}>
+              <label style={{ fontSize: "14px", fontWeight: "bold", marginBottom: "8px", display: "block" }}>
+                Ingresa tu ClaveÚnica
+              </label>
+              <IonInput
+                type="password"
+                placeholder="••••••••"
+                fill="outline"
+                style={{ "--padding-start": "12px", "--border-radius": "8px" } as any}
+              >
+                <IonIcon icon={eyeOutline} slot="end" style={{ padding: "0 12px", cursor: "pointer" }} />
+              </IonInput>
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", marginBottom: "24px" }}>
+              <a href="https://claveunica.gob.cl/recuperar" style={{ color: "#1a5fb4", textDecoration: "none" }}>
+                Recupera tu ClaveÚnica
+              </a>
+              <a href="https://claveunica.gob.cl/sucursales" style={{ color: "#1a5fb4", textDecoration: "none" }}>
+                Solicita tu ClaveÚnica
+              </a>
+            </div>
+
+            <IonButton
+              expand="block"
+              className="btn-primary-login"
+              style={{ "--border-radius": "8px", height: "48px" } as any}
+            >
+              INGRESA
+            </IonButton>
+
+            <div style={{ marginTop: "32px", fontSize: "14px" }}>
+              <a href="https://claveunica.gob.cl/preguntas-frecuentes" style={{ color: "#666", textDecoration: "none" }}>
+                ¿Necesitas ayuda?
+              </a>
+            </div>
+          </div>
+        </IonContent>
+      </IonModal>
     </IonPage>
   );
 };
