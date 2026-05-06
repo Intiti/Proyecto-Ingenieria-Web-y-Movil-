@@ -4,6 +4,9 @@ import { Route, Redirect } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
+
 import Notificaciones from "./pages/Notifications";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import PatientMenu from "./components/PatientMenu";
@@ -12,6 +15,8 @@ import Solicitudes from "./pages/Solicitudes";
 import Agenda from "./pages/Agenda";
 import Perfil from "./pages/Perfil";
 import Ayuda from "./pages/Ayuda";
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
 
 import "@ionic/react/css/core.css";
 import "@ionic/react/css/normalize.css";
@@ -31,6 +36,14 @@ export function App() {
             <Login />
           </Route>
 
+          <Route exact path="/register">
+            <Register />
+          </Route>
+
+          <Route exact path="/forgot-password">
+            <ForgotPassword />
+          </Route>
+
           <Route exact path="/home">
             <Home />
           </Route>
@@ -40,11 +53,11 @@ export function App() {
           </Route>
 
           <Route exact path="/solicitudes">
-            <Solicitudes/>
+            <Solicitudes />
           </Route>
 
           <Route exact path="/agenda">
-            <Agenda/>
+            <Agenda />
           </Route>
 
           <Route exact path="/examenes">
@@ -64,6 +77,42 @@ export function App() {
 
           <Route exact path="/ayuda">
             <Ayuda />
+          </Route>
+
+          <Route exact path="/admin/login">
+            <AdminLogin />
+          </Route>
+
+          <Route exact path="/admin/dashboard">
+            <AdminDashboard />
+          </Route>
+
+          <Route exact path="/admin/pacientes">
+            <PlaceholderPage
+              title="Gestión de pacientes"
+              description="Vista administrativa para revisar, buscar y actualizar información de pacientes."
+            />
+          </Route>
+
+          <Route exact path="/admin/listas">
+            <PlaceholderPage
+              title="Gestión de listas de espera"
+              description="Vista administrativa para priorizar, actualizar y supervisar solicitudes médicas."
+            />
+          </Route>
+
+          <Route exact path="/admin/reportes">
+            <PlaceholderPage
+              title="Reportes"
+              description="Vista administrativa para consultar indicadores y reportes del sistema municipal."
+            />
+          </Route>
+
+          <Route exact path="/admin/agenda">
+            <PlaceholderPage
+              title="Agenda administrativa"
+              description="Vista para revisar y coordinar citas médicas desde el rol funcionario."
+            />
           </Route>
 
           <Route exact path="/">
