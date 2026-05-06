@@ -20,6 +20,7 @@ import {
   timeOutline,
   checkmarkCircleOutline,
   alertCircleOutline,
+  documentTextOutline,
 } from "ionicons/icons";
 
 import { useState } from "react";
@@ -232,8 +233,27 @@ const Examenes: React.FC = () => {
                         </p>
                       </div>
 
-                      {examen.status === "Completado" && (
-                        <div style={{ display: "flex", gap: "10px" }}>
+                      <div style={{ display: "flex", gap: "10px" }}>
+                        {examen.status === "Completado" ? (
+                          <IonButton
+                            expand="block"
+                            fill="solid"
+                            routerLink="/documentos"
+                            style={{
+                              flex: 1,
+                              height: "44px",
+                              "--border-radius": "12px",
+                              "--background": "#0b72d9",
+                              "--color": "#ffffff",
+                              fontWeight: "800",
+                              textTransform: "none",
+                              margin: 0,
+                            }}
+                          >
+                            <IonIcon icon={documentTextOutline} slot="start" />
+                            Ver en documentos
+                          </IonButton>
+                        ) : (
                           <IonButton
                             expand="block"
                             fill="solid"
@@ -247,12 +267,12 @@ const Examenes: React.FC = () => {
                               fontWeight: "800",
                               textTransform: "none",
                               margin: 0,
-                            } as any}
+                            }}
                           >
-                            Se encuentra en documentos
+                            Resultados pendientes
                           </IonButton>
-                        </div>
-                      )}
+                        )}
+                      </div>
                     </IonCardContent>
                   </IonCard>
                 </IonCol>
