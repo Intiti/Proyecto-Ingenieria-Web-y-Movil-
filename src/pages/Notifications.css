@@ -1,0 +1,147 @@
+/* COPIA LITERAL DE LOS VALORES DE TU PLACEHOLDER */
+.notifications-page {
+  --background: #f4f7fb;
+}
+
+.notifications-header ion-toolbar {
+  --background: #063970;
+  --color: #ffffff;
+}
+
+.notifications-shell {
+  width: min(920px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0;
+}
+
+/* Tarjeta principal (Mismos valores que tu placeholder-card) */
+.notifications-main-card {
+  padding: 34px;
+  border-radius: 28px;
+  background: #ffffff;
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
+  margin-bottom: 24px;
+}
+
+.notifications-main-card h1 {
+  margin: 0;
+  color: #10233f;
+  font-size: 34px;
+  font-weight: 850;
+  letter-spacing: -0.04em;
+}
+
+.notifications-main-card p {
+  max-width: 640px;
+  margin: 12px 0 24px;
+  color: #526179;
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+/* Sub-componentes del diseño de notificaciones */
+.notifications-banner-inline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #eef7ff;
+  padding: 14px 20px;
+  border-radius: 14px;
+  color: #0b5cad;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.notifications-segment {
+  margin-bottom: 24px;
+  --background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+/* Tarjetas de la lista (Copia exacta de tu layout placeholder-card) */
+.notifications-item-card {
+  padding: 34px;
+  border-radius: 28px;
+  background: #ffffff;
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
+  margin-bottom: 20px;
+}
+
+.unread-border {
+  border-left: 6px solid #0b72d9 !important; /* Azul de tu botón */
+}
+
+.notifications-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.icon-title-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.icon-title-group h2 {
+  margin: 0;
+  color: #10233f;
+  font-size: 22px;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+}
+
+/* Iconos pequeños basados en tu caja placeholder-icon */
+.notifications-mini-icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+}
+
+.notifications-mini-icon.green-bg { background: #e7f9ed; color: #1a8a42; }
+.notifications-mini-icon.blue-bg { background: #eef7ff; color: #0b5cad; }
+.notifications-mini-icon ion-icon { font-size: 24px; }
+
+.badge-alta {
+  background: #fee2e2;
+  color: #ef4444;
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.notifications-card-body {
+  color: #526179;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 12px 0 20px 0;
+}
+
+.notifications-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 16px;
+}
+
+.notifications-card-footer time {
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 20px;
+  font-size: 22px;
+}
+
+.act-icon { cursor: pointer; }
+.act-icon.blue { color: #0b72d9; }
+.act-icon.red { color: #ef4444; }
