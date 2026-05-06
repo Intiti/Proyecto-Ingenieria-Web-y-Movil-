@@ -11,6 +11,8 @@ import PatientMenu from "./components/PatientMenu";
 import Documents from "./pages/Documents";
 import Solicitudes from "./pages/Solicitudes";
 import Agenda from "./pages/Agenda";
+import Perfil from "./pages/Perfil";
+import Ayuda from "./pages/Ayuda";
 
 import "@ionic/react/css/core.css";
 import "@ionic/react/css/normalize.css";
@@ -69,17 +71,11 @@ export function App() {
           </Route>
 
           <Route exact path="/perfil">
-            <PlaceholderPage
-              title="Mi perfil"
-              description="Revisa y actualiza tus datos personales y de contacto."
-            />
+            <Perfil />
           </Route>
 
           <Route exact path="/ayuda">
-            <PlaceholderPage
-              title="Ayuda"
-              description="Encuentra orientación sobre el uso del sistema y canales de contacto municipal."
-            />
+            <Ayuda />
           </Route>
 
           <Route exact path="/admin/login">

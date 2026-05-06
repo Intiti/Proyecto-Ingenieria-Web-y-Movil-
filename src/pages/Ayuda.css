@@ -1,0 +1,440 @@
+/* =========================
+   Header
+========================= */
+
+.ayuda-header ion-toolbar {
+  --background: #063970;
+  --color: #ffffff;
+}
+
+.ayuda-header ion-title {
+  font-weight: 800;
+}
+
+.ayuda-home-btn {
+  --color: #ffffff;
+}
+
+
+/* =========================
+   Layout base
+========================= */
+
+.ayuda-page {
+  --background: #f4f7fb;
+}
+
+.ayuda-shell {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 32px 0;
+}
+
+
+/* =========================
+   Hero
+========================= */
+
+.ayuda-hero {
+  padding: 32px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #063970 0%, #0b5cad 55%, #1c7ed6 100%);
+  color: #ffffff;
+  box-shadow: 0 18px 48px rgba(6, 57, 112, 0.22);
+}
+
+.ayuda-eyebrow {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 800;
+  opacity: 0.92;
+}
+
+.ayuda-hero h1 {
+  max-width: 760px;
+  margin: 0;
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  font-weight: 850;
+}
+
+.ayuda-hero p {
+  max-width: 760px;
+  margin: 12px 0 0;
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+
+/* =========================
+   Bloque principal de ayuda
+========================= */
+
+.help-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.help-card-main,
+.contact-highlight,
+.option-card,
+.faq-panel,
+.channels-panel {
+  margin: 0;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
+}
+
+.help-card-main ion-card-content {
+  display: flex;
+  gap: 20px;
+  padding: 28px;
+}
+
+.help-main-icon {
+  width: 68px;
+  height: 68px;
+  min-width: 68px;
+  display: grid;
+  place-items: center;
+  border-radius: 22px;
+  background: #eef7ff;
+  color: #0b5cad;
+}
+
+.help-main-icon ion-icon {
+  font-size: 38px;
+}
+
+.help-card-main h2 {
+  margin: 0;
+  color: #10233f;
+  font-size: 27px;
+  font-weight: 850;
+  letter-spacing: -0.03em;
+}
+
+.help-card-main p {
+  max-width: 680px;
+  margin: 10px 0 0;
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.help-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.help-actions ion-button {
+  height: 50px;
+  --border-radius: 14px;
+  --background: #0b72d9;
+  --background-hover: #0757a5;
+  --color: #ffffff;
+  --border-color: #0b72d9;
+  font-size: 15px;
+  font-weight: 850;
+  text-transform: none;
+}
+
+
+/* =========================
+   Contacto destacado
+========================= */
+
+.contact-highlight ion-card-content {
+  height: 100%;
+  padding: 28px;
+  background: #eef7ff;
+}
+
+.contact-highlight ion-icon {
+  width: 54px;
+  height: 54px;
+  padding: 12px;
+  border-radius: 18px;
+  background: #ffffff;
+  color: #0b5cad;
+  margin-bottom: 16px;
+}
+
+.contact-highlight h3 {
+  margin: 0;
+  color: #10233f;
+  font-size: 20px;
+  font-weight: 850;
+}
+
+.contact-highlight strong {
+  display: block;
+  margin-top: 8px;
+  color: #0b5cad;
+  font-size: 22px;
+  font-weight: 850;
+}
+
+.contact-highlight p {
+  margin: 8px 0 0;
+  color: #31577e;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+
+/* =========================
+   Opciones rápidas
+========================= */
+
+.help-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.option-card ion-card-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 26px;
+}
+
+.option-card ion-icon {
+  width: 54px;
+  height: 54px;
+  padding: 12px;
+  border-radius: 18px;
+  background: #eef7ff;
+  color: #0b5cad;
+  margin-bottom: 16px;
+}
+
+.option-card h3 {
+  margin: 0;
+  color: #10233f;
+  font-size: 21px;
+  font-weight: 850;
+}
+
+.option-card p {
+  flex: 1;
+  margin: 10px 0 18px;
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.option-card ion-button {
+  height: 46px;
+  --border-radius: 14px;
+  --color: #0b5cad;
+  font-weight: 850;
+  text-transform: none;
+}
+
+
+/* =========================
+   Contenido inferior
+========================= */
+
+.ayuda-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.faq-panel ion-card-content,
+.channels-panel ion-card-content {
+  padding: 28px;
+}
+
+.section-title {
+  margin-bottom: 22px;
+}
+
+.section-title h2 {
+  margin: 0;
+  color: #10233f;
+  font-size: 25px;
+  font-weight: 850;
+}
+
+.section-title p {
+  margin: 8px 0 0;
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+
+/* =========================
+   FAQ
+========================= */
+
+.faq-list {
+  display: grid;
+  gap: 12px;
+}
+
+.faq-list ion-accordion {
+  border-radius: 16px;
+  overflow: hidden;
+  background: #f4f7fb;
+}
+
+.faq-list ion-item {
+  --background: #f4f7fb;
+  --color: #10233f;
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  font-weight: 800;
+}
+
+.faq-content {
+  padding: 0 16px 16px;
+  color: #526179;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+
+/* =========================
+   Canales
+========================= */
+
+.channel-list {
+  display: grid;
+  gap: 14px;
+}
+
+.channel-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 15px;
+  border-radius: 18px;
+  background: #f4f7fb;
+}
+
+.channel-item ion-icon {
+  min-width: 24px;
+  margin-top: 2px;
+  color: #0b5cad;
+  font-size: 24px;
+}
+
+.channel-item strong {
+  display: block;
+  color: #10233f;
+  font-size: 15px;
+  font-weight: 850;
+}
+
+.channel-item span {
+  display: block;
+  margin-top: 4px;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+
+/* =========================
+   Nota inferior
+========================= */
+
+.ayuda-note {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  padding: 18px;
+  border-radius: 20px;
+  background: #eef7ff;
+  color: #31577e;
+}
+
+.ayuda-note ion-icon {
+  min-width: 22px;
+  margin-top: 2px;
+  font-size: 22px;
+  color: #0b72d9;
+}
+
+.ayuda-note p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.faq-content p {
+  margin: 0 0 12px;
+  color: #526179;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.faq-link-btn {
+  height: 40px;
+  --border-radius: 12px;
+  --background: #0b72d9;
+  --background-hover: #0757a5;
+  --color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: none;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 900px) {
+  .ayuda-shell {
+    width: min(100% - 24px, 620px);
+    padding: 24px 0;
+  }
+
+  .help-summary,
+  .help-options,
+  .ayuda-content {
+    grid-template-columns: 1fr;
+  }
+
+  .ayuda-hero,
+  .help-card-main ion-card-content,
+  .faq-panel ion-card-content,
+  .channels-panel ion-card-content {
+    padding: 24px;
+  }
+
+  .help-card-main ion-card-content {
+    flex-direction: column;
+  }
+
+  .help-actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .ayuda-hero h1 {
+    font-size: 30px;
+  }
+
+  .ayuda-hero p {
+    font-size: 16px;
+  }
+
+  .help-card-main h2 {
+    font-size: 24px;
+  }
+}

@@ -23,6 +23,7 @@ import {
   personCircleOutline,
   timeOutline,
   logOutOutline,
+  helpCircleOutline,
 } from "ionicons/icons";
 
 import "./Home.css";
@@ -35,13 +36,23 @@ const Home: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          
+
           <IonTitle>MuniSalud</IonTitle>
 
-          <IonButton fill="clear" slot="end" routerLink="/login">
-            <IonIcon icon={logOutOutline} slot="start" />
-            Salir
-          </IonButton>
+          <IonButtons slot="end">
+            <IonButton
+              routerLink="/ayuda"
+              fill="clear"
+              className="header-help-btn"
+            >
+              <IonIcon icon={helpCircleOutline} slot="icon-only" />
+            </IonButton>
+
+            <IonButton fill="clear" routerLink="/login">
+              <IonIcon icon={logOutOutline} slot="start" />
+              Salir
+            </IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
 
@@ -74,10 +85,13 @@ const Home: React.FC = () => {
                     <div className="feature-icon">
                       <IonIcon icon={timeOutline} />
                     </div>
+
                     <h2>Lista de espera</h2>
+
                     <p>
                       Consulta tu posición, estado y fecha estimada de atención.
                     </p>
+
                     <IonButton expand="block" routerLink="/solicitudes">
                       Ver estado
                     </IonButton>
@@ -91,8 +105,11 @@ const Home: React.FC = () => {
                     <div className="feature-icon">
                       <IonIcon icon={calendarOutline} />
                     </div>
+
                     <h2>Agenda médica</h2>
+
                     <p>Revisa tus próximas citas y solicitudes de atención.</p>
+
                     <IonButton expand="block" routerLink="/agenda">
                       Ver agenda
                     </IonButton>
@@ -106,10 +123,13 @@ const Home: React.FC = () => {
                     <div className="feature-icon">
                       <IonIcon icon={flaskOutline} />
                     </div>
+
                     <h2>Exámenes</h2>
+
                     <p>
                       Accede a información sobre exámenes pendientes o cargados.
                     </p>
+
                     <IonButton expand="block" routerLink="/examenes">
                       Ver exámenes
                     </IonButton>
@@ -123,10 +143,13 @@ const Home: React.FC = () => {
                     <div className="feature-icon">
                       <IonIcon icon={notificationsOutline} />
                     </div>
+
                     <h2>Notificaciones</h2>
+
                     <p>
                       Revisa avisos importantes sobre cambios o nuevas citas.
                     </p>
+
                     <IonButton expand="block" routerLink="/notificaciones">
                       Ver avisos
                     </IonButton>
@@ -140,10 +163,13 @@ const Home: React.FC = () => {
                     <div className="feature-icon">
                       <IonIcon icon={documentTextOutline} />
                     </div>
+
                     <h2>Documentos</h2>
+
                     <p>
                       Consulta documentos asociados a tus solicitudes de salud.
                     </p>
+
                     <IonButton expand="block" routerLink="/documentos">
                       Ver documentos
                     </IonButton>
@@ -157,10 +183,34 @@ const Home: React.FC = () => {
                     <div className="feature-icon">
                       <IonIcon icon={personCircleOutline} />
                     </div>
+
                     <h2>Mi perfil</h2>
+
                     <p>Revisa y actualiza tus datos personales de contacto.</p>
+
                     <IonButton expand="block" routerLink="/perfil">
                       Ver perfil
+                    </IonButton>
+                  </IonCardContent>
+                </IonCard>
+              </IonCol>
+
+              <IonCol size="12" sizeMd="6" sizeLg="4">
+                <IonCard className="feature-card help-feature-card">
+                  <IonCardContent>
+                    <div className="feature-icon">
+                      <IonIcon icon={helpCircleOutline} />
+                    </div>
+
+                    <h2>Ayuda y orientación</h2>
+
+                    <p>
+                      Encuentra respuestas rápidas y canales de contacto si
+                      necesitas apoyo para usar el sistema.
+                    </p>
+
+                    <IonButton expand="block" routerLink="/ayuda">
+                      Necesito ayuda
                     </IonButton>
                   </IonCardContent>
                 </IonCard>
