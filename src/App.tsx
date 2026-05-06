@@ -2,11 +2,10 @@ import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { Route, Redirect } from "react-router-dom";
 
-/* Importa tus páginas aquí */
-import Login from "./pages/Login"; // Asegúrate de que el nombre coincida con tu archivo
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Home from "./pages/Home";
 
-/* CSS básico de Ionic */
 import "@ionic/react/css/core.css";
 import "@ionic/react/css/normalize.css";
 import "@ionic/react/css/structure.css";
@@ -20,17 +19,18 @@ export function App() {
       <IonReactRouter>
         <IonRouterOutlet>
           
-          {/* 1. Definimos la ruta /login */}
           <Route exact path="/login">
             <Login />
           </Route>
 
-          {/* 2. Definimos la ruta /home */}
+          <Route exact path="/register">
+            <Register />
+          </Route>
+
           <Route exact path="/home">
             <Home />
           </Route>
 
-          {/* 3. El "Redireccionador": Si entras a la raíz (/), te manda al login */}
           <Route exact path="/">
             <Redirect to="/login" />
           </Route>
