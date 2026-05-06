@@ -1,0 +1,48 @@
+.login-background {
+  --background: #1a5fb4 !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  min-height: 100%;
+}
+
+.titles {
+  text-align: center;
+  color: white;
+  margin: 40px 0;
+}
+
+.titles h1 {
+  color: white !important;
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.login-card {
+  max-width: 450px;
+  margin: auto;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  background: white !important;
+}
+
+.btn-claveunica {
+  --background: #2b78d6;
+  margin-top: 20px;
+}
+
+.login-footer {
+  width: 100%;
+  max-width: 900px;
+  margin-top: 60px;
+  color: white;
+  text-align: center;
+}
