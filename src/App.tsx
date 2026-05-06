@@ -8,6 +8,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import PatientMenu from "./components/PatientMenu";
+import Documents from "./pages/Documents";
 
 import "@ionic/react/css/core.css";
 import "@ionic/react/css/normalize.css";
@@ -39,6 +40,10 @@ export function App() {
             <Home />
           </Route>
 
+          <Route exact path="/documentos">
+            <Documents />
+          </Route>
+
           <Route exact path="/solicitudes">
             <PlaceholderPage
               title="Lista de espera"
@@ -64,13 +69,6 @@ export function App() {
             <PlaceholderPage
               title="Notificaciones"
               description="Revisa avisos importantes sobre cambios de estado, citas o solicitudes."
-            />
-          </Route>
-
-          <Route exact path="/documentos">
-            <PlaceholderPage
-              title="Documentos"
-              description="Accede a documentos médicos y antecedentes asociados a tus solicitudes."
             />
           </Route>
 
