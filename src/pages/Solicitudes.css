@@ -1,0 +1,284 @@
+/* =========================
+   Header
+========================= */
+
+.page-header ion-toolbar {
+  --background: #063970;
+  --color: #ffffff;
+}
+
+.page-header ion-title {
+  font-weight: 800;
+}
+
+.header-home-btn {
+  --color: #ffffff;
+}
+
+
+/* =========================
+   Layout base
+========================= */
+
+.patient-page {
+  --background: #f4f7fb;
+}
+
+.patient-shell {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 32px 0;
+}
+
+
+/* =========================
+   Hero superior
+========================= */
+
+.page-hero {
+  padding: 32px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #063970 0%, #0b5cad 55%, #1c7ed6 100%);
+  color: #ffffff;
+  box-shadow: 0 18px 48px rgba(6, 57, 112, 0.22);
+}
+
+.page-eyebrow {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 800;
+  opacity: 0.9;
+}
+
+.page-hero h1 {
+  margin: 0;
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  font-weight: 850;
+}
+
+.page-hero p {
+  max-width: 680px;
+  margin: 14px 0 0;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+
+/* =========================
+   Resumen de estados
+========================= */
+
+.status-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.summary-card {
+  margin: 0;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
+}
+
+.summary-card ion-card-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px;
+}
+
+.summary-card ion-icon {
+  width: 48px;
+  height: 48px;
+  padding: 12px;
+  border-radius: 16px;
+  background: #eef7ff;
+  color: #0b5cad;
+}
+
+.summary-card strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #10233f;
+  font-size: 28px;
+  font-weight: 850;
+  line-height: 1;
+}
+
+.summary-card span {
+  color: #64748b;
+  font-size: 14px;
+}
+
+
+/* =========================
+   Lista de solicitudes
+========================= */
+
+.request-list {
+  display: grid;
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.request-card {
+  margin: 0;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
+}
+
+.request-card ion-card-content {
+  padding: 26px;
+}
+
+.request-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.request-top h2 {
+  margin: 0;
+  color: #10233f;
+  font-size: 22px;
+  font-weight: 850;
+}
+
+.request-top p {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+
+/* =========================
+   Badges de estado
+========================= */
+
+.request-top ion-badge {
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.request-top ion-badge[color="warning"] {
+  --background: #fff4cc;
+  --color: #8a6300;
+}
+
+.request-top ion-badge[color="success"] {
+  --background: #dcfce7;
+  --color: #166534;
+}
+
+
+/* =========================
+   Información interna
+========================= */
+
+.request-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.request-info div {
+  padding: 14px;
+  border-radius: 16px;
+  background: #f4f7fb;
+}
+
+.request-info span {
+  display: block;
+  margin-bottom: 6px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.request-info strong {
+  color: #10233f;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+
+/* =========================
+   Botones
+========================= */
+
+.request-card ion-button {
+  height: 50px;
+  --border-radius: 14px;
+  --background: #0b72d9;
+  --background-hover: #0757a5;
+  --color: #ffffff;
+  font-weight: 800;
+  text-transform: none;
+}
+
+
+/* =========================
+   Caja informativa
+========================= */
+
+.info-box {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  padding: 18px;
+  border-radius: 20px;
+  background: #eef7ff;
+  color: #31577e;
+}
+
+.info-box ion-icon {
+  min-width: 22px;
+  margin-top: 2px;
+  font-size: 22px;
+  color: #0b72d9;
+}
+
+.info-box p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 760px) {
+  .patient-shell {
+    width: min(100% - 24px, 620px);
+    padding: 24px 0;
+  }
+
+  .page-hero,
+  .request-card ion-card-content {
+    padding: 24px;
+  }
+
+  .status-summary,
+  .request-info {
+    grid-template-columns: 1fr;
+  }
+
+  .request-top {
+    flex-direction: column;
+  }
+}

@@ -8,7 +8,7 @@
 }
 
 .placeholder-shell {
-  width: min(920px, calc(100% - 32px));
+  width: min(1120px, calc(100% - 32px));
   margin: 0 auto;
   padding: 36px 0;
 }
