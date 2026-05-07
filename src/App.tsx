@@ -8,8 +8,7 @@ import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 
 import Notificaciones from "./pages/Notifications";
-import PlaceholderPage from "./pages/PlaceholderPage";
-import PatientMenu from "./components/PatientMenu";
+import AppMenu from "./components/AppMenu";
 import Documents from "./pages/Documents";
 import Examenes from "./pages/Examenes";
 import Solicitudes from "./pages/Solicitudes";
@@ -18,6 +17,10 @@ import Perfil from "./pages/Perfil";
 import Ayuda from "./pages/Ayuda";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminReportes from "./pages/AdminReportes";
+import AdminPacientes from "./pages/AdminPacientes";
+import AdminAgenda from "./pages/AdminAgenda";
+import AdminListas from "./pages/AdminListas";
 
 import "@ionic/react/css/core.css";
 import "@ionic/react/css/normalize.css";
@@ -30,7 +33,7 @@ export function App() {
   return (
     <IonApp>
       <IonReactRouter>
-        <PatientMenu />
+        <AppMenu />
 
         <IonRouterOutlet id="main-content">
           <Route exact path="/login">
@@ -86,31 +89,19 @@ export function App() {
           </Route>
 
           <Route exact path="/admin/pacientes">
-            <PlaceholderPage
-              title="Gestión de pacientes"
-              description="Vista administrativa para revisar, buscar y actualizar información de pacientes."
-            />
+            <AdminPacientes />
           </Route>
 
           <Route exact path="/admin/listas">
-            <PlaceholderPage
-              title="Gestión de listas de espera"
-              description="Vista administrativa para priorizar, actualizar y supervisar solicitudes médicas."
-            />
+            <AdminListas />
           </Route>
 
           <Route exact path="/admin/reportes">
-            <PlaceholderPage
-              title="Reportes"
-              description="Vista administrativa para consultar indicadores y reportes del sistema municipal."
-            />
+            <AdminReportes />
           </Route>
 
           <Route exact path="/admin/agenda">
-            <PlaceholderPage
-              title="Agenda administrativa"
-              description="Vista para revisar y coordinar citas médicas desde el rol funcionario."
-            />
+            <AdminAgenda />
           </Route>
 
           <Route exact path="/">
