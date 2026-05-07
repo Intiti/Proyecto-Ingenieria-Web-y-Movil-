@@ -1,0 +1,319 @@
+.admin-agenda-header ion-toolbar {
+  --background: #063970;
+  --color: #ffffff;
+}
+
+.admin-agenda-header ion-title {
+  font-weight: 800;
+}
+
+.admin-agenda-home-btn {
+  --color: #ffffff;
+}
+
+.admin-agenda-page {
+  --background: #f4f7fb;
+}
+
+.admin-agenda-shell {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 32px 0;
+}
+
+.admin-agenda-hero {
+  padding: 32px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #063970 0%, #0b5cad 55%, #1c7ed6 100%);
+  color: #ffffff;
+  box-shadow: 0 18px 48px rgba(6, 57, 112, 0.22);
+}
+
+.admin-agenda-eyebrow {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 800;
+  opacity: 0.92;
+}
+
+.admin-agenda-hero h1 {
+  margin: 0;
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  font-weight: 850;
+}
+
+.admin-agenda-hero p {
+  max-width: 720px;
+  margin: 12px 0 0;
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.admin-agenda-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.admin-agenda-summary-card,
+.admin-agenda-filters,
+.admin-appointment-card,
+.admin-agenda-availability {
+  margin: 0;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
+}
+
+.admin-agenda-summary-card ion-card-content {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 22px;
+}
+
+.admin-agenda-summary-card ion-icon {
+  width: 48px;
+  height: 48px;
+  padding: 12px;
+  border-radius: 16px;
+  background: #eef7ff;
+  color: #0b5cad;
+}
+
+.admin-agenda-summary-card strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #10233f;
+  font-size: 28px;
+  font-weight: 850;
+  line-height: 1;
+}
+
+.admin-agenda-summary-card span {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.admin-agenda-filters {
+  margin-top: 24px;
+}
+
+.admin-agenda-filters ion-card-content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 24px;
+}
+
+.admin-agenda-select {
+  min-height: 58px;
+  --background: #ffffff;
+  --color: #10233f;
+  border: 1.5px solid #c8d3e0;
+  border-radius: 16px;
+  padding: 0 12px;
+}
+
+.admin-agenda-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.admin-agenda-list {
+  display: grid;
+  gap: 18px;
+}
+
+.admin-appointment-card ion-card-content {
+  padding: 26px;
+}
+
+.admin-appointment-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.admin-appointment-date strong {
+  display: block;
+  color: #0b5cad;
+  font-size: 25px;
+  font-weight: 850;
+}
+
+.admin-appointment-date span {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.admin-appointment-card h2 {
+  margin: 0;
+  color: #10233f;
+  font-size: 23px;
+  font-weight: 850;
+}
+
+.admin-appointment-patient {
+  margin: 8px 0 0;
+  color: #64748b;
+  font-size: 15px;
+}
+
+.badge-warning,
+.badge-success,
+.badge-info {
+  height: fit-content;
+  border-radius: 999px;
+  padding: 8px 11px;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.badge-warning {
+  --background: #fff4cc;
+  --color: #8a6300;
+}
+
+.badge-success {
+  --background: #dcfce7;
+  --color: #166534;
+}
+
+.badge-info {
+  --background: #e0f2fe;
+  --color: #075985;
+}
+
+.admin-appointment-info {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.admin-appointment-info div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #526179;
+  font-size: 14px;
+}
+
+.admin-appointment-info ion-icon {
+  color: #0b5cad;
+  font-size: 20px;
+}
+
+.admin-appointment-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.admin-appointment-actions ion-button {
+  height: 48px;
+  --border-radius: 14px;
+  --background: #0b72d9;
+  --background-hover: #0757a5;
+  --color: #ffffff;
+  --border-color: #0b72d9;
+  font-size: 14px;
+  font-weight: 850;
+  text-transform: none;
+}
+
+.admin-agenda-availability ion-card-content {
+  padding: 26px;
+}
+
+.section-title h2 {
+  margin: 0;
+  color: #10233f;
+  font-size: 23px;
+  font-weight: 850;
+}
+
+.section-title p {
+  margin: 8px 0 0;
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.availability-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.availability-list div {
+  padding: 14px;
+  border-radius: 16px;
+  background: #f4f7fb;
+}
+
+.availability-list span {
+  display: block;
+  margin-bottom: 5px;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.availability-list strong {
+  color: #10233f;
+  font-size: 15px;
+  font-weight: 850;
+}
+
+.availability-action {
+  margin-top: 22px;
+  height: 52px;
+  --border-radius: 14px;
+  --background: #0b72d9;
+  --color: #ffffff;
+  font-weight: 850;
+  text-transform: none;
+}
+
+@media (max-width: 1000px) {
+  .admin-agenda-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .admin-agenda-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .admin-agenda-shell {
+    width: min(100% - 24px, 620px);
+    padding: 24px 0;
+  }
+
+  .admin-agenda-hero,
+  .admin-appointment-card ion-card-content,
+  .admin-agenda-filters ion-card-content,
+  .admin-agenda-availability ion-card-content {
+    padding: 24px;
+  }
+
+  .admin-agenda-summary,
+  .admin-agenda-filters ion-card-content,
+  .admin-appointment-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-appointment-top {
+    flex-direction: column;
+  }
+}
