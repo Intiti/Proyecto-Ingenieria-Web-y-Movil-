@@ -10,7 +10,7 @@ import {
 } from "@ionic/react";
 
 import {
-  medkitOutline,
+  medicalOutline,
   shieldCheckmarkOutline,
   personAddOutline,
 } from "ionicons/icons";
@@ -59,12 +59,12 @@ const Register: React.FC = () => {
           <header className="login-header">
             <div className="brand">
               <div className="brand-icon">
-                <IonIcon icon={medkitOutline} />
+                <IonIcon icon={medicalOutline} />
               </div>
 
               <div>
                 <h2>MuniSalud</h2>
-                <p>Municipalidad de Valparaíso</p>
+                <p>Municipalidad de Santo Domingo</p>
               </div>
             </div>
 
