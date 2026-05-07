@@ -26,7 +26,7 @@ import "./Solicitudes.css";
 const Solicitudes: React.FC = () => {
   return (
     <IonPage>
-      <IonHeader className="page-header">
+      <IonHeader className="app-header">
         <IonToolbar>
           <IonButtons slot="start">
             <IonMenuButton />
@@ -38,7 +38,7 @@ const Solicitudes: React.FC = () => {
             <IonButton
               routerLink="/home"
               fill="clear"
-              className="header-home-btn"
+              className="app-header-btn"
             >
               <IonIcon icon={homeOutline} slot="icon-only" />
             </IonButton>
@@ -46,11 +46,11 @@ const Solicitudes: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="patient-page">
-        <main className="patient-shell">
-          <section className="page-hero">
+      <IonContent className="app-page solicitudes-page">
+        <main className="app-shell">
+          <section className="app-hero">
             <div>
-              <p className="page-eyebrow">Estado de atención</p>
+              <p className="app-eyebrow">Estado de atención</p>
               <h1>Consulta tu lista de espera</h1>
               <p>
                 Revisa el avance de tus solicitudes médicas y el estado actual
@@ -59,8 +59,8 @@ const Solicitudes: React.FC = () => {
             </div>
           </section>
 
-          <section className="status-summary">
-            <IonCard className="summary-card">
+          <section className="kpi-grid three-columns">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={hourglassOutline} />
                 <div>
@@ -70,7 +70,7 @@ const Solicitudes: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="summary-card">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={calendarOutline} />
                 <div>
@@ -80,7 +80,7 @@ const Solicitudes: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="summary-card">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={checkmarkCircleOutline} />
                 <div>
@@ -92,7 +92,7 @@ const Solicitudes: React.FC = () => {
           </section>
 
           <section className="request-list">
-            <IonCard className="request-card">
+            <IonCard className="app-card request-card">
               <IonCardContent>
                 <div className="request-top">
                   <div>
@@ -100,7 +100,7 @@ const Solicitudes: React.FC = () => {
                     <p>Solicitud ingresada el 12/04/2026</p>
                   </div>
 
-                  <IonBadge color="warning">En espera</IonBadge>
+                  <IonBadge className="badge-warning">En espera</IonBadge>
                 </div>
 
                 <div className="request-info">
@@ -120,13 +120,17 @@ const Solicitudes: React.FC = () => {
                   </div>
                 </div>
 
-                <IonButton expand="block" fill="outline">
+                <IonButton
+                  expand="block"
+                  fill="outline"
+                  className="app-outline-btn"
+                >
                   Ver detalle
                 </IonButton>
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="request-card">
+            <IonCard className="app-card request-card">
               <IonCardContent>
                 <div className="request-top">
                   <div>
@@ -134,7 +138,7 @@ const Solicitudes: React.FC = () => {
                     <p>Solicitud ingresada el 08/04/2026</p>
                   </div>
 
-                  <IonBadge color="success">Agendada</IonBadge>
+                  <IonBadge className="badge-success">Agendada</IonBadge>
                 </div>
 
                 <div className="request-info">
@@ -154,7 +158,9 @@ const Solicitudes: React.FC = () => {
                   </div>
                 </div>
 
-                <IonButton expand="block">Ver comprobante</IonButton>
+                <IonButton expand="block" className="app-primary-btn">
+                  Ver comprobante
+                </IonButton>
               </IonCardContent>
             </IonCard>
           </section>

@@ -1,0 +1,310 @@
+/* =========================
+   Variables globales
+========================= */
+
+:root {
+  --app-blue-900: #063970;
+  --app-blue-800: #0757a5;
+  --app-blue-700: #0b5cad;
+  --app-blue-600: #0b72d9;
+  --app-blue-500: #1c7ed6;
+
+  --app-bg: #f4f7fb;
+  --app-card-bg: #ffffff;
+
+  --app-text-main: #10233f;
+  --app-text-soft: #64748b;
+  --app-text-muted: #526179;
+
+  --app-border: #c8d3e0;
+  --app-soft-blue: #eef7ff;
+
+  --app-radius-lg: 28px;
+  --app-radius-md: 24px;
+  --app-radius-sm: 16px;
+
+  --app-shadow-card: 0 14px 36px rgba(15, 23, 42, 0.08);
+  --app-shadow-hero: 0 18px 48px rgba(6, 57, 112, 0.22);
+}
+
+
+/* =========================
+   Header global
+========================= */
+
+.app-header ion-toolbar {
+  --background: var(--app-blue-900);
+  --color: #ffffff;
+}
+
+.app-header ion-title {
+  font-weight: 800;
+}
+
+.app-header-btn {
+  --color: #ffffff;
+  font-weight: 800;
+  text-transform: none;
+}
+
+
+/* =========================
+   Layout global
+========================= */
+
+.app-page {
+  --background: var(--app-bg);
+}
+
+.app-shell {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 32px 0;
+}
+
+
+/* =========================
+   Hero global
+========================= */
+
+.app-hero {
+  padding: 32px;
+  border-radius: var(--app-radius-lg);
+  background: linear-gradient(
+    135deg,
+    var(--app-blue-900) 0%,
+    var(--app-blue-700) 55%,
+    var(--app-blue-500) 100%
+  );
+  color: #ffffff;
+  box-shadow: var(--app-shadow-hero);
+}
+
+.app-eyebrow {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 800;
+  opacity: 0.92;
+}
+
+.app-hero h1 {
+  margin: 0;
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  font-weight: 850;
+}
+
+.app-hero p {
+  max-width: 760px;
+  margin: 12px 0 0;
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+
+/* =========================
+   Cards globales
+========================= */
+
+.app-card {
+  margin: 0;
+  border-radius: var(--app-radius-md);
+  background: var(--app-card-bg);
+  box-shadow: var(--app-shadow-card);
+}
+
+.app-card ion-card-content {
+  padding: 26px;
+}
+
+
+/* =========================
+   KPI cards
+========================= */
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.kpi-grid.three-columns {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.kpi-card {
+  margin: 0;
+  border-radius: var(--app-radius-md);
+  background: #ffffff;
+  box-shadow: var(--app-shadow-card);
+}
+
+.kpi-card ion-card-content {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 22px;
+}
+
+.kpi-card ion-icon {
+  width: 48px;
+  height: 48px;
+  padding: 12px;
+  border-radius: var(--app-radius-sm);
+  background: var(--app-soft-blue);
+  color: var(--app-blue-700);
+}
+
+.kpi-card strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--app-text-main);
+  font-size: 28px;
+  font-weight: 850;
+  line-height: 1;
+}
+
+.kpi-card span {
+  color: var(--app-text-soft);
+  font-size: 14px;
+}
+
+
+/* =========================
+   Botones globales
+========================= */
+
+.app-primary-btn {
+  height: 52px;
+  --border-radius: 14px;
+  --background: var(--app-blue-600);
+  --background-hover: var(--app-blue-800);
+  --color: #ffffff;
+  --border-color: var(--app-blue-600);
+  font-size: 15px;
+  font-weight: 850;
+  text-transform: none;
+}
+
+.app-outline-btn {
+  height: 52px;
+  --border-radius: 14px;
+  --background: #ffffff;
+  --color: var(--app-blue-600);
+  --border-color: var(--app-blue-600);
+  --border-width: 1.5px;
+  --border-style: solid;
+  font-size: 15px;
+  font-weight: 850;
+  text-transform: none;
+}
+
+
+/* =========================
+   Badges globales
+========================= */
+
+.badge-warning,
+.badge-success,
+.badge-danger,
+.badge-info {
+  height: fit-content;
+  border-radius: 999px;
+  padding: 8px 11px;
+  font-size: 12px;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.badge-warning {
+  --background: #fff4cc;
+  --color: #8a6300;
+}
+
+.badge-success {
+  --background: #dcfce7;
+  --color: #166534;
+}
+
+.badge-danger {
+  --background: #fee2e2;
+  --color: #991b1b;
+}
+
+.badge-info {
+  --background: #e0f2fe;
+  --color: #075985;
+}
+
+
+/* =========================
+   Reveal on scroll
+========================= */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s ease;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* =========================
+   Responsive global
+========================= */
+
+@media (max-width: 1000px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .kpi-grid.three-columns {
+  grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .app-shell {
+    width: min(100% - 24px, 620px);
+    padding: 24px 0;
+  }
+
+  .app-hero {
+    padding: 24px;
+  }
+
+  .app-hero h1 {
+    font-size: 31px;
+  }
+
+  .app-hero p {
+    font-size: 16px;
+  }
+
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .app-card ion-card-content {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-shell {
+    width: min(100% - 20px, 620px);
+  }
+
+  .app-hero h1 {
+    font-size: 28px;
+  }
+}

@@ -27,11 +27,12 @@ import {
 } from "ionicons/icons";
 
 import "./Home.css";
+import NotificationBell from "../components/NotificationBell";
 
 const Home: React.FC = () => {
   return (
     <IonPage>
-      <IonHeader className="home-header">
+      <IonHeader className="app-header">
         <IonToolbar>
           <IonButtons slot="start">
             <IonMenuButton />
@@ -40,15 +41,21 @@ const Home: React.FC = () => {
           <IonTitle>MuniSalud</IonTitle>
 
           <IonButtons slot="end">
+            <NotificationBell />
+
             <IonButton
               routerLink="/ayuda"
               fill="clear"
-              className="header-help-btn"
+              className="app-header-btn"
             >
               <IonIcon icon={helpCircleOutline} slot="icon-only" />
             </IonButton>
 
-            <IonButton fill="clear" routerLink="/login">
+            <IonButton
+              fill="clear"
+              routerLink="/login"
+              className="app-header-btn"
+            >
               <IonIcon icon={logOutOutline} slot="start" />
               Salir
             </IonButton>
@@ -56,11 +63,11 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="home-page">
-        <main className="home-shell">
-          <section className="home-welcome">
+      <IonContent className="app-page">
+        <main className="app-shell">
+          <section className="home-welcome app-hero">
             <div>
-              <p className="home-eyebrow">Portal paciente</p>
+              <p className="app-eyebrow">Portal paciente</p>
               <h1>Bienvenido/a</h1>
               <p>
                 Revisa tus solicitudes médicas, próximas atenciones y el estado
@@ -80,19 +87,22 @@ const Home: React.FC = () => {
           <IonGrid className="home-grid">
             <IonRow>
               <IonCol size="12" sizeMd="6" sizeLg="4">
-                <IonCard className="feature-card">
+                <IonCard className="feature-card app-card">
                   <IonCardContent>
                     <div className="feature-icon">
                       <IonIcon icon={timeOutline} />
                     </div>
 
                     <h2>Lista de espera</h2>
-
                     <p>
                       Consulta tu posición, estado y fecha estimada de atención.
                     </p>
 
-                    <IonButton expand="block" routerLink="/solicitudes">
+                    <IonButton
+                      expand="block"
+                      routerLink="/solicitudes"
+                      className="app-primary-btn"
+                    >
                       Ver estado
                     </IonButton>
                   </IonCardContent>
@@ -100,17 +110,20 @@ const Home: React.FC = () => {
               </IonCol>
 
               <IonCol size="12" sizeMd="6" sizeLg="4">
-                <IonCard className="feature-card">
+                <IonCard className="feature-card app-card">
                   <IonCardContent>
                     <div className="feature-icon">
                       <IonIcon icon={calendarOutline} />
                     </div>
 
                     <h2>Agenda médica</h2>
-
                     <p>Revisa tus próximas citas y solicitudes de atención.</p>
 
-                    <IonButton expand="block" routerLink="/agenda">
+                    <IonButton
+                      expand="block"
+                      routerLink="/agenda"
+                      className="app-primary-btn"
+                    >
                       Ver agenda
                     </IonButton>
                   </IonCardContent>
@@ -118,19 +131,22 @@ const Home: React.FC = () => {
               </IonCol>
 
               <IonCol size="12" sizeMd="6" sizeLg="4">
-                <IonCard className="feature-card">
+                <IonCard className="feature-card app-card">
                   <IonCardContent>
                     <div className="feature-icon">
                       <IonIcon icon={flaskOutline} />
                     </div>
 
                     <h2>Exámenes</h2>
-
                     <p>
                       Accede a información sobre exámenes pendientes o cargados.
                     </p>
 
-                    <IonButton expand="block" routerLink="/examenes">
+                    <IonButton
+                      expand="block"
+                      routerLink="/examenes"
+                      className="app-primary-btn"
+                    >
                       Ver exámenes
                     </IonButton>
                   </IonCardContent>
@@ -138,19 +154,22 @@ const Home: React.FC = () => {
               </IonCol>
 
               <IonCol size="12" sizeMd="6" sizeLg="4">
-                <IonCard className="feature-card">
+                <IonCard className="feature-card app-card">
                   <IonCardContent>
                     <div className="feature-icon">
                       <IonIcon icon={notificationsOutline} />
                     </div>
 
                     <h2>Notificaciones</h2>
-
                     <p>
                       Revisa avisos importantes sobre cambios o nuevas citas.
                     </p>
 
-                    <IonButton expand="block" routerLink="/notificaciones">
+                    <IonButton
+                      expand="block"
+                      routerLink="/notificaciones"
+                      className="app-primary-btn"
+                    >
                       Ver avisos
                     </IonButton>
                   </IonCardContent>
@@ -158,19 +177,22 @@ const Home: React.FC = () => {
               </IonCol>
 
               <IonCol size="12" sizeMd="6" sizeLg="4">
-                <IonCard className="feature-card">
+                <IonCard className="feature-card app-card">
                   <IonCardContent>
                     <div className="feature-icon">
                       <IonIcon icon={documentTextOutline} />
                     </div>
 
                     <h2>Documentos</h2>
-
                     <p>
                       Consulta documentos asociados a tus solicitudes de salud.
                     </p>
 
-                    <IonButton expand="block" routerLink="/documentos">
+                    <IonButton
+                      expand="block"
+                      routerLink="/documentos"
+                      className="app-primary-btn"
+                    >
                       Ver documentos
                     </IonButton>
                   </IonCardContent>
@@ -178,17 +200,20 @@ const Home: React.FC = () => {
               </IonCol>
 
               <IonCol size="12" sizeMd="6" sizeLg="4">
-                <IonCard className="feature-card">
+                <IonCard className="feature-card app-card">
                   <IonCardContent>
                     <div className="feature-icon">
                       <IonIcon icon={personCircleOutline} />
                     </div>
 
                     <h2>Mi perfil</h2>
-
                     <p>Revisa y actualiza tus datos personales de contacto.</p>
 
-                    <IonButton expand="block" routerLink="/perfil">
+                    <IonButton
+                      expand="block"
+                      routerLink="/perfil"
+                      className="app-primary-btn"
+                    >
                       Ver perfil
                     </IonButton>
                   </IonCardContent>
@@ -196,20 +221,23 @@ const Home: React.FC = () => {
               </IonCol>
 
               <IonCol size="12" sizeMd="6" sizeLg="4">
-                <IonCard className="feature-card help-feature-card">
+                <IonCard className="feature-card app-card help-feature-card">
                   <IonCardContent>
                     <div className="feature-icon">
                       <IonIcon icon={helpCircleOutline} />
                     </div>
 
                     <h2>Ayuda y orientación</h2>
-
                     <p>
                       Encuentra respuestas rápidas y canales de contacto si
                       necesitas apoyo para usar el sistema.
                     </p>
 
-                    <IonButton expand="block" routerLink="/ayuda">
+                    <IonButton
+                      expand="block"
+                      routerLink="/ayuda"
+                      className="app-primary-btn"
+                    >
                       Necesito ayuda
                     </IonButton>
                   </IonCardContent>

@@ -1,180 +1,258 @@
-import React, { useState } from 'react';
+import { useState } from "react";
+
 import {
+  IonBadge,
+  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
+  IonLabel,
   IonMenuButton,
   IonPage,
-  IonTitle,
-  IonToolbar,
   IonSegment,
   IonSegmentButton,
-  IonLabel,
-  IonBadge,
-  IonIcon,
+  IonTitle,
+  IonToolbar,
 } from "@ionic/react";
-import { 
-  mailOpenOutline, 
-  trashOutline, 
-  trendingUpOutline, 
+
+import {
   calendarOutline,
-  mailUnreadOutline,
+  flaskOutline,
+  homeOutline,
   informationCircleOutline,
-  flaskOutline
+  mailOpenOutline,
+  mailUnreadOutline,
+  trashOutline,
+  trendingUpOutline,
 } from "ionicons/icons";
 
 import "./Notifications.css";
 
+type NotificationStatus = "unread" | "read";
+type NotificationPriority = "Alta" | "Media" | "Baja";
+type NotificationFilter = "no-leidas" | "leidas" | "todas";
+
+type PatientNotification = {
+  id: number;
+  title: string;
+  description: string;
+  status: NotificationStatus;
+  priority: NotificationPriority;
+  icon: string;
+  date: string;
+};
+
+const initialNotifications: PatientNotification[] = [
+  {
+    id: 1,
+    title: "Avance en Lista de Espera",
+    description:
+      "Has avanzado 3 posiciones en la lista de espera de Cardiología. Posición actual: 8 de 45.",
+    status: "unread",
+    priority: "Alta",
+    icon: trendingUpOutline,
+    date: "2 de mayo de 2026, 08:00 p. m.",
+  },
+  {
+    id: 2,
+    title: "Nuevo Cupo Disponible",
+    description:
+      "Se ha liberado un cupo para Cardiología el 20 de Junio a las 10:30. Confirma tu asistencia.",
+    status: "unread",
+    priority: "Alta",
+    icon: calendarOutline,
+    date: "1 de mayo de 2026, 08:00 p. m.",
+  },
+  {
+    id: 3,
+    title: "Recordatorio de Examen",
+    description:
+      "Tienes un Electrocardiograma programado para el 15 de Mayo a las 09:00.",
+    status: "read",
+    priority: "Media",
+    icon: flaskOutline,
+    date: "30 de abril de 2026, 08:00 p. m.",
+  },
+  {
+    id: 4,
+    title: "Actualización del Sistema",
+    description:
+      "El sistema estará en mantenimiento el próximo domingo de 02:00 a 06:00 hrs.",
+    status: "read",
+    priority: "Baja",
+    icon: informationCircleOutline,
+    date: "27 de abril de 2026, 08:00 p. m.",
+  },
+];
+
 const Notifications: React.FC = () => {
-  const [filter, setFilter] = useState('no-leidas');
+  const [filter, setFilter] = useState<NotificationFilter>("no-leidas");
+  const [notifications, setNotifications] =
+    useState<PatientNotification[]>(initialNotifications);
 
-  // Estado inicial con los datos de tus capturas
-  const [notifications, setNotifications] = useState([
-    { 
-      id: 1, 
-      title: 'Avance en Lista de Espera', 
-      description: 'Has avanzado 3 posiciones en la lista de espera de Cardiología. Posición actual: 8 de 45.',
-      status: 'unread', 
-      priority: 'Alta', 
-      icon: trendingUpOutline,
-      date: '2 de mayo de 2026, 08:00 p. m.' 
-    },
-    { 
-      id: 2, 
-      title: 'Nuevo Cupo Disponible', 
-      description: 'Se ha liberado un cupo para Cardiología el 20 de Junio a las 10:30. Confirma tu asistencia.',
-      status: 'unread', 
-      priority: 'Alta', 
-      icon: calendarOutline,
-      date: '1 de mayo de 2026, 08:00 p. m.' 
-    },
-    { 
-      id: 3, 
-      title: 'Recordatorio de Examen', 
-      description: 'Tienes un Electrocardiograma programado para el 15 de Mayo a las 09:00.',
-      status: 'read', 
-      priority: 'Media', 
-      icon: flaskOutline,
-      date: '30 de abril de 2026, 08:00 p. m.' 
-    },
-    { 
-      id: 4, 
-      title: 'Actualización del Sistema', 
-      description: 'El sistema estará en mantenimiento el próximo domingo de 02:00 a 06:00 hrs.',
-      status: 'read', 
-      priority: 'Baja', 
-      icon: informationCircleOutline,
-      date: '27 de abril de 2026, 08:00 p. m.' 
-    },
-  ]);
-
-  // Lógica de Filtrado: Esto es lo que hace que las secciones cambien
-  const filteredList = notifications.filter(n => {
-    if (filter === 'no-leidas') return n.status === 'unread';
-    if (filter === 'leidas') return n.status === 'read';
-    return true; 
+  const filteredList = notifications.filter((notification) => {
+    if (filter === "no-leidas") return notification.status === "unread";
+    if (filter === "leidas") return notification.status === "read";
+    return true;
   });
 
-  // Funciones de acción
   const markAsRead = (id: number) => {
-    setNotifications(notifications.map(n => n.id === id ? { ...n, status: 'read' } : n));
+    setNotifications((current) =>
+      current.map((notification) =>
+        notification.id === id
+          ? { ...notification, status: "read" }
+          : notification,
+      ),
+    );
   };
 
   const deleteNotification = (id: number) => {
-    setNotifications(notifications.filter(n => n.id !== id));
+    setNotifications((current) =>
+      current.filter((notification) => notification.id !== id),
+    );
   };
 
-  const unreadCount = notifications.filter(n => n.status === 'unread').length;
+  const unreadCount = notifications.filter(
+    (notification) => notification.status === "unread",
+  ).length;
+
+  const readCount = notifications.filter(
+    (notification) => notification.status === "read",
+  ).length;
 
   return (
     <IonPage>
-      <IonHeader className="notifications-header ion-no-border">
+      <IonHeader className="app-header ion-no-border">
         <IonToolbar>
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>MuniSalud</IonTitle>
+
+          <IonTitle>Notificaciones</IonTitle>
+
+          <IonButtons slot="end">
+            <IonButton
+              routerLink="/home"
+              fill="clear"
+              className="app-header-btn"
+            >
+              <IonIcon icon={homeOutline} slot="icon-only" />
+            </IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="notifications-page">
-        <main className="notifications-shell">
-          
-          <section className="notifications-hero">
-            <p className="notifications-eyebrow">CENTRO DE MENSAJES</p>
-            <h1>Notificaciones</h1>
-            <p>Mantente informado sobre el estado de tus listas de espera y actualizaciones de salud.</p>
-  
-            {unreadCount > 0 && (
+      <IonContent className="app-page notifications-page">
+        <main className="app-shell notifications-shell">
+          <section className="app-hero notifications-hero">
+            <div>
+              <p className="app-eyebrow">Centro de mensajes</p>
+              <h1>Notificaciones</h1>
+              <p>
+                Mantente informado sobre el estado de tus listas de espera,
+                citas médicas, exámenes y actualizaciones del sistema.
+              </p>
+
+              {unreadCount > 0 && (
                 <div className="notifications-banner-hero">
-                    <IonIcon icon={mailUnreadOutline} />
-                    <span>Tienes {unreadCount} mensajes nuevos</span>
+                  <IonIcon icon={mailUnreadOutline} />
+                  <span>Tienes {unreadCount} mensajes nuevos</span>
                 </div>
-            )}
+              )}
+            </div>
           </section>
-          <IonSegment 
-            value={filter} 
-            mode="md" 
+
+          <IonSegment
+            value={filter}
+            mode="md"
             className="notifications-segment"
-            onIonChange={(e) => setFilter(e.detail.value as string)}
+            onIonChange={(event) =>
+              setFilter(event.detail.value as NotificationFilter)
+            }
           >
             <IonSegmentButton value="no-leidas">
-              <IonLabel>NO LEÍDAS {unreadCount > 0 && <IonBadge color="danger">{unreadCount}</IonBadge>}</IonLabel>
+              <IonLabel>
+                No leídas{" "}
+                {unreadCount > 0 && (
+                  <IonBadge color="danger">{unreadCount}</IonBadge>
+                )}
+              </IonLabel>
             </IonSegmentButton>
+
             <IonSegmentButton value="leidas">
-              <IonLabel>LEÍDAS ({notifications.filter(n => n.status === 'read').length})</IonLabel>
+              <IonLabel>Leídas ({readCount})</IonLabel>
             </IonSegmentButton>
+
             <IonSegmentButton value="todas">
-              <IonLabel>TODAS ({notifications.length})</IonLabel>
+              <IonLabel>Todas ({notifications.length})</IonLabel>
             </IonSegmentButton>
           </IonSegment>
 
-          <div className="notifications-list">
-            {filteredList.map((notif) => (
-              <article 
-                key={notif.id} 
-                className={`notifications-item-card ${notif.status === 'unread' ? 'unread-border' : ''}`}
+          <section className="notifications-list">
+            {filteredList.map((notification) => (
+              <article
+                key={notification.id}
+                className={
+                  notification.status === "unread"
+                    ? "app-card notifications-item-card unread-border"
+                    : "app-card notifications-item-card"
+                }
               >
                 <div className="notifications-card-header">
                   <div className="icon-title-group">
-                    <div className={`notifications-mini-icon ${notif.priority.toLowerCase()}-bg`}>
-                      <IonIcon icon={notif.icon} />
+                    <div
+                      className={`notifications-mini-icon ${notification.priority.toLowerCase()}-bg`}
+                    >
+                      <IonIcon icon={notification.icon} />
                     </div>
-                    <h2>{notif.title}</h2>
+
+                    <h2>{notification.title}</h2>
                   </div>
-                  <span className={`priority-badge badge-${notif.priority.toLowerCase()}`}>
-                    {notif.priority}
+
+                  <span
+                    className={`priority-badge badge-${notification.priority.toLowerCase()}`}
+                  >
+                    {notification.priority}
                   </span>
                 </div>
-                
-                <p className="notifications-card-body">{notif.description}</p>
-                
+
+                <p className="notifications-card-body">
+                  {notification.description}
+                </p>
+
                 <div className="notifications-card-footer">
-                  <time>{notif.date}</time>
+                  <time>{notification.date}</time>
+
                   <div className="action-buttons">
-                    {notif.status === 'unread' && (
-                      <IonIcon 
-                        icon={mailOpenOutline} 
-                        className="act-icon blue" 
-                        onClick={() => markAsRead(notif.id)}
-                      />
+                    {notification.status === "unread" && (
+                      <IonButton
+                        fill="clear"
+                        className="notification-page-action-btn"
+                        onClick={() => markAsRead(notification.id)}
+                      >
+                        <IonIcon icon={mailOpenOutline} slot="icon-only" />
+                      </IonButton>
                     )}
-                    <IonIcon 
-                      icon={trashOutline} 
-                      className="act-icon red" 
-                      onClick={() => deleteNotification(notif.id)}
-                    />
+
+                    <IonButton
+                      fill="clear"
+                      className="notification-page-action-btn danger"
+                      onClick={() => deleteNotification(notification.id)}
+                    >
+                      <IonIcon icon={trashOutline} slot="icon-only" />
+                    </IonButton>
                   </div>
                 </div>
               </article>
             ))}
 
             {filteredList.length === 0 && (
-              <div className="empty-state">
+              <div className="app-card empty-state">
                 <p>No hay notificaciones para mostrar.</p>
               </div>
             )}
-          </div>
+          </section>
         </main>
       </IonContent>
     </IonPage>

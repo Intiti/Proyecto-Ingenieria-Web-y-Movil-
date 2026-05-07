@@ -104,7 +104,7 @@ const AdminAgenda: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader className="admin-agenda-header">
+      <IonHeader className="app-header">
         <IonToolbar>
           <IonButtons slot="start">
             <IonMenuButton />
@@ -116,7 +116,7 @@ const AdminAgenda: React.FC = () => {
             <IonButton
               routerLink="/admin/dashboard"
               fill="clear"
-              className="admin-agenda-home-btn"
+              className="app-header-btn"
             >
               <IonIcon icon={homeOutline} slot="icon-only" />
             </IonButton>
@@ -124,11 +124,11 @@ const AdminAgenda: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="admin-agenda-page">
-        <main className="admin-agenda-shell">
-          <section className="admin-agenda-hero">
+      <IonContent className="app-page admin-agenda-page">
+        <main className="app-shell">
+          <section className="app-hero">
             <div>
-              <p className="admin-agenda-eyebrow">Coordinación diaria</p>
+              <p className="app-eyebrow">Coordinación diaria</p>
               <h1>Revisar agenda médica</h1>
               <p>
                 Coordina citas, revisa disponibilidad, confirma atenciones y
@@ -137,8 +137,8 @@ const AdminAgenda: React.FC = () => {
             </div>
           </section>
 
-          <section className="admin-agenda-summary">
-            <IonCard className="admin-agenda-summary-card">
+          <section className="kpi-grid">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={calendarOutline} />
                 <div>
@@ -148,7 +148,7 @@ const AdminAgenda: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="admin-agenda-summary-card">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={checkmarkCircleOutline} />
                 <div>
@@ -158,7 +158,7 @@ const AdminAgenda: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="admin-agenda-summary-card">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={timeOutline} />
                 <div>
@@ -168,7 +168,7 @@ const AdminAgenda: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="admin-agenda-summary-card">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={peopleOutline} />
                 <div>
@@ -179,7 +179,7 @@ const AdminAgenda: React.FC = () => {
             </IonCard>
           </section>
 
-          <IonCard className="admin-agenda-filters">
+          <IonCard className="app-card admin-agenda-filters">
             <IonCardContent>
               <IonSelect
                 value={status}
@@ -228,7 +228,7 @@ const AdminAgenda: React.FC = () => {
             <div className="admin-agenda-list">
               {filteredAppointments.map((appointment) => (
                 <IonCard
-                  className="admin-appointment-card"
+                  className="app-card admin-appointment-card"
                   key={`${appointment.patient}-${appointment.time}`}
                 >
                   <IonCardContent>
@@ -252,6 +252,7 @@ const AdminAgenda: React.FC = () => {
                     </div>
 
                     <h2>{appointment.service}</h2>
+
                     <p className="admin-appointment-patient">
                       {appointment.patient}
                     </p>
@@ -274,11 +275,23 @@ const AdminAgenda: React.FC = () => {
                     </div>
 
                     <div className="admin-appointment-actions">
-                      <IonButton expand="block">Confirmar</IonButton>
-                      <IonButton expand="block" fill="outline">
+                      <IonButton expand="block" className="app-primary-btn">
+                        Confirmar
+                      </IonButton>
+
+                      <IonButton
+                        expand="block"
+                        fill="outline"
+                        className="app-outline-btn"
+                      >
                         Reagendar
                       </IonButton>
-                      <IonButton expand="block" fill="clear">
+
+                      <IonButton
+                        expand="block"
+                        fill="clear"
+                        className="agenda-clear-btn"
+                      >
                         Marcar asistencia
                       </IonButton>
                     </div>
@@ -287,7 +300,7 @@ const AdminAgenda: React.FC = () => {
               ))}
             </div>
 
-            <IonCard className="admin-agenda-availability">
+            <IonCard className="app-card admin-agenda-availability">
               <IonCardContent>
                 <div className="section-title">
                   <h2>Disponibilidad del día</h2>
@@ -319,7 +332,7 @@ const AdminAgenda: React.FC = () => {
                 <IonButton
                   expand="block"
                   routerLink="/admin/listas"
-                  className="availability-action"
+                  className="app-primary-btn availability-action"
                 >
                   Asignar pacientes desde lista de espera
                 </IonButton>

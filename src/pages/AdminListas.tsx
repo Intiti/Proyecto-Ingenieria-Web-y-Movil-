@@ -116,7 +116,7 @@ const AdminListas: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader className="admin-listas-header">
+      <IonHeader className="app-header">
         <IonToolbar>
           <IonButtons slot="start">
             <IonMenuButton />
@@ -128,7 +128,7 @@ const AdminListas: React.FC = () => {
             <IonButton
               routerLink="/admin/dashboard"
               fill="clear"
-              className="admin-listas-home-btn"
+              className="app-header-btn"
             >
               <IonIcon icon={homeOutline} slot="icon-only" />
             </IonButton>
@@ -136,11 +136,11 @@ const AdminListas: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="admin-listas-page">
-        <main className="admin-listas-shell">
-          <section className="admin-listas-hero">
+      <IonContent className="app-page admin-listas-page">
+        <main className="app-shell">
+          <section className="app-hero">
             <div>
-              <p className="admin-listas-eyebrow">Priorización clínica</p>
+              <p className="app-eyebrow">Priorización clínica</p>
               <h1>Gestión de listas de espera</h1>
               <p>
                 Revisa solicitudes pendientes, prioriza casos críticos y deriva
@@ -149,8 +149,8 @@ const AdminListas: React.FC = () => {
             </div>
           </section>
 
-          <section className="admin-listas-summary">
-            <IonCard className="admin-listas-summary-card">
+          <section className="kpi-grid">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={peopleOutline} />
                 <div>
@@ -160,7 +160,7 @@ const AdminListas: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="admin-listas-summary-card">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={timeOutline} />
                 <div>
@@ -170,7 +170,7 @@ const AdminListas: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="admin-listas-summary-card">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={alertCircleOutline} />
                 <div>
@@ -180,7 +180,7 @@ const AdminListas: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="admin-listas-summary-card">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={calendarOutline} />
                 <div>
@@ -191,7 +191,7 @@ const AdminListas: React.FC = () => {
             </IonCard>
           </section>
 
-          <IonCard className="admin-listas-filters">
+          <IonCard className="app-card admin-listas-filters">
             <IonCardContent>
               <IonSelect
                 value={status}
@@ -232,7 +232,7 @@ const AdminListas: React.FC = () => {
           <section className="admin-listas-content">
             <div className="admin-listas-list">
               {filteredRequests.map((request) => (
-                <IonCard className="waitlist-card" key={request.id}>
+                <IonCard className="app-card waitlist-card" key={request.id}>
                   <IonCardContent>
                     <div className="waitlist-top">
                       <div>
@@ -279,7 +279,7 @@ const AdminListas: React.FC = () => {
                     </div>
 
                     <div className="waitlist-actions">
-                      <IonButton expand="block">
+                      <IonButton expand="block" className="app-primary-btn">
                         <IonIcon icon={checkmarkCircleOutline} slot="start" />
                         Marcar revisado
                       </IonButton>
@@ -288,6 +288,7 @@ const AdminListas: React.FC = () => {
                         expand="block"
                         fill="outline"
                         routerLink="/admin/agenda"
+                        className="app-outline-btn"
                       >
                         <IonIcon icon={calendarOutline} slot="start" />
                         Agendar
@@ -297,6 +298,7 @@ const AdminListas: React.FC = () => {
                         expand="block"
                         fill="clear"
                         routerLink="/admin/pacientes"
+                        className="waitlist-clear-btn"
                       >
                         <IonIcon icon={swapHorizontalOutline} slot="start" />
                         Reasignar
@@ -307,7 +309,7 @@ const AdminListas: React.FC = () => {
               ))}
             </div>
 
-            <IonCard className="admin-listas-side-panel">
+            <IonCard className="app-card admin-listas-side-panel">
               <IonCardContent>
                 <div className="section-title">
                   <h2>Criterios de priorización</h2>
@@ -349,7 +351,7 @@ const AdminListas: React.FC = () => {
                 <IonButton
                   expand="block"
                   routerLink="/admin/reportes"
-                  className="side-panel-action"
+                  className="app-primary-btn side-panel-action"
                 >
                   Ver reportes de saturación
                 </IonButton>

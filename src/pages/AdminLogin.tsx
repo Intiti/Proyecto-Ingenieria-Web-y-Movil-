@@ -57,7 +57,7 @@ const AdminLogin: React.FC = () => {
             </div>
           </section>
 
-          <IonCard className="admin-login-card">
+          <IonCard className="app-card admin-login-card">
             <IonCardContent>
               <div className="admin-card-title">
                 <h2>Ingreso funcionario</h2>
@@ -70,6 +70,7 @@ const AdminLogin: React.FC = () => {
 
                   <div className="admin-input-with-icon">
                     <IonIcon icon={mailOutline} />
+
                     <IonInput
                       id="admin-email"
                       className="admin-input icon-input"
@@ -85,6 +86,7 @@ const AdminLogin: React.FC = () => {
 
                   <div className="admin-input-with-icon">
                     <IonIcon icon={lockClosedOutline} />
+
                     <IonInput
                       id="admin-password"
                       className="admin-input icon-input"
@@ -98,7 +100,7 @@ const AdminLogin: React.FC = () => {
 
               <IonButton
                 expand="block"
-                className="admin-login-btn"
+                className="app-primary-btn admin-login-btn"
                 onClick={handleAdminLogin}
               >
                 Ingresar al panel

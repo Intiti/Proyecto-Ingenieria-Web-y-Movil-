@@ -28,7 +28,7 @@ import "./Agenda.css";
 const Agenda: React.FC = () => {
   return (
     <IonPage>
-      <IonHeader className="agenda-header">
+      <IonHeader className="app-header">
         <IonToolbar>
           <IonButtons slot="start">
             <IonMenuButton />
@@ -40,7 +40,7 @@ const Agenda: React.FC = () => {
             <IonButton
               routerLink="/home"
               fill="clear"
-              className="agenda-home-btn"
+              className="app-header-btn"
             >
               <IonIcon icon={homeOutline} slot="icon-only" />
             </IonButton>
@@ -48,11 +48,11 @@ const Agenda: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="agenda-page">
-        <main className="agenda-shell">
-          <section className="agenda-hero">
+      <IonContent className="app-page agenda-page">
+        <main className="app-shell">
+          <section className="app-hero">
             <div>
-              <p className="agenda-eyebrow">Atenciones programadas</p>
+              <p className="app-eyebrow">Atenciones programadas</p>
               <h1>Revisa tus próximas citas médicas</h1>
               <p>
                 Consulta fecha, hora, lugar y estado de tus atenciones
@@ -62,7 +62,7 @@ const Agenda: React.FC = () => {
           </section>
 
           <section className="next-appointment">
-            <IonCard className="next-card">
+            <IonCard className="app-card next-card">
               <IonCardContent>
                 <div className="next-card-header">
                   <div className="next-icon">
@@ -70,7 +70,7 @@ const Agenda: React.FC = () => {
                   </div>
 
                   <div>
-                    <IonBadge color="primary">Próxima cita</IonBadge>
+                    <IonBadge className="badge-info">Próxima cita</IonBadge>
                     <h2>Control médico general</h2>
                     <p>Centro de Salud Familiar Santo Domingo</p>
                   </div>
@@ -97,15 +97,22 @@ const Agenda: React.FC = () => {
                 </div>
 
                 <div className="next-actions">
-                  <IonButton expand="block">Ver indicaciones</IonButton>
-                  <IonButton expand="block" fill="outline">
+                  <IonButton expand="block" className="app-primary-btn">
+                    Ver indicaciones
+                  </IonButton>
+
+                  <IonButton
+                    expand="block"
+                    fill="outline"
+                    className="app-outline-btn"
+                  >
                     Reagendar
                   </IonButton>
                 </div>
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="reminder-card">
+            <IonCard className="app-card reminder-card">
               <IonCardContent>
                 <IonIcon icon={alertCircleOutline} />
                 <h3>Recuerda llegar 15 minutos antes</h3>
@@ -117,8 +124,8 @@ const Agenda: React.FC = () => {
             </IonCard>
           </section>
 
-          <section className="agenda-summary">
-            <IonCard className="agenda-summary-card">
+          <section className="kpi-grid three-columns">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={calendarOutline} />
                 <div>
@@ -128,7 +135,7 @@ const Agenda: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="agenda-summary-card">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={checkmarkCircleOutline} />
                 <div>
@@ -138,7 +145,7 @@ const Agenda: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="agenda-summary-card">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={medicalOutline} />
                 <div>
@@ -150,7 +157,7 @@ const Agenda: React.FC = () => {
           </section>
 
           <section className="agenda-content">
-            <div className="agenda-panel">
+            <div className="app-card agenda-panel">
               <div className="section-title">
                 <h2>Próximas atenciones</h2>
                 <p>Citas programadas asociadas a tu atención municipal.</p>
@@ -206,7 +213,7 @@ const Agenda: React.FC = () => {
                   <div className="appointment-info">
                     <div className="appointment-top">
                       <h3>Consulta traumatología</h3>
-                      <IonBadge className="badge-review">En revisión</IonBadge>
+                      <IonBadge className="badge-info">En revisión</IonBadge>
                     </div>
 
                     <p>
@@ -218,7 +225,7 @@ const Agenda: React.FC = () => {
               </div>
             </div>
 
-            <div className="agenda-panel">
+            <div className="app-card agenda-panel">
               <div className="section-title">
                 <h2>Historial reciente</h2>
                 <p>Últimas atenciones registradas en el sistema.</p>

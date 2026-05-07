@@ -275,7 +275,7 @@ const AdminReportes: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader className="reports-header">
+      <IonHeader className="app-header">
         <IonToolbar>
           <IonButtons slot="start">
             <IonMenuButton />
@@ -287,7 +287,7 @@ const AdminReportes: React.FC = () => {
             <IonButton
               routerLink="/admin/dashboard"
               fill="clear"
-              className="reports-home-btn"
+              className="app-header-btn"
             >
               <IonIcon icon={homeOutline} slot="icon-only" />
             </IonButton>
@@ -295,11 +295,11 @@ const AdminReportes: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="reports-page">
-        <main className="reports-shell">
-          <section className="reports-hero">
+      <IonContent className="app-page">
+        <main className="app-shell">
+          <section className="app-hero">
             <div>
-              <p className="reports-eyebrow">Indicadores administrativos</p>
+              <p className="app-eyebrow">Indicadores administrativos</p>
               <h1>Reportes de gestión municipal</h1>
               <p>
                 Visualiza indicadores sobre listas de espera, solicitudes,
@@ -315,7 +315,7 @@ const AdminReportes: React.FC = () => {
           </section>
 
           <section ref={filtersReveal.ref} className={filtersReveal.className}>
-            <IonCard className="filters-card">
+            <IonCard className="app-card filters-card">
               <IonCardContent>
                 <div className="filters-title">
                   <IonIcon icon={funnelOutline} />
@@ -402,9 +402,9 @@ const AdminReportes: React.FC = () => {
 
           <section
             ref={summaryReveal.ref}
-            className={`reports-summary ${summaryReveal.className}`}
+            className={`kpi-grid ${summaryReveal.className}`}
           >
-            <IonCard className="report-summary-card">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={peopleOutline} />
                 <div>
@@ -414,7 +414,7 @@ const AdminReportes: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="report-summary-card">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={timeOutline} />
                 <div>
@@ -424,7 +424,7 @@ const AdminReportes: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="report-summary-card">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={calendarOutline} />
                 <div>
@@ -434,7 +434,7 @@ const AdminReportes: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="report-summary-card">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={trendingUpOutline} />
                 <div>
@@ -449,7 +449,7 @@ const AdminReportes: React.FC = () => {
             ref={capacityReveal.ref}
             className={`capacity-section ${capacityReveal.className}`}
           >
-            <IonCard className="capacity-card">
+            <IonCard className="app-card capacity-card">
               <IonCardContent>
                 <div className="section-title">
                   <div>
@@ -582,7 +582,7 @@ const AdminReportes: React.FC = () => {
             ref={chartsReveal.ref}
             className={`reports-content ${chartsReveal.className}`}
           >
-            <IonCard className="report-panel large-panel">
+            <IonCard className="app-card report-panel large-panel">
               <IonCardContent>
                 <div className="section-title">
                   <div>
@@ -624,7 +624,7 @@ const AdminReportes: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="report-panel">
+            <IonCard className="app-card report-panel">
               <IonCardContent>
                 <div className="section-title">
                   <div>
@@ -667,7 +667,7 @@ const AdminReportes: React.FC = () => {
             ref={bottomReveal.ref}
             className={`reports-content bottom-content ${bottomReveal.className}`}
           >
-            <IonCard className="report-panel">
+            <IonCard className="app-card report-panel">
               <IonCardContent>
                 <div className="section-title">
                   <div>
@@ -701,7 +701,7 @@ const AdminReportes: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="report-panel priority-panel">
+            <IonCard className="app-card report-panel priority-panel">
               <IonCardContent>
                 <div className="section-title">
                   <div>
@@ -746,7 +746,7 @@ const AdminReportes: React.FC = () => {
             ref={alertsReveal.ref}
             className={`management-alerts ${alertsReveal.className}`}
           >
-            <IonCard className="management-alert-card">
+            <IonCard className="app-card management-alert-card">
               <IonCardContent>
                 <div className="section-title">
                   <div>

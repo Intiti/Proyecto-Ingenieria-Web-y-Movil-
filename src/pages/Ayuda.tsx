@@ -34,7 +34,7 @@ import "./Ayuda.css";
 const Ayuda: React.FC = () => {
   return (
     <IonPage>
-      <IonHeader className="ayuda-header">
+      <IonHeader className="app-header">
         <IonToolbar>
           <IonButtons slot="start">
             <IonMenuButton />
@@ -46,7 +46,7 @@ const Ayuda: React.FC = () => {
             <IonButton
               routerLink="/home"
               fill="clear"
-              className="ayuda-home-btn"
+              className="app-header-btn"
             >
               <IonIcon icon={homeOutline} slot="icon-only" />
             </IonButton>
@@ -54,20 +54,22 @@ const Ayuda: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="ayuda-page">
-        <main className="ayuda-shell">
-          <section className="ayuda-hero">
-            <p className="ayuda-eyebrow">Orientación ciudadana</p>
-            <h1>¿Necesitas ayuda con el sistema?</h1>
-            <p>
-              Encuentra orientación para revisar tus solicitudes, consultar tus
-              citas médicas y resolver dudas frecuentes sobre la atención
-              municipal.
-            </p>
+      <IonContent className="app-page ayuda-page">
+        <main className="app-shell">
+          <section className="app-hero">
+            <div>
+              <p className="app-eyebrow">Orientación ciudadana</p>
+              <h1>¿Necesitas ayuda con el sistema?</h1>
+              <p>
+                Encuentra orientación para revisar tus solicitudes, consultar
+                tus citas médicas y resolver dudas frecuentes sobre la atención
+                municipal.
+              </p>
+            </div>
           </section>
 
           <section className="help-summary">
-            <IonCard className="help-card-main">
+            <IonCard className="app-card help-card-main">
               <IonCardContent>
                 <div className="help-main-icon">
                   <IonIcon icon={helpCircleOutline} />
@@ -75,6 +77,7 @@ const Ayuda: React.FC = () => {
 
                 <div>
                   <h2>Guía rápida para pacientes</h2>
+
                   <p>
                     Si es tu primera vez usando MuniSalud, comienza revisando tu
                     lista de espera, luego tu agenda médica y finalmente tus
@@ -82,11 +85,18 @@ const Ayuda: React.FC = () => {
                   </p>
 
                   <div className="help-actions">
-                    <IonButton routerLink="/solicitudes">
+                    <IonButton
+                      routerLink="/solicitudes"
+                      className="app-primary-btn"
+                    >
                       Ver lista de espera
                     </IonButton>
 
-                    <IonButton routerLink="/agenda" fill="outline">
+                    <IonButton
+                      routerLink="/agenda"
+                      fill="outline"
+                      className="app-outline-btn"
+                    >
                       Ver agenda médica
                     </IonButton>
                   </div>
@@ -94,58 +104,81 @@ const Ayuda: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="contact-highlight">
+            <IonCard className="app-card contact-highlight">
               <IonCardContent>
                 <IonIcon icon={callOutline} />
+
                 <h3>Atención telefónica</h3>
+
                 <strong>600 360 7777</strong>
+
                 <p>Lunes a viernes de 08:30 a 17:30 hrs.</p>
               </IonCardContent>
             </IonCard>
           </section>
 
           <section className="help-options">
-            <IonCard className="option-card">
+            <IonCard className="app-card option-card">
               <IonCardContent>
                 <IonIcon icon={timeOutline} />
+
                 <h3>Lista de espera</h3>
+
                 <p>
                   Revisa el estado de tus solicitudes médicas y la última
                   actualización registrada.
                 </p>
+
                 <IonButton
                   expand="block"
                   fill="clear"
                   routerLink="/solicitudes"
+                  className="option-link-btn"
                 >
                   Ir a solicitudes
                 </IonButton>
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="option-card">
+            <IonCard className="app-card option-card">
               <IonCardContent>
                 <IonIcon icon={documentTextOutline} />
+
                 <h3>Documentos</h3>
+
                 <p>
                   Consulta documentos asociados a tus atenciones, comprobantes o
                   antecedentes médicos.
                 </p>
-                <IonButton expand="block" fill="clear" routerLink="/documentos">
+
+                <IonButton
+                  expand="block"
+                  fill="clear"
+                  routerLink="/documentos"
+                  className="option-link-btn"
+                >
                   Ver documentos
                 </IonButton>
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="option-card">
+            <IonCard className="app-card option-card">
               <IonCardContent>
                 <IonIcon icon={peopleOutline} />
+
                 <h3>Datos personales</h3>
+
                 <p>
                   Mantén actualizado tu teléfono, correo y dirección para
                   recibir avisos importantes.
                 </p>
-                <IonButton expand="block" fill="clear" routerLink="/perfil">
+
+                <IonButton
+                  expand="block"
+                  fill="clear"
+                  routerLink="/perfil"
+                  className="option-link-btn"
+                >
                   Actualizar perfil
                 </IonButton>
               </IonCardContent>
@@ -153,7 +186,7 @@ const Ayuda: React.FC = () => {
           </section>
 
           <section className="ayuda-content">
-            <IonCard className="faq-panel">
+            <IonCard className="app-card faq-panel">
               <IonCardContent>
                 <div className="section-title">
                   <h2>Preguntas frecuentes</h2>
@@ -251,7 +284,7 @@ const Ayuda: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="channels-panel">
+            <IonCard className="app-card channels-panel">
               <IonCardContent>
                 <div className="section-title">
                   <h2>Canales de atención</h2>
@@ -297,6 +330,7 @@ const Ayuda: React.FC = () => {
 
           <section className="ayuda-note">
             <IonIcon icon={informationCircleOutline} />
+
             <p>
               Esta sección está diseñada para apoyar a pacientes y usuarios que
               requieran orientación durante el uso del sistema.
