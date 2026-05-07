@@ -35,7 +35,7 @@ const Login: React.FC = () => {
   const handleLogin = () => {
     router.push("/home", "forward", "push");
   };
-  
+
   return (
     <IonPage>
       <IonContent fullscreen className="login-page">
@@ -86,7 +86,7 @@ const Login: React.FC = () => {
               </div>
             </div>
 
-            <IonCard className="login-card">
+            <IonCard className="app-card login-card">
               <IonCardContent>
                 <div className="card-title">
                   <h2>Acceso paciente</h2>
@@ -130,7 +130,7 @@ const Login: React.FC = () => {
 
                 <IonButton
                   expand="block"
-                  className="btn-primary-login"
+                  className="app-primary-btn login-main-btn"
                   onClick={handleLogin}
                 >
                   Ingresar
@@ -149,7 +149,7 @@ const Login: React.FC = () => {
                 <IonButton
                   expand="block"
                   fill="outline"
-                  className="btn-claveunica"
+                  className="app-outline-btn btn-claveunica"
                   onClick={() => setShowModal(true)}
                 >
                   Ingresar con ClaveÚnica
@@ -161,6 +161,7 @@ const Login: React.FC = () => {
 
                 <div className="security-note">
                   <IonIcon icon={shieldCheckmarkOutline} />
+
                   <span>
                     Tus datos serán validados de forma segura según el método de
                     ingreso seleccionado.
@@ -189,6 +190,7 @@ const Login: React.FC = () => {
                 <IonIcon icon={callOutline} />
                 600 360 7777
               </p>
+
               <p>
                 <IonIcon icon={mailOutline} />
                 contacto@munisalud.cl
@@ -205,13 +207,14 @@ const Login: React.FC = () => {
       >
         <IonHeader>
           <IonToolbar>
-            <IonTitle style={{ display: "flex", alignItems: "center" }}>
+            <IonTitle className="cu-modal-title">
               <img
                 src="/Assets/ClaveUnica.png"
                 alt="ClaveÚnica"
-                style={{ height: "90px", width: "auto" }}
+                className="cu-logo"
               />
             </IonTitle>
+
             <IonButtons slot="end">
               <IonButton onClick={() => setShowModal(false)}>
                 <IonIcon icon={closeOutline} />
@@ -219,35 +222,14 @@ const Login: React.FC = () => {
             </IonButtons>
           </IonToolbar>
         </IonHeader>
-        <IonContent className="ion-padding">
-          <div
-            style={{
-              maxWidth: "400px",
-              margin: "24px auto",
-              textAlign: "center",
-            }}
-          >
-            <h2
-              style={{
-                fontSize: "20px",
-                fontWeight: "bold",
-                marginBottom: "24px",
-              }}
-            >
-              Portal Ciudadano ClaveÚnica
-            </h2>
 
-            <div style={{ textAlign: "left", marginBottom: "16px" }}>
-              <label
-                style={{
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  marginBottom: "8px",
-                  display: "block",
-                }}
-              >
-                Ingresa tu RUN
-              </label>
+        <IonContent className="cu-modal-content">
+          <div className="cu-shell">
+            <h2>Portal Ciudadano ClaveÚnica</h2>
+
+            <div className="cu-field">
+              <label>Ingresa tu RUN</label>
+
               <IonInput
                 placeholder="12.345.678-9"
                 fill="outline"
@@ -255,17 +237,9 @@ const Login: React.FC = () => {
               />
             </div>
 
-            <div style={{ textAlign: "left", marginBottom: "20px" }}>
-              <label
-                style={{
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  marginBottom: "8px",
-                  display: "block",
-                }}
-              >
-                Ingresa tu ClaveÚnica
-              </label>
+            <div className="cu-field">
+              <label>Ingresa tu ClaveÚnica</label>
+
               <IonInput
                 type="password"
                 placeholder="••••••••"
@@ -280,37 +254,22 @@ const Login: React.FC = () => {
               </IonInput>
             </div>
 
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                fontSize: "13px",
-                marginBottom: "24px",
-              }}
-            >
-              <a
-                href="https://claveunica.gob.cl/recuperar"
-                style={{ color: "#1a5fb4", textDecoration: "none" }}
-              >
+            <div className="cu-links">
+              <a href="https://claveunica.gob.cl/recuperar">
                 Recupera tu ClaveÚnica
               </a>
-              <a
-                href="https://claveunica.gob.cl/sucursales"
-                style={{ color: "#1a5fb4", textDecoration: "none" }}
-              >
+
+              <a href="https://claveunica.gob.cl/sucursales">
                 Solicita tu ClaveÚnica
               </a>
             </div>
 
-            <IonButton expand="block" className="btn-claveunica-submit">
+            <IonButton expand="block" className="app-primary-btn cu-submit-btn">
               INGRESA
             </IonButton>
 
-            <div style={{ marginTop: "32px", fontSize: "14px" }}>
-              <a
-                href="https://claveunica.gob.cl/preguntas-frecuentes"
-                style={{ color: "#666", textDecoration: "none" }}
-              >
+            <div className="cu-help">
+              <a href="https://claveunica.gob.cl/preguntas-frecuentes">
                 ¿Necesitas ayuda?
               </a>
             </div>

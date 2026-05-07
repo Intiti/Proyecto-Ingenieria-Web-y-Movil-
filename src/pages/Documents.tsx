@@ -1,16 +1,16 @@
 import {
-  IonContent,
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonButtons,
-  IonMenuButton,
   IonButton,
-  IonIcon,
+  IonButtons,
   IonCard,
   IonCardContent,
+  IonContent,
   IonGrid,
+  IonHeader,
+  IonIcon,
+  IonMenuButton,
+  IonPage,
+  IonTitle,
+  IonToolbar,
   IonRow,
   IonCol,
 } from "@ionic/react";
@@ -26,7 +26,7 @@ import {
 } from "ionicons/icons";
 
 import { useState } from "react";
-import "./PlaceholderPage.css";
+import "./Documents.css";
 
 const Documents: React.FC = () => {
   const [filter, setFilter] = useState("Todos");
@@ -40,8 +40,7 @@ const Documents: React.FC = () => {
       doctor: "Dra. Ana Pérez",
       size: "150 KB",
       icon: medkitOutline,
-      color: "#0b5cad",
-      bgColor: "#eef7ff",
+      variant: "blue",
     },
     {
       id: 2,
@@ -51,8 +50,7 @@ const Documents: React.FC = () => {
       doctor: "Dr. Juan Gómez",
       size: "420 KB",
       icon: readerOutline,
-      color: "#2b8a3e",
-      bgColor: "#ebfbee",
+      variant: "green",
     },
     {
       id: 3,
@@ -62,8 +60,7 @@ const Documents: React.FC = () => {
       doctor: "Laboratorio Municipal",
       size: "1.2 MB",
       icon: flaskOutline,
-      color: "#d97706",
-      bgColor: "#fffbeb",
+      variant: "orange",
     },
     {
       id: 4,
@@ -73,8 +70,7 @@ const Documents: React.FC = () => {
       doctor: "Dr. Roberto Silva",
       size: "160 KB",
       icon: medkitOutline,
-      color: "#0b5cad",
-      bgColor: "#eef7ff",
+      variant: "blue",
     },
   ];
 
@@ -85,19 +81,19 @@ const Documents: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader className="page-header">
+      <IonHeader className="app-header">
         <IonToolbar>
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
+
           <IonTitle>Documentos</IonTitle>
 
           <IonButtons slot="end">
             <IonButton
               routerLink="/home"
               fill="clear"
-              className="header-home-btn"
-              style={{ color: "#ffffff" }}
+              className="app-header-btn"
             >
               <IonIcon icon={homeOutline} slot="icon-only" />
             </IonButton>
@@ -105,157 +101,112 @@ const Documents: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="placeholder-page">
-        <main className="placeholder-shell">
-          <section className="placeholder-card" style={{ marginBottom: "24px" }}>
-            <div className="placeholder-icon">
+      <IonContent className="app-page documents-page">
+        <main className="app-shell">
+          <section className="app-hero documents-hero">
+            <div>
+              <p className="app-eyebrow">Documentación médica</p>
+              <h1>Mis documentos</h1>
+              <p>
+                Consulta, descarga y visualiza documentos asociados a tus
+                solicitudes de salud.
+              </p>
+            </div>
+
+            <div className="documents-hero-icon">
               <IonIcon icon={documentTextOutline} />
             </div>
-            <h1 style={{ fontSize: "32px", fontWeight: 850, color: "#10233f" }}>
-              Mis Documentos
-            </h1>
-            <p style={{ color: "#526179", fontSize: "17px", lineHeight: 1.55 }}>
-              Consulta, descarga y visualiza documentos asociados a tus solicitudes de salud.
-            </p>
           </section>
 
-          <div style={{ display: "flex", gap: "12px", marginBottom: "24px", flexWrap: "wrap" }}>
+          <section className="document-filters">
             <IonButton
               fill={filter === "Todos" ? "solid" : "outline"}
+              className={
+                filter === "Todos"
+                  ? "document-filter-btn active"
+                  : "document-filter-btn"
+              }
               onClick={() => setFilter("Todos")}
-              style={{
-                "--border-radius": "12px",
-                textTransform: "none",
-                fontWeight: 800,
-              }}
             >
               Todos
             </IonButton>
+
             <IonButton
               fill={filter === "Receta Médica" ? "solid" : "outline"}
+              className={
+                filter === "Receta Médica"
+                  ? "document-filter-btn active"
+                  : "document-filter-btn"
+              }
               onClick={() => setFilter("Receta Médica")}
-              style={{
-                "--border-radius": "12px",
-                textTransform: "none",
-                fontWeight: 800,
-              }}
             >
               Recetas Médicas
             </IonButton>
+
             <IonButton
               fill={filter === "Licencia Médica" ? "solid" : "outline"}
+              className={
+                filter === "Licencia Médica"
+                  ? "document-filter-btn active"
+                  : "document-filter-btn"
+              }
               onClick={() => setFilter("Licencia Médica")}
-              style={{
-                "--border-radius": "12px",
-                textTransform: "none",
-                fontWeight: 800,
-              }}
             >
               Licencias Médicas
             </IonButton>
+
             <IonButton
               fill={filter === "Examen de Laboratorio" ? "solid" : "outline"}
+              className={
+                filter === "Examen de Laboratorio"
+                  ? "document-filter-btn active"
+                  : "document-filter-btn"
+              }
               onClick={() => setFilter("Examen de Laboratorio")}
-              style={{
-                "--border-radius": "12px",
-                textTransform: "none",
-                fontWeight: 800,
-              }}
             >
               Exámenes
             </IonButton>
-          </div>
+          </section>
 
-          <IonGrid style={{ padding: 0 }}>
+          <IonGrid className="documents-grid">
             <IonRow>
               {filteredList.map((doc) => (
                 <IonCol size="12" sizeMd="6" sizeLg="4" key={doc.id}>
-                  <IonCard
-                    style={{
-                      borderRadius: "20px",
-                      boxShadow: "0 10px 28px rgba(15, 23, 42, 0.06)",
-                      margin: 0,
-                      height: "100%",
-                      background: "#ffffff",
-                    }}
-                  >
-                    <IonCardContent
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        height: "100%",
-                        padding: "24px",
-                      }}
-                    >
-                      <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "16px" }}>
-                        <div
-                          style={{
-                            width: "48px",
-                            height: "48px",
-                            borderRadius: "14px",
-                            display: "grid",
-                            placeItems: "center",
-                            background: doc.bgColor,
-                            color: doc.color,
-                          }}
-                        >
-                          <IonIcon icon={doc.icon} style={{ fontSize: "24px" }} />
+                  <IonCard className="app-card document-card">
+                    <IonCardContent>
+                      <div className="document-card-header">
+                        <div className={`document-icon ${doc.variant}`}>
+                          <IonIcon icon={doc.icon} />
                         </div>
+
                         <div>
-                          <span
-                            style={{
-                              display: "inline-block",
-                              fontSize: "12px",
-                              fontWeight: "800",
-                              color: doc.color,
-                              backgroundColor: doc.bgColor,
-                              padding: "4px 10px",
-                              borderRadius: "8px",
-                              textTransform: "uppercase",
-                              marginBottom: "2px",
-                            }}
-                          >
+                          <span className={`document-type ${doc.variant}`}>
                             {doc.type}
                           </span>
-                          <h2
-                            style={{
-                              margin: 0,
-                              fontSize: "16px",
-                              fontWeight: "850",
-                              color: "#10233f",
-                            }}
-                          >
-                            {doc.name}
-                          </h2>
+
+                          <h2>{doc.name}</h2>
                         </div>
                       </div>
 
-                      <div style={{ flex: 1, color: "#526179", fontSize: "16px", lineHeight: "1.6", marginBottom: "20px" }}>
-                        <p style={{ margin: "4px 0" }}>
+                      <div className="document-meta">
+                        <p>
                           <strong>Fecha de emisión:</strong> {doc.date}
                         </p>
-                        <p style={{ margin: "4px 0" }}>
+
+                        <p>
                           <strong>Emitido por:</strong> {doc.doctor}
                         </p>
-                        <p style={{ margin: "4px 0" }}>
+
+                        <p>
                           <strong>Tamaño:</strong> {doc.size}
                         </p>
                       </div>
 
-                      <div style={{ display: "flex", gap: "10px" }}>
+                      <div className="document-actions">
                         <IonButton
                           expand="block"
                           fill="outline"
-                          style={{
-                            flex: 1,
-                            height: "44px",
-                            "--border-radius": "12px",
-                            "--border-color": "#0b72d9",
-                            "--color": "#0b72d9",
-                            fontWeight: "800",
-                            textTransform: "none",
-                            margin: 0,
-                          } as any}
+                          className="app-outline-btn document-action-btn"
                         >
                           <IonIcon icon={eyeOutline} slot="start" />
                           Visualizar
@@ -263,16 +214,7 @@ const Documents: React.FC = () => {
 
                         <IonButton
                           expand="block"
-                          style={{
-                            flex: 1,
-                            height: "44px",
-                            "--border-radius": "12px",
-                            "--background": "linear-gradient(135deg, #0b72d9, #0757a5)",
-                            "--color": "#ffffff",
-                            fontWeight: "800",
-                            textTransform: "none",
-                            margin: 0,
-                          } as any}
+                          className="app-primary-btn document-action-btn"
                         >
                           <IonIcon icon={downloadOutline} slot="start" />
                           Descargar

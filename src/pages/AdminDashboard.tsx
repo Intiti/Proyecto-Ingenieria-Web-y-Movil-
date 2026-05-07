@@ -30,7 +30,7 @@ import "./AdminDashboard.css";
 const AdminDashboard: React.FC = () => {
   return (
     <IonPage>
-      <IonHeader className="admin-header">
+      <IonHeader className="app-header">
         <IonToolbar>
           <IonButtons slot="start">
             <IonMenuButton />
@@ -42,7 +42,7 @@ const AdminDashboard: React.FC = () => {
             <IonButton
               routerLink="/login"
               fill="clear"
-              className="admin-logout-btn"
+              className="app-header-btn"
             >
               <IonIcon icon={logOutOutline} slot="start" />
               Salir
@@ -51,11 +51,11 @@ const AdminDashboard: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="admin-page">
-        <main className="admin-shell">
-          <section className="admin-hero">
+      <IonContent className="app-page">
+        <main className="app-shell">
+          <section className="app-hero">
             <div>
-              <p className="admin-eyebrow">Gestión municipal</p>
+              <p className="app-eyebrow">Gestión municipal</p>
               <h1>Panel de control para funcionarios</h1>
               <p>
                 Administra solicitudes, pacientes y listas de espera del sistema
@@ -64,8 +64,8 @@ const AdminDashboard: React.FC = () => {
             </div>
           </section>
 
-          <section className="admin-summary">
-            <IonCard className="admin-summary-card">
+          <section className="kpi-grid">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={peopleOutline} />
                 <div>
@@ -75,7 +75,7 @@ const AdminDashboard: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="admin-summary-card">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={timeOutline} />
                 <div>
@@ -85,7 +85,7 @@ const AdminDashboard: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="admin-summary-card">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={calendarOutline} />
                 <div>
@@ -95,7 +95,7 @@ const AdminDashboard: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="admin-summary-card">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={alertCircleOutline} />
                 <div>
@@ -107,7 +107,7 @@ const AdminDashboard: React.FC = () => {
           </section>
 
           <section className="admin-content">
-            <IonCard className="admin-panel">
+            <IonCard className="app-card admin-panel">
               <IonCardContent>
                 <div className="section-title">
                   <h2>Solicitudes recientes</h2>
@@ -163,7 +163,7 @@ const AdminDashboard: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="admin-panel">
+            <IonCard className="app-card admin-panel">
               <IonCardContent>
                 <div className="section-title">
                   <h2>Acciones rápidas</h2>
@@ -171,22 +171,38 @@ const AdminDashboard: React.FC = () => {
                 </div>
 
                 <div className="admin-actions">
-                  <IonButton expand="block" routerLink="/admin/pacientes">
+                  <IonButton
+                    expand="block"
+                    routerLink="/admin/pacientes"
+                    className="app-primary-btn"
+                  >
                     <IonIcon icon={peopleOutline} slot="start" />
                     Gestionar pacientes
                   </IonButton>
 
-                  <IonButton expand="block" routerLink="/admin/listas">
+                  <IonButton
+                    expand="block"
+                    routerLink="/admin/listas"
+                    className="app-primary-btn"
+                  >
                     <IonIcon icon={timeOutline} slot="start" />
                     Gestionar listas de espera
                   </IonButton>
 
-                  <IonButton expand="block" routerLink="/admin/reportes">
+                  <IonButton
+                    expand="block"
+                    routerLink="/admin/reportes"
+                    className="app-primary-btn"
+                  >
                     <IonIcon icon={analyticsOutline} slot="start" />
                     Ver reportes
                   </IonButton>
 
-                  <IonButton expand="block" routerLink="/admin/agenda">
+                  <IonButton
+                    expand="block"
+                    routerLink="/admin/agenda"
+                    className="app-primary-btn"
+                  >
                     <IonIcon icon={calendarOutline} slot="start" />
                     Revisar agenda
                   </IonButton>

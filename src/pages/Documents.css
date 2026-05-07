@@ -1,0 +1,215 @@
+/* =========================
+   Hero documentos
+========================= */
+
+.documents-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.documents-hero-icon {
+  width: 74px;
+  height: 74px;
+  min-width: 74px;
+  display: grid;
+  place-items: center;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.documents-hero-icon ion-icon {
+  color: #ffffff;
+  font-size: 38px;
+}
+
+
+/* =========================
+   Filtros
+========================= */
+
+.document-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.document-filter-btn {
+  height: 44px;
+  --border-radius: 14px;
+  --background: #ffffff;
+  --color: #0b72d9;
+  --border-color: #0b72d9;
+  --border-width: 1.5px;
+  --border-style: solid;
+  --box-shadow: none;
+  font-size: 15px;
+  font-weight: 850;
+  text-transform: none;
+}
+
+.document-filter-btn.active {
+  --background: #0b72d9;
+  --background-hover: #0757a5;
+  --color: #ffffff;
+  --box-shadow: 0 8px 18px rgba(11, 114, 217, 0.24);
+}
+
+
+/* =========================
+   Grilla documentos
+========================= */
+
+.documents-grid {
+  margin-top: 24px;
+  padding: 0;
+}
+
+.document-card {
+  height: 100%;
+}
+
+.document-card ion-card-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+
+.document-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.document-icon {
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+}
+
+.document-icon ion-icon {
+  font-size: 25px;
+}
+
+.document-icon.blue {
+  background: #eef7ff;
+  color: #0b5cad;
+}
+
+.document-icon.green {
+  background: #ebfbee;
+  color: #2b8a3e;
+}
+
+.document-icon.orange {
+  background: #fffbeb;
+  color: #d97706;
+}
+
+.document-type {
+  display: inline-block;
+  margin-bottom: 5px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.document-type.blue {
+  background: #eef7ff;
+  color: #0b5cad;
+}
+
+.document-type.green {
+  background: #ebfbee;
+  color: #2b8a3e;
+}
+
+.document-type.orange {
+  background: #fffbeb;
+  color: #d97706;
+}
+
+.document-card h2 {
+  margin: 0;
+  color: #10233f;
+  font-size: 17px;
+  font-weight: 850;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.document-meta {
+  flex: 1;
+  color: #526179;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.document-meta p {
+  margin: 4px 0;
+}
+
+.document-meta strong {
+  color: #41516a;
+  font-weight: 850;
+}
+
+
+/* =========================
+   Acciones
+========================= */
+
+.document-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.document-action-btn {
+  height: 48px;
+  font-size: 15px;
+}
+
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 760px) {
+  .documents-hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .documents-hero-icon {
+    width: 62px;
+    height: 62px;
+    min-width: 62px;
+    border-radius: 20px;
+  }
+
+  .documents-hero-icon ion-icon {
+    font-size: 32px;
+  }
+
+  .document-filters {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .document-actions {
+    grid-template-columns: 1fr;
+  }
+}

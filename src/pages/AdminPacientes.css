@@ -1,105 +1,20 @@
-.admin-patients-header ion-toolbar {
-  --background: #063970;
-  --color: #ffffff;
+/* =========================
+   Ajustes de separación
+========================= */
+
+.admin-patients-page .kpi-grid {
+  margin-bottom: 28px;
 }
 
-.admin-patients-header ion-title {
-  font-weight: 800;
-}
 
-.admin-patients-home-btn {
-  --color: #ffffff;
-}
-
-.admin-patients-page {
-  --background: #f4f7fb;
-}
-
-.admin-patients-shell {
-  width: min(1120px, calc(100% - 32px));
-  margin: 0 auto;
-  padding: 32px 0;
-}
-
-.admin-patients-hero {
-  padding: 32px;
-  border-radius: 28px;
-  background: linear-gradient(135deg, #063970 0%, #0b5cad 55%, #1c7ed6 100%);
-  color: #ffffff;
-  box-shadow: 0 18px 48px rgba(6, 57, 112, 0.22);
-}
-
-.admin-patients-eyebrow {
-  margin: 0 0 10px;
-  font-size: 14px;
-  font-weight: 800;
-  opacity: 0.92;
-}
-
-.admin-patients-hero h1 {
-  margin: 0;
-  font-size: clamp(30px, 4vw, 46px);
-  line-height: 1.08;
-  letter-spacing: -0.04em;
-  font-weight: 850;
-}
-
-.admin-patients-hero p {
-  max-width: 720px;
-  margin: 12px 0 0;
-  color: rgba(255, 255, 255, 0.94);
-  font-size: 17px;
-  line-height: 1.55;
-}
-
-.admin-patients-summary {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-  margin-top: 24px;
-}
-
-.admin-patients-summary-card,
-.admin-patients-filters,
-.admin-patient-card {
-  margin: 0;
-  border-radius: 24px;
-  background: #ffffff;
-  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
-}
-
-.admin-patients-summary-card ion-card-content {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 22px;
-}
-
-.admin-patients-summary-card ion-icon {
-  width: 48px;
-  height: 48px;
-  padding: 12px;
-  border-radius: 16px;
-  background: #eef7ff;
-  color: #0b5cad;
-}
-
-.admin-patients-summary-card strong {
-  display: block;
-  margin-bottom: 4px;
-  color: #10233f;
-  font-size: 28px;
-  font-weight: 850;
-  line-height: 1;
-}
-
-.admin-patients-summary-card span {
-  color: #64748b;
-  font-size: 14px;
-}
+/* =========================
+   Filtros
+========================= */
 
 .admin-patients-filters {
-  margin-top: 24px;
+  margin: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .admin-patients-filters ion-card-content {
@@ -142,10 +57,15 @@
   padding: 0 12px;
 }
 
+
+/* =========================
+   Lista de pacientes
+========================= */
+
 .admin-patients-list {
   display: grid;
   gap: 18px;
-  margin-top: 24px;
+  margin-top: 28px;
 }
 
 .admin-patient-card ion-card-content {
@@ -170,31 +90,6 @@
   margin: 6px 0 0;
   color: #64748b;
   font-size: 15px;
-}
-
-.badge-warning,
-.badge-success,
-.badge-danger {
-  height: fit-content;
-  border-radius: 999px;
-  padding: 8px 11px;
-  font-size: 12px;
-  font-weight: 850;
-}
-
-.badge-warning {
-  --background: #fff4cc;
-  --color: #8a6300;
-}
-
-.badge-success {
-  --background: #dcfce7;
-  --color: #166534;
-}
-
-.badge-danger {
-  --background: #fee2e2;
-  --color: #991b1b;
 }
 
 .admin-patient-info {
@@ -251,20 +146,12 @@
   margin-top: 22px;
 }
 
-.admin-patient-actions ion-button {
-  height: 50px;
-  --border-radius: 14px;
-  --background: #0b72d9;
-  --background-hover: #0757a5;
-  --color: #ffffff;
-  --border-color: #0b72d9;
-  font-size: 14px;
-  font-weight: 850;
-  text-transform: none;
-}
+
+/* =========================
+   Responsive
+========================= */
 
 @media (max-width: 1000px) {
-  .admin-patients-summary,
   .admin-patient-info {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -275,18 +162,15 @@
 }
 
 @media (max-width: 760px) {
-  .admin-patients-shell {
-    width: min(100% - 24px, 620px);
-    padding: 24px 0;
+  .admin-patients-page .kpi-grid {
+    margin-bottom: 24px;
   }
 
-  .admin-patients-hero,
   .admin-patient-card ion-card-content,
   .admin-patients-filters ion-card-content {
     padding: 24px;
   }
 
-  .admin-patients-summary,
   .admin-patient-info,
   .admin-patient-actions {
     grid-template-columns: 1fr;

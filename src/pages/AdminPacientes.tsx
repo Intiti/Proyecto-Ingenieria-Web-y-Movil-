@@ -117,7 +117,7 @@ const AdminPacientes: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader className="admin-patients-header">
+      <IonHeader className="app-header">
         <IonToolbar>
           <IonButtons slot="start">
             <IonMenuButton />
@@ -129,7 +129,7 @@ const AdminPacientes: React.FC = () => {
             <IonButton
               routerLink="/admin/dashboard"
               fill="clear"
-              className="admin-patients-home-btn"
+              className="app-header-btn"
             >
               <IonIcon icon={homeOutline} slot="icon-only" />
             </IonButton>
@@ -137,11 +137,11 @@ const AdminPacientes: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="admin-patients-page">
-        <main className="admin-patients-shell">
-          <section className="admin-patients-hero">
+      <IonContent className="app-page admin-patients-page">
+        <main className="app-shell">
+          <section className="app-hero">
             <div>
-              <p className="admin-patients-eyebrow">Administración</p>
+              <p className="app-eyebrow">Administración</p>
               <h1>Gestionar pacientes</h1>
               <p>
                 Busca pacientes, revisa solicitudes, detecta prioridades y
@@ -150,8 +150,8 @@ const AdminPacientes: React.FC = () => {
             </div>
           </section>
 
-          <section className="admin-patients-summary">
-            <IonCard className="admin-patients-summary-card">
+          <section className="kpi-grid">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={peopleOutline} />
                 <div>
@@ -161,7 +161,7 @@ const AdminPacientes: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="admin-patients-summary-card">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={timeOutline} />
                 <div>
@@ -171,7 +171,7 @@ const AdminPacientes: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="admin-patients-summary-card">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={documentTextOutline} />
                 <div>
@@ -181,7 +181,7 @@ const AdminPacientes: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="admin-patients-summary-card">
+            <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={swapHorizontalOutline} />
                 <div>
@@ -192,7 +192,7 @@ const AdminPacientes: React.FC = () => {
             </IonCard>
           </section>
 
-          <IonCard className="admin-patients-filters">
+          <IonCard className="app-card admin-patients-filters">
             <IonCardContent>
               <div className="admin-patients-search">
                 <IonIcon icon={searchOutline} />
@@ -228,7 +228,10 @@ const AdminPacientes: React.FC = () => {
 
           <section className="admin-patients-list">
             {filteredPatients.map((patient) => (
-              <IonCard className="admin-patient-card" key={patient.rut}>
+              <IonCard
+                className="app-card admin-patient-card"
+                key={patient.rut}
+              >
                 <IonCardContent>
                   <div className="admin-patient-top">
                     <div>
@@ -284,7 +287,11 @@ const AdminPacientes: React.FC = () => {
                   </div>
 
                   <div className="admin-patient-actions">
-                    <IonButton expand="block" routerLink="/admin/listas">
+                    <IonButton
+                      expand="block"
+                      routerLink="/admin/listas"
+                      className="app-primary-btn"
+                    >
                       Revisar solicitud
                     </IonButton>
 
@@ -292,6 +299,7 @@ const AdminPacientes: React.FC = () => {
                       expand="block"
                       fill="outline"
                       routerLink="/admin/agenda"
+                      className="app-outline-btn"
                     >
                       Reasignar / agendar
                     </IonButton>

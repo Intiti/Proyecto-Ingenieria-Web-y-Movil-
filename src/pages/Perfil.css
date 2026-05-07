@@ -1,74 +1,4 @@
 /* =========================
-   Header
-========================= */
-
-.perfil-header ion-toolbar {
-  --background: #063970;
-  --color: #ffffff;
-}
-
-.perfil-header ion-title {
-  font-weight: 800;
-}
-
-.perfil-home-btn {
-  --color: #ffffff;
-}
-
-
-/* =========================
-   Layout base
-========================= */
-
-.perfil-page {
-  --background: #f4f7fb;
-}
-
-.perfil-shell {
-  width: min(1120px, calc(100% - 32px));
-  margin: 0 auto;
-  padding: 32px 0;
-}
-
-
-/* =========================
-   Hero
-========================= */
-
-.perfil-hero {
-  padding: 32px;
-  border-radius: 28px;
-  background: linear-gradient(135deg, #063970 0%, #0b5cad 55%, #1c7ed6 100%);
-  color: #ffffff;
-  box-shadow: 0 18px 48px rgba(6, 57, 112, 0.22);
-}
-
-.perfil-eyebrow {
-  margin: 0 0 10px;
-  font-size: 14px;
-  font-weight: 800;
-  opacity: 0.92;
-}
-
-.perfil-hero h1 {
-  max-width: 780px;
-  margin: 0;
-  font-size: clamp(30px, 4vw, 46px);
-  line-height: 1.08;
-  letter-spacing: -0.04em;
-  font-weight: 850;
-}
-
-.perfil-hero p {
-  max-width: 760px;
-  margin: 12px 0 0;
-  color: rgba(255, 255, 255, 0.94);
-  font-size: 17px;
-  line-height: 1.55;
-}
-
-
-/* =========================
    Resumen perfil
 ========================= */
 
@@ -77,15 +7,6 @@
   grid-template-columns: minmax(0, 1fr) 300px;
   gap: 18px;
   margin-top: 24px;
-}
-
-.profile-card,
-.profile-status-card,
-.perfil-panel {
-  margin: 0;
-  border-radius: 24px;
-  background: #ffffff;
-  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
 }
 
 .profile-card ion-card-content {
@@ -305,48 +226,18 @@
   margin-top: 26px;
 }
 
-.save-profile-btn,
-.back-home-btn {
-  height: 56px;
-  --border-radius: 14px;
-  font-size: 16px;
-  font-weight: 850;
-  text-transform: none;
-}
-
-.save-profile-btn {
-  --background: #0b72d9;
-  --background-hover: #0757a5;
-  --color: #ffffff;
-  --box-shadow: 0 10px 24px rgba(11, 114, 217, 0.24);
-}
-
-.back-home-btn {
-  --background: #ffffff;
-  --color: #0757a5;
-  --border-color: #0b72d9;
-  --border-width: 1.5px;
-  --border-style: solid;
-}
-
 
 /* =========================
    Responsive
 ========================= */
 
 @media (max-width: 900px) {
-  .perfil-shell {
-    width: min(100% - 24px, 620px);
-    padding: 24px 0;
-  }
-
   .perfil-summary,
   .perfil-form-grid,
   .perfil-actions {
     grid-template-columns: 1fr;
   }
 
-  .perfil-hero,
   .profile-card ion-card-content,
   .perfil-panel ion-card-content {
     padding: 24px;
@@ -358,14 +249,6 @@
 }
 
 @media (max-width: 480px) {
-  .perfil-hero h1 {
-    font-size: 30px;
-  }
-
-  .perfil-hero p {
-    font-size: 16px;
-  }
-
   .profile-card ion-card-content {
     flex-direction: column;
   }

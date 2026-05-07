@@ -32,7 +32,7 @@ import "./Perfil.css";
 const Perfil: React.FC = () => {
   return (
     <IonPage>
-      <IonHeader className="perfil-header">
+      <IonHeader className="app-header">
         <IonToolbar>
           <IonButtons slot="start">
             <IonMenuButton />
@@ -44,7 +44,7 @@ const Perfil: React.FC = () => {
             <IonButton
               routerLink="/home"
               fill="clear"
-              className="perfil-home-btn"
+              className="app-header-btn"
             >
               <IonIcon icon={homeOutline} slot="icon-only" />
             </IonButton>
@@ -52,19 +52,21 @@ const Perfil: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="perfil-page">
-        <main className="perfil-shell">
-          <section className="perfil-hero">
-            <p className="perfil-eyebrow">Datos del paciente</p>
-            <h1>Revisa y actualiza tu información personal</h1>
-            <p>
-              Mantén tus datos de contacto actualizados para recibir avisos
-              sobre citas, exámenes y listas de espera.
-            </p>
+      <IonContent className="app-page perfil-page">
+        <main className="app-shell">
+          <section className="app-hero">
+            <div>
+              <p className="app-eyebrow">Datos del paciente</p>
+              <h1>Revisa y actualiza tu información personal</h1>
+              <p>
+                Mantén tus datos de contacto actualizados para recibir avisos
+                sobre citas, exámenes y listas de espera.
+              </p>
+            </div>
           </section>
 
           <section className="perfil-summary">
-            <IonCard className="profile-card">
+            <IonCard className="app-card profile-card">
               <IonCardContent>
                 <div className="profile-avatar">
                   <IonIcon icon={personCircleOutline} />
@@ -89,7 +91,7 @@ const Perfil: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="profile-status-card">
+            <IonCard className="app-card profile-status-card">
               <IonCardContent>
                 <IonIcon icon={idCardOutline} />
                 <h3>RUT registrado</h3>
@@ -100,7 +102,7 @@ const Perfil: React.FC = () => {
           </section>
 
           <section className="perfil-content">
-            <IonCard className="perfil-panel">
+            <IonCard className="app-card perfil-panel">
               <IonCardContent>
                 <div className="section-title">
                   <h2>Datos personales</h2>
@@ -110,6 +112,7 @@ const Perfil: React.FC = () => {
                 <div className="perfil-form-grid">
                   <div className="field-group">
                     <label htmlFor="nombre">Nombre completo</label>
+
                     <IonInput
                       id="nombre"
                       className="perfil-input"
@@ -120,6 +123,7 @@ const Perfil: React.FC = () => {
 
                   <div className="field-group">
                     <label htmlFor="rut">RUT</label>
+
                     <IonInput
                       id="rut"
                       className="perfil-input"
@@ -127,11 +131,13 @@ const Perfil: React.FC = () => {
                       readonly
                       aria-label="RUT"
                     />
+
                     <p>El RUT no puede modificarse desde esta pantalla.</p>
                   </div>
 
                   <div className="field-group">
                     <label htmlFor="region">Región</label>
+
                     <IonSelect
                       id="region"
                       className="perfil-input"
@@ -142,6 +148,7 @@ const Perfil: React.FC = () => {
                       <IonSelectOption value="valparaiso">
                         Región de Valparaíso
                       </IonSelectOption>
+
                       <IonSelectOption value="metropolitana">
                         Región Metropolitana
                       </IonSelectOption>
@@ -150,6 +157,7 @@ const Perfil: React.FC = () => {
 
                   <div className="field-group">
                     <label htmlFor="comuna">Comuna</label>
+
                     <IonSelect
                       id="comuna"
                       className="perfil-input"
@@ -160,9 +168,11 @@ const Perfil: React.FC = () => {
                       <IonSelectOption value="santo-domingo">
                         Santo Domingo
                       </IonSelectOption>
+
                       <IonSelectOption value="san-antonio">
                         San Antonio
                       </IonSelectOption>
+
                       <IonSelectOption value="cartagena">
                         Cartagena
                       </IonSelectOption>
@@ -172,7 +182,7 @@ const Perfil: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="perfil-panel">
+            <IonCard className="app-card perfil-panel">
               <IonCardContent>
                 <div className="section-title">
                   <h2>Contacto</h2>
@@ -184,8 +194,10 @@ const Perfil: React.FC = () => {
                 <div className="perfil-form-grid">
                   <div className="field-group">
                     <label htmlFor="correo">Correo electrónico</label>
+
                     <div className="input-with-icon">
                       <IonIcon icon={mailOutline} />
+
                       <IonInput
                         id="correo"
                         className="perfil-input icon-input"
@@ -198,8 +210,10 @@ const Perfil: React.FC = () => {
 
                   <div className="field-group">
                     <label htmlFor="telefono">Teléfono</label>
+
                     <div className="input-with-icon">
                       <IonIcon icon={callOutline} />
+
                       <IonInput
                         id="telefono"
                         className="perfil-input icon-input"
@@ -212,8 +226,10 @@ const Perfil: React.FC = () => {
 
                   <div className="field-group full">
                     <label htmlFor="direccion">Dirección</label>
+
                     <div className="input-with-icon">
                       <IonIcon icon={locationOutline} />
+
                       <IonInput
                         id="direccion"
                         className="perfil-input icon-input"
@@ -226,7 +242,7 @@ const Perfil: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            <IonCard className="perfil-panel emergency-panel">
+            <IonCard className="app-card perfil-panel emergency-panel">
               <IonCardContent>
                 <div className="section-title">
                   <h2>Contacto de emergencia</h2>
@@ -236,6 +252,7 @@ const Perfil: React.FC = () => {
                 <div className="perfil-form-grid">
                   <div className="field-group">
                     <label htmlFor="emergencia-nombre">Nombre</label>
+
                     <IonInput
                       id="emergencia-nombre"
                       className="perfil-input"
@@ -246,6 +263,7 @@ const Perfil: React.FC = () => {
 
                   <div className="field-group">
                     <label htmlFor="emergencia-telefono">Teléfono</label>
+
                     <IonInput
                       id="emergencia-telefono"
                       className="perfil-input"
@@ -257,7 +275,7 @@ const Perfil: React.FC = () => {
                 </div>
 
                 <div className="perfil-actions">
-                  <IonButton expand="block" className="save-profile-btn">
+                  <IonButton expand="block" className="app-primary-btn">
                     <IonIcon icon={saveOutline} slot="start" />
                     Guardar cambios
                   </IonButton>
@@ -266,7 +284,7 @@ const Perfil: React.FC = () => {
                     expand="block"
                     fill="outline"
                     routerLink="/home"
-                    className="back-home-btn"
+                    className="app-outline-btn"
                   >
                     Volver al inicio
                   </IonButton>
