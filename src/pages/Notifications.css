@@ -1,4 +1,6 @@
-/* COPIA LITERAL DE LOS VALORES DE TU PLACEHOLDER */
+/* =========================
+   Página y Shell
+========================= */
 .notifications-page {
   --background: #f4f7fb;
 }
@@ -14,134 +16,206 @@
   padding: 36px 0;
 }
 
-/* Tarjeta principal (Mismos valores que tu placeholder-card) */
-.notifications-main-card {
-  padding: 34px;
+/* =========================
+   Hero (Copiado de Agenda)
+========================= */
+
+.notifications-hero {
+  padding: 28px 32px;
   border-radius: 28px;
-  background: #ffffff;
-  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
-  margin-bottom: 24px;
+  /* Gradiente exacto de tu código de Agenda */
+  background: linear-gradient(135deg, #063970 0%, #0b5cad 55%, #1c7ed6 100%);
+  color: #ffffff;
+  box-shadow: 0 18px 48px rgba(6, 57, 112, 0.22);
+  margin-bottom: 32px;
 }
 
-.notifications-main-card h1 {
+.notifications-eyebrow {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.9;
+}
+
+.notifications-hero h1 {
   margin: 0;
-  color: #10233f;
-  font-size: 34px;
-  font-weight: 850;
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1.08;
   letter-spacing: -0.04em;
+  font-weight: 850;
+  color: #ffffff; /* Aseguramos que sea blanco */
 }
 
-.notifications-main-card p {
-  max-width: 640px;
-  margin: 12px 0 24px;
-  color: #526179;
+.notifications-hero p {
+  max-width: 700px;
+  margin: 14px 0 0;
+  color: rgba(255, 255, 255, 0.92);
   font-size: 17px;
   line-height: 1.55;
 }
 
-/* Sub-componentes del diseño de notificaciones */
-.notifications-banner-inline {
-  display: flex;
+/* Banner de mensajes dentro del Hero */
+.notifications-banner-hero {
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
-  background: #eef7ff;
-  padding: 14px 20px;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 14px;
-  color: #0b5cad;
+  backdrop-filter: blur(4px);
   font-weight: 700;
-  font-size: 16px;
 }
 
+.notifications-banner-hero IonIcon {
+  font-size: 20px;
+}
+
+/* =========================
+   Segmentos (Tabs)
+========================= */
 .notifications-segment {
+  --background: transparent;
   margin-bottom: 24px;
-  --background: #ffffff;
-  border-radius: 14px;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  border-bottom: 1px solid #d8e1ec;
 }
 
-/* Tarjetas de la lista (Copia exacta de tu layout placeholder-card) */
+.notifications-segment ion-segment-button {
+  --color: #526179;
+  --color-checked: #0b72d9;
+  --indicator-color: #0b72d9;
+  --indicator-height: 3px;
+  font-weight: 750;
+  text-transform: none;
+}
+
+.notifications-segment ion-badge {
+  margin-left: 6px;
+  --border-radius: 6px;
+  font-weight: 800;
+}
+
+/* =========================
+   Item Card (Notificaciones)
+========================= */
 .notifications-item-card {
-  padding: 34px;
-  border-radius: 28px;
   background: #ffffff;
+  border-radius: 28px;
+  padding: 28px;
+  margin-bottom: 18px;
   box-shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
-  margin-bottom: 20px;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
 }
 
+/* Estado No Leída */
 .unread-border {
-  border-left: 6px solid #0b72d9 !important; /* Azul de tu botón */
+  border-left: 5px solid #0b72d9;
+}
+
+/* Estado Leída (opcional: bajar un poco la opacidad) */
+.notifications-item-card:not(.unread-border) {
+  opacity: 0.9;
 }
 
 .notifications-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .icon-title-group {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
 }
 
-.icon-title-group h2 {
-  margin: 0;
-  color: #10233f;
+.notifications-mini-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
   font-size: 22px;
-  font-weight: 850;
+}
+
+/* Colores de iconos según prioridad */
+.alta-bg { background: #ecfdf5; color: #059669; }   /* Verde */
+.media-bg { background: #fff7ed; color: #ea580c; }  /* Naranja */
+.baja-bg { background: #f0f9ff; color: #0284c7; }   /* Celeste/Azul */
+
+.notifications-card-header h2 {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 800;
+  color: #10233f;
   letter-spacing: -0.02em;
 }
 
-/* Iconos pequeños basados en tu caja placeholder-icon */
-.notifications-mini-icon {
-  width: 48px;
-  height: 48px;
-  display: grid;
-  place-items: center;
-  border-radius: 14px;
-}
-
-.notifications-mini-icon.green-bg { background: #e7f9ed; color: #1a8a42; }
-.notifications-mini-icon.blue-bg { background: #eef7ff; color: #0b5cad; }
-.notifications-mini-icon ion-icon { font-size: 24px; }
-
-.badge-alta {
-  background: #fee2e2;
-  color: #ef4444;
-  padding: 6px 14px;
-  border-radius: 10px;
-  font-weight: 800;
+/* Badges de Prioridad (Derecha) */
+.priority-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
   font-size: 13px;
+  font-weight: 800;
 }
+
+.badge-alta { background: #fee2e2; color: #b91c1c; }
+.badge-media { background: #ffedd5; color: #9a3412; }
+.badge-baja { background: #e0f2fe; color: #0369a1; }
 
 .notifications-card-body {
+  margin: 0 0 20px 0;
   color: #526179;
   font-size: 16px;
-  line-height: 1.5;
-  margin: 12px 0 20px 0;
+  line-height: 1.55;
 }
 
+/* =========================
+   Footer de la Card
+========================= */
 .notifications-card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #f1f5f9;
   padding-top: 16px;
+  border-top: 1px solid #f1f5f9;
 }
 
 .notifications-card-footer time {
-  color: #64748b;
   font-size: 14px;
-  font-weight: 600;
+  color: #94a3b8;
+  font-weight: 500;
 }
 
 .action-buttons {
   display: flex;
-  gap: 20px;
-  font-size: 22px;
+  gap: 16px;
 }
 
-.act-icon { cursor: pointer; }
-.act-icon.blue { color: #0b72d9; }
-.act-icon.red { color: #ef4444; }
+.act-icon {
+  font-size: 22px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.act-icon:hover { opacity: 0.7; }
+.blue { color: #0b72d9; }
+.red { color: #ef4444; }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .notifications-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .priority-badge {
+    align-self: flex-start;
+  }
+}

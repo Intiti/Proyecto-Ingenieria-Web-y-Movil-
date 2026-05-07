@@ -9,9 +9,28 @@ import {
   IonCheckbox
 } from '@ionic/react';
 import { medkitOutline, shieldCheckmarkOutline } from 'ionicons/icons';
+import { useState } from 'react';
 import './Login.css';
 
 const Register: React.FC = () => {
+  const [selectedRegion, setSelectedRegion] = useState("");
+
+  const regiones = [
+    { id: "coquimbo", name: "Región de Coquimbo" },
+    { id: "valparaiso", name: "Región de Valparaíso" },
+    { id: "metropolitana", name: "Región Metropolitana" },
+    { id: "biobio", name: "Región del Biobío" },
+    { id: "araucania", name: "Región de La Araucanía" }
+  ];
+
+  const comunasPorRegion: Record<string, string[]> = {
+    coquimbo: ["La Serena", "Coquimbo", "Ovalle", "Illapel"],
+    valparaiso: ["Valparaíso", "Viña del Mar", "Quilpué", "Villa Alemana", "Concón", "San Antonio"],
+    metropolitana: ["Santiago", "Puente Alto", "Maipú", "La Florida", "Providencia", "Las Condes"],
+    biobio: ["Concepción", "Talcahuano", "Los Ángeles", "San Pedro de la Paz"],
+    araucania: ["Temuco", "Padre Las Casas", "Villarrica", "Pucón"]
+  };
+
   return (
     <IonPage className="login-page">
       <IonContent className="login-page" fullscreen>
@@ -62,22 +81,31 @@ const Register: React.FC = () => {
 
                   <div className="field-group" style={{ gridColumn: 'span 1' }}>
                     <label className="field-label">Región</label>
-                    <select className="clean-input" style={{ width: '100%', height: '58px', borderRadius: '16px', border: '1.5px solid #c8d3e0', padding: '0 16px', backgroundColor: '#ffffff', color: '#172033', fontSize: '17px', outline: 'none' }}>
-                      <option value="" disabled selected>Seleccione región</option>
-                      <option value="valparaiso">Valparaíso</option>
-                      <option value="metropolitana">Metropolitana</option>
+                    <select 
+                      className="clean-input" 
+                      value={selectedRegion}
+                      onChange={(e) => setSelectedRegion(e.target.value)}
+                      style={{ width: '100%', height: '58px', borderRadius: '16px', border: '1.5px solid #c8d3e0', padding: '0 16px', backgroundColor: '#ffffff', color: '#172033', fontSize: '17px', outline: 'none' }}
+                    >
+                      <option value="" disabled>Seleccione región</option>
+                      {regiones.map(r => (
+                        <option key={r.id} value={r.id}>{r.name}</option>
+                      ))}
                     </select>
                   </div>
 
                   <div className="field-group" style={{ gridColumn: 'span 1' }}>
                     <label className="field-label">Comuna</label>
-                    <select className="clean-input" style={{ width: '100%', height: '58px', borderRadius: '16px', border: '1.5px solid #c8d3e0', padding: '0 16px', backgroundColor: '#ffffff', color: '#172033', fontSize: '17px', outline: 'none' }}>
-                      <option value="" disabled selected>Seleccione comuna</option>
-                      <option value="valparaiso">Valparaíso</option>
-                      <option value="vina">Viña del Mar</option>
-                      <option value="quilpue">Quilpué</option>
-                      <option value="villaAlemana">Villa Alemana</option>
-                      <option value="concon">Concón</option>
+                    <select 
+                      className="clean-input" 
+                      defaultValue=""
+                      disabled={!selectedRegion}
+                      style={{ width: '100%', height: '58px', borderRadius: '16px', border: '1.5px solid #c8d3e0', padding: '0 16px', backgroundColor: '#ffffff', color: '#172033', fontSize: '17px', outline: 'none', opacity: !selectedRegion ? 0.6 : 1 }}
+                    >
+                      <option value="" disabled>Seleccione comuna</option>
+                      {selectedRegion && comunasPorRegion[selectedRegion].map(comuna => (
+                        <option key={comuna} value={comuna}>{comuna}</option>
+                      ))}
                     </select>
                   </div>
 
