@@ -2,25 +2,27 @@ import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { Route, Redirect } from "react-router-dom";
 
-import Login from "./pages/Login";
-import Home from "./pages/Home";
-import Register from "./pages/Register";
-import ForgotPassword from "./pages/ForgotPassword";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import AdminLogin from "./pages/auth/AdminLogin";
 
-import Notificaciones from "./pages/Notifications";
+import Home from "./pages/patient/Home";
+import Notificaciones from "./pages/patient/Notifications";
+import Documents from "./pages/patient/Documents";
+import Examenes from "./pages/patient/Examenes";
+import Solicitudes from "./pages/patient/Solicitudes";
+import Agenda from "./pages/patient/Agenda";
+import Perfil from "./pages/patient/Perfil";
+import Ayuda from "./pages/patient/Ayuda";
+
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminReportes from "./pages/admin/AdminReportes";
+import AdminPacientes from "./pages/admin/AdminPacientes";
+import AdminAgenda from "./pages/admin/AdminAgenda";
+import AdminListas from "./pages/admin/AdminListas";
+
 import AppMenu from "./components/AppMenu";
-import Documents from "./pages/Documents";
-import Examenes from "./pages/Examenes";
-import Solicitudes from "./pages/Solicitudes";
-import Agenda from "./pages/Agenda";
-import Perfil from "./pages/Perfil";
-import Ayuda from "./pages/Ayuda";
-import AdminLogin from "./pages/AdminLogin";
-import AdminDashboard from "./pages/AdminDashboard";
-import AdminReportes from "./pages/AdminReportes";
-import AdminPacientes from "./pages/AdminPacientes";
-import AdminAgenda from "./pages/AdminAgenda";
-import AdminListas from "./pages/AdminListas";
 
 import "@ionic/react/css/core.css";
 import "@ionic/react/css/normalize.css";
@@ -37,18 +39,29 @@ export function App() {
         <AppMenu />
 
         <IonRouterOutlet id="main-content">
+          {/* Rutas públicas */}
           <Route exact path="/login">
             <Login />
           </Route>
 
-          <Route exact path="/register">
+          <Route exact path="/crear-cuenta">
             <Register />
           </Route>
 
-          <Route exact path="/forgot-password">
+          <Route exact path="/recuperar-contrasena">
             <ForgotPassword />
           </Route>
 
+          {/* Compatibilidad con rutas antiguas */}
+          <Route exact path="/register">
+            <Redirect to="/crear-cuenta" />
+          </Route>
+
+          <Route exact path="/forgot-password">
+            <Redirect to="/recuperar-contrasena" />
+          </Route>
+
+          {/* Rutas paciente */}
           <Route exact path="/home">
             <Home />
           </Route>
@@ -66,7 +79,7 @@ export function App() {
           </Route>
 
           <Route exact path="/examenes">
-            <Examenes/>
+            <Examenes />
           </Route>
 
           <Route exact path="/notificaciones">
@@ -81,6 +94,7 @@ export function App() {
             <Ayuda />
           </Route>
 
+          {/* Rutas funcionario */}
           <Route exact path="/admin/login">
             <AdminLogin />
           </Route>

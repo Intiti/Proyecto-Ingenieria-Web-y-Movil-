@@ -27,7 +27,7 @@ import {
 } from "ionicons/icons";
 
 import "./Home.css";
-import NotificationBell from "../components/NotificationBell";
+import NotificationBell from "../../components/NotificationBell";
 
 const Home: React.FC = () => {
   return (
