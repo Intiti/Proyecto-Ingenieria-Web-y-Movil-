@@ -35,7 +35,7 @@ const Documents: React.FC = () => {
     {
       id: 1,
       type: "Receta Médica",
-      name: "Receta_Paracetamol_500mg.pdf",
+      name: "Tratamiento_Hipertension_Losartan.pdf",
       date: "2026-04-12",
       doctor: "Dra. Ana Pérez",
       size: "150 KB",
@@ -45,12 +45,12 @@ const Documents: React.FC = () => {
     {
       id: 2,
       type: "Licencia Médica",
-      name: "Licencia_Medica_14d.pdf",
+      name: "Licencia_Medica_Folio_88291.pdf",
       date: "2026-03-05",
       doctor: "Dr. Juan Gómez",
       size: "420 KB",
       icon: readerOutline,
-      variant: "green",
+      variant: "orange", // Cambiado de verde a naranja
     },
     {
       id: 3,
@@ -60,12 +60,12 @@ const Documents: React.FC = () => {
       doctor: "Laboratorio Municipal",
       size: "1.2 MB",
       icon: flaskOutline,
-      variant: "orange",
+      variant: "green", // Cambiado de naranja a verde
     },
     {
       id: 4,
       type: "Receta Médica",
-      name: "Receta_Ibuprofeno_400mg.pdf",
+      name: "Antibiotico_Amoxicilina_Clavulanico.pdf",
       date: "2026-04-20",
       doctor: "Dr. Roberto Silva",
       size: "160 KB",
