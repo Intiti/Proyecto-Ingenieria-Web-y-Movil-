@@ -18,11 +18,11 @@ Representa al ciudadano de la comuna que accede a los servicios de salud públic
 
 Necesidades Clave:
 
-* Transparencia: Conocer de forma real y actualizada su posición en las listas de espera.
+* **Transparencia:** Conocer de forma real y actualizada su posición en las listas de espera.
 
-* Autogestión: Capacidad de solicitar, confirmar o cancelar citas sin depender de llamadas telefónicas o trámites presenciales.
+* **Autogestión:** Capacidad de solicitar, confirmar o cancelar citas sin depender de llamadas telefónicas o trámites presenciales.
 
-* Oportunidad: Recibir alertas inmediatas ante la liberación de cupos o cambios en su atención.
+* **Oportunidad:** Recibir alertas inmediatas ante la liberación de cupos o cambios en su atención.
 
 Puntos de Dolor: Largos tiempos de espera, falta de información sobre el estado de sus solicitudes y dificultad para comunicarse con los centros de salud.
 
@@ -33,11 +33,11 @@ Personal técnico y administrativo encargado de la operatividad del sistema. Su 
 
 Necesidades Clave:
 
-* Optimización de Recursos: Identificar horarios vacantes y redistribuir la carga de atención de manera dinámica.
+* **Optimización de Recursos:** Identificar horarios vacantes y redistribuir la carga de atención de manera dinámica.
 
-* Soporte a la Decisión: Acceso a datos centralizados y analíticas en tiempo real para proyectar necesidades de insumos o personal.
+* **Soporte a la Decisión:** Acceso a datos centralizados y analíticas en tiempo real para proyectar necesidades de insumos o personal.
 
-* Estandarización del Triaje: Aplicar criterios clínicos uniformes para asignar prioridades de atención (Urgente, Prioritario, Rutinario).
+* **Estandarización del Triaje:** Aplicar criterios clínicos uniformes para asignar prioridades de atención (Urgente, Prioritario, Rutinario).
 
 Puntos de Dolor: Saturación de las listas de espera, procesos manuales propensos a errores en la asignación de horas y falta de visibilidad estadística del rendimiento del centro.
 
