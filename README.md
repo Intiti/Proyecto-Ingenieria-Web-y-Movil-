@@ -10,55 +10,13 @@
 **Paralelo:** 2  
 **Entrega:** Entrega Parcial 1 - Diseño y estructura inicial
 
-<<<<<<< HEAD
 ---
 
 ## Descripción de la entrega
-=======
-## 1. Justificación y Problema
-En el sistema de salud pública chileno, la gestión de la demanda excede constantemente la oferta disponible, lo que genera listas de espera que se han convertido en un problema crítico de salud pública. Actualmente, el flujo de información es unidireccional y fragmentado: una vez que se emite una interconsulta, el rastro administrativo se vuelve complejo para el ciudadano, generando incertidumbre en el paciente. Este es un dilema que viene desde un problema mucho más profundo y que tiene relación no solo con la falta de especialistas, sino también de la ineficiencia en la comunicación y gestión de datos.
-
-En este caso, no es solo el paciente quien se ve afectado por la falta de información y de comunicación, sino que también los funcionarios se ven sobrepasados por un sistema que se colapsa por la mala gestión de los pacientes y por el exceso de carga administrativa.
-
-## 2. Análisis del Usuario Objetivo
-### 2.1. Perfil del Paciente (Usuario Final)
-Representa al ciudadano de la comuna que accede a los servicios de salud pública. Su interacción con el sistema busca reducir la incertidumbre y eliminar la presencialidad innecesaria en los centros de salud.
-
-Necesidades Clave:
-
-* **Transparencia:** Conocer de forma real y actualizada su posición en las listas de espera.
-
-* **Autogestión:** Capacidad de solicitar, confirmar o cancelar citas sin depender de llamadas telefónicas o trámites presenciales.
-
-* **Oportunidad:** Recibir alertas inmediatas ante la liberación de cupos o cambios en su atención.
-
-Puntos de Dolor: Largos tiempos de espera, falta de información sobre el estado de sus solicitudes y dificultad para comunicarse con los centros de salud.
-
-Valor Agregado: Otorgarle autonomía al paciente sobre su propia salud y así reducir la brecha digital en el acceso a servicios públicos.
-
-### 2.2 Perfil del Administrador (Gestor Municipal / Funcionario)
-Personal técnico y administrativo encargado de la operatividad del sistema. Su enfoque está en la eficiencia de los recursos y la correcta categorización de la demanda.
-
-Necesidades Clave:
-
-* **Optimización de Recursos:** Identificar horarios vacantes y redistribuir la carga de atención de manera dinámica.
-
-* **Soporte a la Decisión:** Acceso a datos centralizados y analíticas en tiempo real para proyectar necesidades de insumos o personal.
-
-* **Estandarización del Triaje:** Aplicar criterios clínicos uniformes para asignar prioridades de atención (Urgente, Prioritario, Rutinario).
-
-Puntos de Dolor: Saturación de las listas de espera, procesos manuales propensos a errores en la asignación de horas y falta de visibilidad estadística del rendimiento del centro.
-
-Valor Agregado: Automatización de tareas logísticas, mejora en los indicadores de gestión municipal y reducción de los cupos no utilizados mediante el sistema de confirmaciones automáticas.
->>>>>>> 42fb921260f4906d73b3f70761304bb5524ac249
 
 Esta entrega corresponde a la primera etapa del proyecto **MuniSalud**, una aplicación orientada a mejorar la gestión de listas de espera y la comunicación entre pacientes y funcionarios municipales de salud.
 
-<<<<<<< HEAD
 En esta etapa se presenta:
-=======
-### 3.1 Requerimientos Funcionales (RF)
->>>>>>> 42fb921260f4906d73b3f70761304bb5524ac249
 
 - Definición del problema.
 - Análisis de usuarios objetivo.
@@ -71,24 +29,11 @@ En esta etapa se presenta:
 
 ---
 
-<<<<<<< HEAD
 ## 1. Justificación y problema
 
 En Chile, las listas de espera en el área de salud representan un problema estructural del sistema público. En muchos casos, el paciente recibe una interconsulta o solicitud médica y luego pierde visibilidad sobre el estado de su proceso, su prioridad, los tiempos estimados o la disponibilidad de atención.
 
 El proyecto **MuniSalud** busca reducir esa incertidumbre mediante una plataforma que permita al paciente consultar su estado de atención, revisar su agenda médica, recibir notificaciones, acceder a documentos y mantener actualizados sus datos personales.
-=======
-**Rol: Administrador**
-1. **Gestionar Pacientes:** El administrador supervisa el flujo de usuarios, procesa solicitudes de ingreso y aplica criterios de disponibilidad para enviar cada caso hacia la unidad de atención correspondiente.
-2. **Gestionar Listas de Espera:** El administrador tiene la facultad de gestionar los cupos de atención y establecer el orden de prioridad de los pacientes basándose en criterios clínicos (triaje).
-3. **Ver Reportes:** El sistema permite al administrador generar reportes detallados y analíticas sobre el estado de las listas, tiempos de espera y uso de recursos para la toma de decisiones.
-4. **Revisar Agenda:** El sistema permite la coordinación técnica de citas y la gestión de disponibilidad operativa, facilitando la confirmación de atenciones y la detección temprana de horarios vacantes para optimizar la capacidad instalada.
-
-### 3.2 Requerimientos No Funcionales (RNF)
-* **Seguridad (Protección de Datos):** El sistema debe cumplir con estándares de cifrado para datos sensibles de salud (Ley 20.584), asegurando que solo el rol Admin y el dueño del RUT vean la ficha.
-* **Usabilidad (Accesibilidad):** La interfaz debe cumplir con WCAG 2.1, considerando que gran parte de los usuarios del sistema público son adultos mayores (fuentes legibles, botones grandes, alto contraste).
-* **Rendimiento:** El tiempo de carga de la lista de interconsultas no debe superar los 2 segundos, incluso bajo condiciones de red móvil 3G/4G.
->>>>>>> 42fb921260f4906d73b3f70761304bb5524ac249
 
 Desde el punto de vista administrativo, la aplicación busca apoyar a funcionarios municipales o de centros de salud en la gestión de pacientes, listas de espera, agenda médica y reportes para la toma de decisiones.
 
@@ -148,8 +93,6 @@ Usuario encargado de revisar pacientes, gestionar listas de espera, coordinar ag
 
 11. **Reportes administrativos:**  
    El funcionario puede consultar indicadores sobre pacientes registrados, solicitudes en espera, citas programadas, especialidades más solicitadas y centros con mayor demanda.
-
----
 
 ### 3.2 Requerimientos no funcionales
 
@@ -312,15 +255,194 @@ src/
 
   App.tsx
 
+```
 ---
 
 ## 8. Instalación y ejecución
-Requisitos previos
 
-Para ejecutar el proyecto se requiere tener instalado:
+Esta sección describe el procedimiento completo para descargar, instalar y ejecutar el proyecto **MuniSalud** en un entorno local.
 
-Node.js
-npm
-Git
-Pasos para ejecutar el proyecto
-Clonar el repositorio:
+### 8.1 Requisitos previos
+
+Para ejecutar el proyecto correctamente, se debe contar con las siguientes herramientas instaladas en el equipo:
+
+- **Git:** necesario para clonar el repositorio desde GitHub.
+- **Node.js:** entorno de ejecución requerido para trabajar con proyectos basados en React, Ionic y Vite.
+- **npm:** gestor de paquetes utilizado para instalar las dependencias del proyecto.
+- **Visual Studio Code:** editor recomendado para revisar, modificar y ejecutar el código fuente.
+
+Para verificar que Node.js y npm estén instalados correctamente, se pueden ejecutar los siguientes comandos en la terminal:
+
+```bash
+node -v
+npm -v
+```
+
+Si ambos comandos muestran una versión instalada, el entorno está preparado para continuar con la instalación del proyecto.
+
+### 8.2 Clonar el repositorio
+
+Primero se debe clonar el repositorio oficial del proyecto desde GitHub:
+
+```bash
+git clone https://github.com/Intiti/Proyecto-Ingenieria-Web-y-Movil-.git
+```
+
+Luego, se debe ingresar a la carpeta generada por el repositorio:
+
+```bash
+cd Proyecto-Ingenieria-Web-y-Movil-
+```
+
+### 8.3 Instalar dependencias
+
+Una vez dentro de la carpeta principal del proyecto, se deben instalar las dependencias necesarias mediante npm:
+
+```bash
+npm install
+```
+
+Este comando descarga e instala las librerías requeridas para ejecutar la aplicación, incluyendo Ionic, React, TypeScript, React Router y las dependencias utilizadas por el entorno de desarrollo.
+
+### 8.4 Ejecutar la aplicación
+
+Para iniciar el servidor de desarrollo local, se debe ejecutar el siguiente comando:
+
+```bash
+npm run dev
+```
+
+Al ejecutar este comando, la terminal mostrará una dirección local similar a la siguiente:
+
+```txt
+http://localhost:5173
+```
+
+La aplicación debe abrirse desde el navegador ingresando a esa dirección.
+
+### 8.5 Rutas principales para revisar
+
+Una vez ejecutada la aplicación, se pueden revisar las siguientes rutas principales del sistema.
+
+#### Rutas públicas
+
+- `/login`: inicio de sesión del paciente.
+- `/crear-cuenta`: registro de paciente.
+- `/recuperar-contrasena`: recuperación de contraseña.
+- `/admin/login`: inicio de sesión del funcionario.
+
+#### Rutas del paciente
+
+- `/home`: panel principal del paciente.
+- `/solicitudes`: consulta de lista de espera.
+- `/agenda`: agenda médica del paciente.
+- `/examenes`: estado de exámenes.
+- `/documentos`: documentos médicos.
+- `/notificaciones`: centro de notificaciones.
+- `/perfil`: datos personales del paciente.
+- `/ayuda`: ayuda y orientación.
+
+#### Rutas del funcionario
+
+- `/admin/dashboard`: panel principal del funcionario.
+- `/admin/pacientes`: gestión de pacientes.
+- `/admin/listas`: gestión de listas de espera.
+- `/admin/agenda`: agenda administrativa.
+- `/admin/reportes`: reportes administrativos.
+
+### 8.6 Credenciales de prueba
+
+Como esta entrega corresponde a la estructura inicial del frontend, el sistema utiliza credenciales ficticias para simular el acceso de usuarios.
+
+#### Paciente
+
+```txt
+RUT: 12.345.678-9
+Contraseña: paciente123
+```
+
+También se puede escribir el RUT sin puntos ni guion:
+
+```txt
+123456789
+```
+
+El sistema lo formatea automáticamente como:
+
+```txt
+12.345.678-9
+```
+
+#### Funcionario
+
+```txt
+Correo: funcionario@santodomingo.cl
+Contraseña: admin123
+```
+
+### 8.7 Consideraciones de esta entrega
+
+En esta **Entrega Parcial 1**, la aplicación funciona como un prototipo navegable del frontend. Por lo tanto:
+
+- Las credenciales son simuladas.
+- No existe conexión real a una base de datos.
+- No existe autenticación real mediante JWT.
+- No existe backend implementado todavía.
+- Las vistas muestran datos de ejemplo para representar el flujo esperado del sistema.
+- La integración con backend, API REST, base de datos y autenticación real queda planificada para la **Entrega Parcial 2**.
+
+---
+
+## 9. Prototipo UI/UX
+
+El prototipo UI/UX del proyecto se encuentra disponible en Figma.
+
+[https://www.figma.com/design/VZNDjyapyVvHnXxJKnnw4h/MuniSalud?node-id=0-1&t=h0QVlP000InmznrO-1](https://www.figma.com/proto/VZNDjyapyVvHnXxJKnnw4h/MuniSalud?node-id=26-99&p=f&t=CVmV1LAhO5alpUCW-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=26%3A99)
+
+El prototipo considera pantallas para los roles de paciente y funcionario municipal, contemplando vistas en formato web y móvil. Las pantallas fueron diseñadas considerando jerarquía visual, navegación clara, componentes de interacción y coherencia entre las funcionalidades principales del sistema.
+
+---
+## 10. Material complementario
+
+Los documentos complementarios de la entrega se encuentran en la carpeta /otros, ubicada en la raíz del proyecto.
+
+otros/
+  EP1.4_Arquitectura_Navegacion_Experiencia_Usuario_MuniSalud.pdf
+
+Este documento contiene la definición de la arquitectura de navegación y experiencia de usuario, incluyendo rutas principales y secundarias, jerarquía de vistas, flujo de navegación, diferenciación por roles, task flow, puntos críticos de interacción y justificación técnica de las decisiones adoptadas.
+
+---
+## 11. Gestión del proyecto
+
+El proyecto se gestiona mediante GitHub, aplicando buenas prácticas de control de versiones y organización del trabajo colaborativo.
+
+Durante el desarrollo se utilizaron las siguientes prácticas:
+
+- **Commits descriptivos:** para registrar avances y cambios relevantes del proyecto.
+- **Ramas de trabajo:** para separar funcionalidades, refactorizaciones y ajustes importantes.
+- **Pull Requests:** para revisar e integrar cambios antes de incorporarlos a la rama principal.
+- **Issues:** para organizar tareas, funcionalidades pendientes y correcciones.
+- **GitHub Projects:** para visualizar el avance general del proyecto y distribuir el trabajo del equipo.
+
+El repositorio contiene el código fuente del frontend, la documentación técnica inicial y el material complementario correspondiente a la Entrega Parcial 1.
+
+---
+
+## 12. Estado de la entrega
+
+En esta Entrega Parcial 1 se incluye:
+
+- Frontend inicial desarrollado con **Ionic + React**.
+- Aplicación navegable mediante **React Router**.
+- Separación de rutas según rol de usuario.
+- Flujo de navegación para **paciente**.
+- Flujo de navegación para **funcionario municipal**.
+- Pantallas principales implementadas con componentes de Ionic.
+- Uso de componentes como `IonPage`, `IonHeader`, `IonContent`, `IonMenu`, `IonCard`, `IonButton` e `IonInput`.
+- Estructura modular del código en carpetas `auth`, `patient`, `admin`, `components` y `theme`.
+- Simulación de credenciales de acceso para paciente y funcionario.
+- Prototipo UI/UX en Figma.
+- Documentación técnica inicial en `README.md`.
+- Material complementario en la carpeta `/otros`.
+
+La implementación de backend, base de datos, autenticación real, API REST, JWT, validación persistente de usuarios e integración frontend-backend queda planificada para la **Entrega Parcial 2**.
