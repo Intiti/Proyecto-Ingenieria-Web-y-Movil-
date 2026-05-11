@@ -192,45 +192,36 @@ const Perfil: React.FC = () => {
                   <div className="field-group">
                     <label htmlFor="correo">Correo electrónico</label>
 
-                    <div className="field-group">
-
-                      <IonInput
-                        id="correo"
-                        className="perfil-input"
-                        value="maria.munoz@gmail.com"
-                        type="email"
-                        aria-label="Correo electrónico"
-                      />
-                    </div>
+                    <IonInput
+                      id="correo"
+                      className="perfil-input"
+                      value="maria.munoz@gmail.com"
+                      type="email"
+                      aria-label="Correo electrónico"
+                    />
                   </div>
 
                   <div className="field-group">
                     <label htmlFor="telefono">Teléfono</label>
 
-                    <div className="field-group">
-
-                      <IonInput
-                        id="telefono"
-                        className="perfil-input"
-                        value="+56 9 8765 4321"
-                        type="tel"
-                        aria-label="Teléfono"
-                      />
-                    </div>
+                    <IonInput
+                      id="telefono"
+                      className="perfil-input"
+                      value="+56 9 8765 4321"
+                      type="tel"
+                      aria-label="Teléfono"
+                    />
                   </div>
 
                   <div className="field-group full">
                     <label htmlFor="direccion">Dirección</label>
 
-                    <div className="field-group">
-
-                      <IonInput
-                        id="direccion"
-                        className="perfil-input"
-                        value="Av. Litoral 1234"
-                        aria-label="Dirección"
-                      />
-                    </div>
+                    <IonInput
+                      id="direccion"
+                      className="perfil-input"
+                      value="Av. Litoral 1234"
+                      aria-label="Dirección"
+                    />
                   </div>
                 </div>
               </IonCardContent>

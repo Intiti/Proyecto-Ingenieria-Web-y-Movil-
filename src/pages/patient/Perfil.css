@@ -10,18 +10,18 @@
 }
 
 .profile-card ion-card-content {
-  min-height: 250px;
+  min-height: 170px;
   display: flex;
   align-items: center;
-  justify-content: left;
-  gap: 22px;
+  justify-content: center;
+  gap: 24px;
   padding: 28px;
 }
 
 .profile-avatar {
-  width: 100px;
-  height: px;
-  min-width: 78px;
+  width: 86px;
+  height: 86px;
+  min-width: 86px;
   display: grid;
   place-items: center;
   border-radius: 24px;
@@ -30,7 +30,13 @@
 }
 
 .profile-avatar ion-icon {
-  font-size: 50px;
+  font-size: 52px;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .profile-info h2 {
@@ -71,7 +77,11 @@
 }
 
 .profile-status-card ion-card-content {
+  min-height: 170px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   padding: 28px;
   background: #eef7ff;
 }
@@ -123,7 +133,7 @@
   padding: 30px 32px;
 }
 
-/* Importante: scopeado para que otros .section-title globales no lo rompan */
+/* Scopeado para evitar choques con .section-title de otras páginas */
 .perfil-panel .section-title {
   display: block !important;
   margin-bottom: 24px;
@@ -182,7 +192,6 @@
   line-height: 1.4;
 }
 
-/* Caja base */
 .perfil-input {
   width: 100%;
   height: 68px;
@@ -197,7 +206,7 @@
 
   --padding-start: 16px;
   --padding-end: 16px;
-  --padding-top: 5px;
+  --padding-top: 0;
   --padding-bottom: 0;
 
   border: 1.5px solid #b9c8d8;
@@ -207,7 +216,6 @@
   overflow: hidden;
 }
 
-/* Texto real dentro de IonInput */
 .perfil-input::part(native) {
   height: 68px !important;
   min-height: 68px !important;
@@ -218,7 +226,6 @@
   font-weight: 400 !important;
 }
 
-/* Texto real dentro de IonSelect */
 .perfil-input::part(text),
 .perfil-input::part(placeholder) {
   display: flex;
