@@ -12,6 +12,38 @@
 
 ---
 
+## Índice
+
+- [Descripción de la entrega](#descripción-de-la-entrega)
+- [1. Justificación y problema](#1-justificación-y-problema)
+- [2. Análisis del usuario objetivo](#2-análisis-del-usuario-objetivo)
+  - [Paciente](#paciente)
+  - [Funcionario municipal / administrador](#funcionario-municipal--administrador)
+- [3. Requerimientos del sistema](#3-requerimientos-del-sistema)
+  - [3.1 Requerimientos funcionales](#31-requerimientos-funcionales)
+  - [3.2 Requerimientos no funcionales](#32-requerimientos-no-funcionales)
+- [4. Arquitectura de navegación](#4-arquitectura-de-navegación)
+  - [4.1 Rutas públicas](#41-rutas-públicas)
+  - [4.2 Rutas del paciente](#42-rutas-del-paciente)
+  - [4.3 Rutas del funcionario](#43-rutas-del-funcionario)
+  - [4.4 Diferenciación por roles](#44-diferenciación-por-roles)
+- [5. Credenciales de prueba](#5-credenciales-de-prueba)
+- [6. Tecnologías utilizadas](#6-tecnologías-utilizadas)
+- [7. Estructura del proyecto](#7-estructura-del-proyecto)
+- [8. Instalación y ejecución](#8-instalación-y-ejecución)
+  - [8.1 Requisitos previos](#81-requisitos-previos)
+  - [8.2 Clonar el repositorio](#82-clonar-el-repositorio)
+  - [8.3 Instalar dependencias](#83-instalar-dependencias)
+  - [8.4 Ejecutar la aplicación](#84-ejecutar-la-aplicación)
+  - [8.5 Rutas principales para revisar](#85-rutas-principales-para-revisar)
+  - [8.6 Credenciales de prueba](#86-credenciales-de-prueba)
+  - [8.7 Consideraciones de esta entrega](#87-consideraciones-de-esta-entrega)
+- [9. Prototipo UI/UX](#9-prototipo-uiux)
+- [10. Material complementario](#10-material-complementario)
+- [11. Gestión del proyecto](#11-gestión-del-proyecto)
+- [12. Estado de la entrega](#12-estado-de-la-entrega)
+
+---
 ## Descripción de la entrega
 
 Esta entrega corresponde a la primera etapa del proyecto **MuniSalud**, una aplicación orientada a mejorar la gestión de listas de espera y la comunicación entre pacientes y funcionarios municipales de salud.
@@ -28,6 +60,8 @@ En esta etapa se presenta:
 - Organización modular del código fuente.
 
 ---
+
+
 
 ## 1. Justificación y problema
 
