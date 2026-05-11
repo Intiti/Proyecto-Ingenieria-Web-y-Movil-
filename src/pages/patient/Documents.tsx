@@ -57,7 +57,7 @@ const Documents: React.FC = () => {
       type: "Examen de Laboratorio",
       name: "Examen_Sangre_Completo.pdf",
       date: "2026-02-18",
-      doctor: "Laboratorio Municipal",
+      doctor: "CESFAM, Santo Domingo",
       size: "1.2 MB",
       icon: flaskOutline,
       variant: "orange",

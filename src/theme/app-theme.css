@@ -257,6 +257,43 @@
   transform: translateY(0);
 }
 
+/* =========================
+   Inputs globales
+========================= */
+
+ion-input,
+ion-select,
+ion-textarea {
+  font-weight: 400;
+}
+
+ion-input::part(native),
+ion-textarea::part(native) {
+  font-weight: 400;
+  font-size: 16px;
+}
+
+ion-select::part(text),
+ion-select::part(placeholder) {
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.clean-input,
+.perfil-input,
+.admin-input,
+.forgot-input {
+  font-weight: 400;
+}
+
+.clean-input::part(native),
+.perfil-input::part(native),
+.admin-input::part(native),
+.forgot-input::part(native) {
+  font-weight: 400;
+  font-size: 16px;
+}
+
 
 /* =========================
    Responsive global
@@ -307,4 +344,51 @@
   .app-hero h1 {
     font-size: 28px;
   }
+}
+
+/* =========================
+   Normalización global de inputs Ionic
+========================= */
+
+ion-input,
+ion-select,
+ion-textarea {
+  font-weight: 400 !important;
+  --color: #10233f;
+}
+
+ion-input::part(native),
+ion-textarea::part(native) {
+  font-weight: 400 !important;
+  font-size: 16px !important;
+  line-height: 1.4 !important;
+}
+
+ion-select::part(text),
+ion-select::part(placeholder) {
+  font-weight: 400 !important;
+  font-size: 16px !important;
+}
+
+.clean-input,
+.perfil-input,
+.admin-input,
+.forgot-input,
+.claveunica-input {
+  font-weight: 400 !important;
+}
+
+.clean-input::part(native),
+.perfil-input::part(native),
+.admin-input::part(native),
+.forgot-input::part(native),
+.claveunica-input::part(native) {
+  font-weight: 400 !important;
+  font-size: 16px !important;
+}
+
+.perfil-input::part(text),
+.perfil-input::part(placeholder) {
+  font-weight: 400 !important;
+  font-size: 16px !important;
 }

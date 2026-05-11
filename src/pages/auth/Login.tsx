@@ -28,11 +28,51 @@ import {
 import { useState } from "react";
 import "./Login.css";
 
+const PATIENT_RUT = "12.345.678-9";
+const PATIENT_PASSWORD = "paciente123";
+
+const formatRut = (value: string) => {
+  const cleanValue = value.replace(/[^0-9kK]/g, "").toUpperCase();
+
+  if (cleanValue.length <= 1) {
+    return cleanValue;
+  }
+
+  const body = cleanValue.slice(0, -1);
+  const verifier = cleanValue.slice(-1);
+
+  const formattedBody = body.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+  return `${formattedBody}-${verifier}`;
+};
+
 const Login: React.FC = () => {
   const router = useIonRouter();
+
   const [showModal, setShowModal] = useState(false);
+  const [rut, setRut] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = () => {
+    const cleanRut = rut.trim();
+
+    if (!cleanRut || !password) {
+      setErrorMessage("Debes ingresar RUT y contraseña.");
+      return;
+    }
+
+    if (cleanRut !== PATIENT_RUT || password !== PATIENT_PASSWORD) {
+      setErrorMessage("Credenciales de paciente inválidas.");
+      return;
+    }
+
+    setErrorMessage("");
+    router.push("/home", "forward", "push");
+  };
+
+  const handleClaveUnicaLogin = () => {
+    setShowModal(false);
     router.push("/home", "forward", "push");
   };
 
@@ -98,18 +138,25 @@ const Login: React.FC = () => {
                 <div className="form-inputs">
                   <div className="field-group">
                     <label className="field-label" htmlFor="rut">
-                      RUT o correo electrónico
+                      RUT
                     </label>
 
                     <IonInput
                       id="rut"
                       className="clean-input"
                       placeholder="Ej: 12.345.678-9"
-                      aria-label="Ingrese su RUT o correo electrónico"
+                      value={rut}
+                      inputMode="text"
+                      maxlength={12}
+                      aria-label="Ingrese su RUT"
+                      onIonInput={(event) => {
+                        const value = event.detail.value ?? "";
+                        setRut(formatRut(value));
+                      }}
                     />
 
                     <p className="helper-text">
-                      Puedes ingresar con tu RUT o con el correo registrado.
+                      Puedes escribirlo sin puntos ni guion. Ejemplo: 123456789.
                     </p>
                   </div>
 
@@ -124,9 +171,15 @@ const Login: React.FC = () => {
                       type="password"
                       placeholder="Ingrese su contraseña"
                       aria-label="Ingrese su contraseña"
+                      value={password}
+                      onIonInput={(event) =>
+                        setPassword(event.detail.value ?? "")
+                      }
                     />
                   </div>
                 </div>
+
+                {errorMessage && <p className="login-error">{errorMessage}</p>}
 
                 <IonButton
                   expand="block"
@@ -135,9 +188,9 @@ const Login: React.FC = () => {
                 >
                   Ingresar
                 </IonButton>
-
+                
                 <div className="login-actions">
-                  <a href="/forgot-password">¿Olvidaste tu contraseña?</a>
+                  <a href="/recuperar-contrasena">¿Olvidaste tu contraseña?</a>
                 </div>
 
                 <div className="login-divider">
@@ -156,7 +209,8 @@ const Login: React.FC = () => {
                 </IonButton>
 
                 <p className="register-link">
-                  ¿No tienes una cuenta? <a href="/register">Crear cuenta</a>
+                  ¿No tienes una cuenta?{" "}
+                  <a href="/crear-cuenta">Crear cuenta</a>
                 </p>
 
                 <div className="security-note">
@@ -264,7 +318,11 @@ const Login: React.FC = () => {
               </a>
             </div>
 
-            <IonButton expand="block" className="app-primary-btn cu-submit-btn">
+            <IonButton
+              expand="block"
+              className="app-primary-btn cu-submit-btn"
+              onClick={handleClaveUnicaLogin}
+            >
               INGRESA
             </IonButton>
 

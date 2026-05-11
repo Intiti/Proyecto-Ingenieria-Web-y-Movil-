@@ -16,12 +16,9 @@ import {
 } from "@ionic/react";
 
 import {
-  callOutline,
   checkmarkCircleOutline,
   homeOutline,
   idCardOutline,
-  locationOutline,
-  mailOutline,
   personCircleOutline,
   saveOutline,
   shieldCheckmarkOutline,
@@ -195,12 +192,11 @@ const Perfil: React.FC = () => {
                   <div className="field-group">
                     <label htmlFor="correo">Correo electrónico</label>
 
-                    <div className="input-with-icon">
-                      <IonIcon icon={mailOutline} />
+                    <div className="field-group">
 
                       <IonInput
                         id="correo"
-                        className="perfil-input icon-input"
+                        className="perfil-input"
                         value="maria.munoz@gmail.com"
                         type="email"
                         aria-label="Correo electrónico"
@@ -211,12 +207,11 @@ const Perfil: React.FC = () => {
                   <div className="field-group">
                     <label htmlFor="telefono">Teléfono</label>
 
-                    <div className="input-with-icon">
-                      <IonIcon icon={callOutline} />
+                    <div className="field-group">
 
                       <IonInput
                         id="telefono"
-                        className="perfil-input icon-input"
+                        className="perfil-input"
                         value="+56 9 8765 4321"
                         type="tel"
                         aria-label="Teléfono"
@@ -227,12 +222,11 @@ const Perfil: React.FC = () => {
                   <div className="field-group full">
                     <label htmlFor="direccion">Dirección</label>
 
-                    <div className="input-with-icon">
-                      <IonIcon icon={locationOutline} />
+                    <div className="field-group">
 
                       <IonInput
                         id="direccion"
-                        className="perfil-input icon-input"
+                        className="perfil-input"
                         value="Av. Litoral 1234"
                         aria-label="Dirección"
                       />

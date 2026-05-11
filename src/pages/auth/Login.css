@@ -290,6 +290,29 @@
   font-weight: 700;
 }
 
+.login-error {
+  margin: 22px 0 0;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.login-error + .login-main-btn {
+  margin-top: 18px;
+}
+
+.login-main-btn {
+  margin-top: 26px;
+  height: 60px;
+  --border-radius: 16px;
+}
+
 .btn-claveunica {
   height: 58px;
   --border-radius: 16px;
@@ -305,7 +328,7 @@
 
 .register-link a {
   color: #0b72d9;
-  font-weight: 800;
+  font-weight: 400;
   text-decoration: none;
 }
 
@@ -422,7 +445,7 @@
   margin-bottom: 8px;
   color: #1d2d44;
   font-size: 14px;
-  font-weight: 850;
+  font-weight: 500;
 }
 
 .claveunica-input {

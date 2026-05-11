@@ -11,17 +11,36 @@ import {
 
 import {
   briefcaseOutline,
-  lockClosedOutline,
-  mailOutline,
   shieldCheckmarkOutline,
 } from "ionicons/icons";
 
+import { useState } from "react";
 import "./AdminLogin.css";
+
+const ADMIN_EMAIL = "funcionario@santodomingo.cl";
+const ADMIN_PASSWORD = "admin123";
 
 const AdminLogin: React.FC = () => {
   const router = useIonRouter();
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
   const handleAdminLogin = () => {
+    const cleanEmail = email.trim().toLowerCase();
+
+    if (!cleanEmail || !password) {
+      setErrorMessage("Debes ingresar correo y contraseña.");
+      return;
+    }
+
+    if (cleanEmail !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
+      setErrorMessage("Credenciales de funcionario inválidas.");
+      return;
+    }
+
+    setErrorMessage("");
     router.push("/admin/dashboard", "forward", "push");
   };
 
@@ -68,35 +87,37 @@ const AdminLogin: React.FC = () => {
                 <div className="admin-field-group">
                   <label htmlFor="admin-email">Correo institucional</label>
 
-                  <div className="admin-input-with-icon">
-                    <IonIcon icon={mailOutline} />
-
-                    <IonInput
-                      id="admin-email"
-                      className="admin-input icon-input"
-                      type="email"
-                      placeholder="funcionario@santodomingo.cl"
-                      aria-label="Correo institucional"
-                    />
-                  </div>
+                  <IonInput
+                    id="admin-email"
+                    className="admin-input"
+                    type="email"
+                    placeholder="funcionario@santodomingo.cl"
+                    value={email}
+                    aria-label="Correo institucional"
+                    onIonInput={(event) => setEmail(event.detail.value ?? "")}
+                  />
                 </div>
 
                 <div className="admin-field-group">
                   <label htmlFor="admin-password">Contraseña</label>
 
-                  <div className="admin-input-with-icon">
-                    <IonIcon icon={lockClosedOutline} />
-
-                    <IonInput
-                      id="admin-password"
-                      className="admin-input icon-input"
-                      type="password"
-                      placeholder="Ingrese su contraseña"
-                      aria-label="Contraseña funcionario"
-                    />
-                  </div>
+                  <IonInput
+                    id="admin-password"
+                    className="admin-input"
+                    type="password"
+                    placeholder="admin123"
+                    value={password}
+                    aria-label="Contraseña funcionario"
+                    onIonInput={(event) =>
+                      setPassword(event.detail.value ?? "")
+                    }
+                  />
                 </div>
               </div>
+
+              {errorMessage && (
+                <p className="admin-login-error">{errorMessage}</p>
+              )}
 
               <IonButton
                 expand="block"
