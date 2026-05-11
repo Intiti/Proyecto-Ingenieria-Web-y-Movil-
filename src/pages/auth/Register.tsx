@@ -7,6 +7,7 @@ import {
   IonIcon,
   IonInput,
   IonPage,
+  useIonRouter,
 } from "@ionic/react";
 
 import {
@@ -20,6 +21,12 @@ import "./Login.css";
 import "./Register.css";
 
 const Register: React.FC = () => {
+
+  const router = useIonRouter();
+  const handleRegister = () => {
+    router.push("/home", "forward", "push");
+  };
+
   const [selectedRegion, setSelectedRegion] = useState("");
 
   const regiones = [
@@ -111,7 +118,7 @@ const Register: React.FC = () => {
                     <IonInput
                       id="username"
                       className="clean-input"
-                      placeholder="Ej: juanperez"
+                      placeholder="Ej: Juan Pérez"
                     />
                   </div>
 
@@ -224,6 +231,7 @@ const Register: React.FC = () => {
                 <IonButton
                   expand="block"
                   className="app-primary-btn register-main-btn"
+                  onClick={handleRegister}
                 >
                   Registrarse
                 </IonButton>

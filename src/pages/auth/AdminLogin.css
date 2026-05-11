@@ -185,23 +185,6 @@
   box-shadow: 0 0 0 4px rgba(11, 114, 217, 0.14);
 }
 
-.admin-input-with-icon {
-  position: relative;
-}
-
-.admin-input-with-icon > ion-icon {
-  position: absolute;
-  left: 15px;
-  top: 18px;
-  z-index: 2;
-  color: #0b5cad;
-  font-size: 22px;
-}
-
-.icon-input {
-  --padding-start: 48px;
-}
-
 .admin-login-btn {
   margin-top: 26px;
   height: 58px;
@@ -251,6 +234,34 @@
     opacity: 1;
     transform: translateX(0);
   }
+}
+
+/* =========================
+   Corrección peso visual inputs funcionario
+========================= */
+
+.admin-input,
+.admin-input::part(native),
+.admin-input.icon-input,
+.admin-input.icon-input::part(native) {
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: 1.4 !important;
+}
+
+.admin-input input {
+  font-weight: 400 !important;
+}
+
+.admin-login-error {
+  margin: 18px 0 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #fee2e2;
+  color: #991b1b;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
 }
 
 
