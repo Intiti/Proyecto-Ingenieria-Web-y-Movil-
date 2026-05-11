@@ -91,7 +91,7 @@ const AdminLogin: React.FC = () => {
                     id="admin-email"
                     className="admin-input"
                     type="email"
-                    placeholder="funcionario@santodomingo.cl"
+                    placeholder="micorreo@gmail.cl"
                     value={email}
                     aria-label="Correo institucional"
                     onIonInput={(event) => setEmail(event.detail.value ?? "")}
@@ -105,7 +105,7 @@ const AdminLogin: React.FC = () => {
                     id="admin-password"
                     className="admin-input"
                     type="password"
-                    placeholder="admin123"
+                    placeholder="Ingrese su contraseña"
                     value={password}
                     aria-label="Contraseña funcionario"
                     onIonInput={(event) =>
