@@ -1,0 +1,242 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RolUsuario {
+  PACIENTE
+  FUNCIONARIO
+  ADMIN
+}
+
+enum EstadoSolicitud {
+  EN_ESPERA
+  AGENDADA
+  FINALIZADA
+  CANCELADA
+}
+
+enum PrioridadSolicitud {
+  BAJA
+  MEDIA
+  ALTA
+}
+
+enum EstadoCita {
+  PROGRAMADA
+  CONFIRMADA
+  REALIZADA
+  CANCELADA
+}
+
+enum EstadoExamen {
+  PENDIENTE
+  EN_PROCESO
+  COMPLETADO
+}
+
+enum TipoDocumento {
+  RECETA
+  LICENCIA
+  RESULTADO_EXAMEN
+  INTERCONSULTA
+  OTRO
+}
+
+model Usuario {
+  id           String     @id @default(cuid())
+  rut          String     @unique
+  nombre       String
+  correo       String     @unique
+  passwordHash String
+  rol          RolUsuario
+  activo       Boolean    @default(true)
+
+  paciente    Paciente?
+  funcionario Funcionario?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("usuarios")
+}
+
+model Paciente {
+  id        String  @id @default(cuid())
+  usuarioId String  @unique
+  usuario   Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  telefono                   String?
+  region                     String?
+  comuna                     String?
+  direccion                  String?
+  contactoEmergenciaNombre   String?
+  contactoEmergenciaTelefono String?
+
+  solicitudes    Solicitud[]
+  citas          Cita[]
+  examenes       Examen[]
+  documentos     Documento[]
+  notificaciones Notificacion[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("pacientes")
+}
+
+model Funcionario {
+  id        String  @id @default(cuid())
+  usuarioId String  @unique
+  usuario   Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  cargo         String
+  centroSaludId String?
+  centroSalud   CentroSalud? @relation(fields: [centroSaludId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("funcionarios")
+}
+
+model CentroSalud {
+  id        String  @id @default(cuid())
+  nombre    String
+  comuna    String
+  direccion String?
+  activo    Boolean @default(true)
+
+  funcionarios Funcionario[]
+  solicitudes  Solicitud[]
+  citas        Cita[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("centros_salud")
+}
+
+model Especialidad {
+  id     String  @id @default(cuid())
+  nombre String  @unique
+  activo Boolean @default(true)
+
+  solicitudes Solicitud[]
+  citas       Cita[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("especialidades")
+}
+
+model Solicitud {
+  id String @id @default(cuid())
+
+  pacienteId String
+  paciente   Paciente @relation(fields: [pacienteId], references: [id], onDelete: Cascade)
+
+  especialidadId String
+  especialidad   Especialidad @relation(fields: [especialidadId], references: [id], onDelete: Restrict)
+
+  centroSaludId String?
+  centroSalud   CentroSalud? @relation(fields: [centroSaludId], references: [id], onDelete: SetNull)
+
+  motivo     String
+  estado     EstadoSolicitud    @default(EN_ESPERA)
+  prioridad  PrioridadSolicitud @default(MEDIA)
+  diasEspera Int                @default(0)
+
+  fechaSolicitud DateTime  @default(now())
+  fechaEstimada  DateTime?
+
+  citas Cita[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("solicitudes")
+}
+
+model Cita {
+  id String @id @default(cuid())
+
+  pacienteId String
+  paciente   Paciente @relation(fields: [pacienteId], references: [id], onDelete: Cascade)
+
+  solicitudId String?
+  solicitud   Solicitud? @relation(fields: [solicitudId], references: [id], onDelete: SetNull)
+
+  centroSaludId String
+  centroSalud   CentroSalud @relation(fields: [centroSaludId], references: [id], onDelete: Restrict)
+
+  especialidadId String
+  especialidad   Especialidad @relation(fields: [especialidadId], references: [id], onDelete: Restrict)
+
+  fecha  DateTime
+  hora   String
+  box    String?
+  estado EstadoCita @default(PROGRAMADA)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("citas")
+}
+
+model Examen {
+  id String @id @default(cuid())
+
+  pacienteId String
+  paciente   Paciente @relation(fields: [pacienteId], references: [id], onDelete: Cascade)
+
+  nombre        String
+  estado        EstadoExamen @default(PENDIENTE)
+  fecha         DateTime?
+  instrucciones String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("examenes")
+}
+
+model Documento {
+  id String @id @default(cuid())
+
+  pacienteId String
+  paciente   Paciente @relation(fields: [pacienteId], references: [id], onDelete: Cascade)
+
+  tipo   TipoDocumento
+  nombre String
+  url    String
+  fecha  DateTime      @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("documentos")
+}
+
+model Notificacion {
+  id String @id @default(cuid())
+
+  pacienteId String
+  paciente   Paciente @relation(fields: [pacienteId], references: [id], onDelete: Cascade)
+
+  titulo    String
+  mensaje   String
+  prioridad PrioridadSolicitud @default(MEDIA)
+  leida     Boolean            @default(false)
+  fecha     DateTime           @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("notificaciones")
+}
