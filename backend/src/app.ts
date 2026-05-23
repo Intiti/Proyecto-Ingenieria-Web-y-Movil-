@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 
 import authRoutes from "./routes/auth.routes";
+import pacientesRoutes from "./routes/pacientes.routes";
 
 const app = express();
 
@@ -20,9 +21,9 @@ app.get("/api/health", (_req, res) => {
     message: "API MuniSalud funcionando correctamente",
   });
 });
-console.log("Auth routes cargadas en /api/auth");
 
 app.use("/api/auth", authRoutes);
+app.use("/api/pacientes", pacientesRoutes);
 
 app.use((_req, res) => {
   res.status(404).json({
