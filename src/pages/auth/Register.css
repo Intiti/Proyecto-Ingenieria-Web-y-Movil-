@@ -97,6 +97,14 @@
   margin-top: 20px;
 }
 
+.register-error {
+  margin: 14px 0 0;
+  color: #b91c1c;
+  font-size: 14px;
+  font-weight: 750;
+  line-height: 1.4;
+}
+
 
 /* =========================
    Responsive
