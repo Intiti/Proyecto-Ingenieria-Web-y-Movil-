@@ -12,6 +12,7 @@ import {
   IonTitle,
   IonButtons,
   useIonRouter,
+  useIonViewWillEnter,
 } from "@ionic/react";
 
 import {
@@ -26,10 +27,9 @@ import {
 } from "ionicons/icons";
 
 import { useState } from "react";
-import "./Login.css";
+import { loginRequest, logout } from "../../services/authService";
 
-const PATIENT_RUT = "12.345.678-9";
-const PATIENT_PASSWORD = "paciente123";
+import "./Login.css";
 
 const formatRut = (value: string) => {
   const cleanValue = value.replace(/[^0-9kK]/g, "").toUpperCase();
@@ -53,27 +53,59 @@ const Login: React.FC = () => {
   const [rut, setRut] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = () => {
-    const cleanRut = rut.trim();
-
-    if (!cleanRut || !password) {
-      setErrorMessage("Debes ingresar RUT y contraseña.");
-      return;
-    }
-
-    if (cleanRut !== PATIENT_RUT || password !== PATIENT_PASSWORD) {
-      setErrorMessage("Credenciales de paciente inválidas.");
-      return;
-    }
-
+  useIonViewWillEnter(() => {
+    logout();
+    setRut("");
+    setPassword("");
     setErrorMessage("");
-    router.push("/home", "forward", "push");
+    setIsLoading(false);
+  });
+
+  const handleLogin = async () => {
+    try {
+      setErrorMessage("");
+      setIsLoading(true);
+
+      logout();
+
+      const rutValue = rut.trim();
+      const passwordValue = password.trim();
+
+      if (!rutValue || !passwordValue) {
+        setErrorMessage("Debes ingresar RUT y contraseña.");
+        return;
+      }
+
+      const response = await loginRequest({
+        identificador: rutValue,
+        password: passwordValue,
+      });
+
+      if (
+        response.user.rol === "FUNCIONARIO" ||
+        response.user.rol === "ADMIN"
+      ) {
+        router.push("/admin/dashboard", "root", "replace");
+        return;
+      }
+
+      router.push("/home", "root", "replace");
+    } catch (error) {
+      logout();
+
+      setErrorMessage(
+        error instanceof Error ? error.message : "No se pudo iniciar sesión.",
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleClaveUnicaLogin = () => {
     setShowModal(false);
-    router.push("/home", "forward", "push");
+    router.push("/home", "root", "replace");
   };
 
   return (
@@ -137,18 +169,16 @@ const Login: React.FC = () => {
 
                 <div className="form-inputs">
                   <div className="field-group">
-                    <label className="field-label" htmlFor="rut">
-                      RUT
-                    </label>
+                    <p className="field-label">RUT</p>
 
                     <IonInput
-                      id="rut"
                       className="clean-input"
                       placeholder="Ej: 12.345.678-9"
                       value={rut}
                       inputMode="text"
                       maxlength={12}
                       aria-label="Ingrese su RUT"
+                      autocomplete="username"
                       onIonInput={(event) => {
                         const value = event.detail.value ?? "";
                         setRut(formatRut(value));
@@ -161,17 +191,15 @@ const Login: React.FC = () => {
                   </div>
 
                   <div className="field-group">
-                    <label className="field-label" htmlFor="password">
-                      Contraseña
-                    </label>
+                    <p className="field-label">Contraseña</p>
 
                     <IonInput
-                      id="password"
                       className="clean-input"
                       type="password"
                       placeholder="Ingrese su contraseña"
                       aria-label="Ingrese su contraseña"
                       value={password}
+                      autocomplete="current-password"
                       onIonInput={(event) =>
                         setPassword(event.detail.value ?? "")
                       }
@@ -185,10 +213,11 @@ const Login: React.FC = () => {
                   expand="block"
                   className="app-primary-btn login-main-btn"
                   onClick={handleLogin}
+                  disabled={isLoading}
                 >
-                  Ingresar
+                  {isLoading ? "Ingresando..." : "Ingresar"}
                 </IonButton>
-                
+
                 <div className="login-actions">
                   <a href="/recuperar-contrasena">¿Olvidaste tu contraseña?</a>
                 </div>
@@ -282,7 +311,7 @@ const Login: React.FC = () => {
             <h2>Portal Ciudadano ClaveÚnica</h2>
 
             <div className="cu-field">
-              <label>Ingresa tu RUN</label>
+              <p className="field-label">Ingresa tu RUN</p>
 
               <IonInput
                 placeholder="12.345.678-9"
@@ -292,7 +321,7 @@ const Login: React.FC = () => {
             </div>
 
             <div className="cu-field">
-              <label>Ingresa tu ClaveÚnica</label>
+              <p className="field-label">ClaveÚnica</p>
 
               <IonInput
                 type="password"

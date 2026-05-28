@@ -9,39 +9,53 @@ import {
   useIonRouter,
 } from "@ionic/react";
 
-import {
-  briefcaseOutline,
-  shieldCheckmarkOutline,
-} from "ionicons/icons";
+import { briefcaseOutline, shieldCheckmarkOutline } from "ionicons/icons";
 
 import { useState } from "react";
-import "./AdminLogin.css";
+import { loginRequest, logout } from "../../services/authService";
 
-const ADMIN_EMAIL = "funcionario@santodomingo.cl";
-const ADMIN_PASSWORD = "admin123";
+import "./AdminLogin.css";
 
 const AdminLogin: React.FC = () => {
   const router = useIonRouter();
 
-  const [email, setEmail] = useState("");
+  const [correo, setCorreo] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleAdminLogin = () => {
-    const cleanEmail = email.trim().toLowerCase();
+  const handleAdminLogin = async () => {
+    try {
+      setErrorMessage("");
 
-    if (!cleanEmail || !password) {
-      setErrorMessage("Debes ingresar correo y contraseña.");
-      return;
+      logout();
+
+      if (!correo || !password) {
+        setErrorMessage("Debes ingresar correo y contraseña.");
+        return;
+      }
+
+      const response = await loginRequest({
+        identificador: correo,
+        password,
+      });
+
+      if (
+        response.user.rol !== "FUNCIONARIO" &&
+        response.user.rol !== "ADMIN"
+      ) {
+        logout();
+        setErrorMessage("No tienes permisos de funcionario.");
+        return;
+      }
+
+      router.push("/admin/dashboard", "root", "replace");
+    } catch (error) {
+      logout();
+
+      setErrorMessage(
+        error instanceof Error ? error.message : "No se pudo iniciar sesión.",
+      );
     }
-
-    if (cleanEmail !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
-      setErrorMessage("Credenciales de funcionario inválidas.");
-      return;
-    }
-
-    setErrorMessage("");
-    router.push("/admin/dashboard", "forward", "push");
   };
 
   return (
@@ -91,10 +105,10 @@ const AdminLogin: React.FC = () => {
                     id="admin-email"
                     className="admin-input"
                     type="email"
-                    placeholder="micorreo@gmail.cl"
-                    value={email}
+                    placeholder="funcionario@santodomingo.cl"
                     aria-label="Correo institucional"
-                    onIonInput={(event) => setEmail(event.detail.value ?? "")}
+                    value={correo}
+                    onIonInput={(event) => setCorreo(event.detail.value ?? "")}
                   />
                 </div>
 
@@ -106,8 +120,8 @@ const AdminLogin: React.FC = () => {
                     className="admin-input"
                     type="password"
                     placeholder="Ingrese su contraseña"
-                    value={password}
                     aria-label="Contraseña funcionario"
+                    value={password}
                     onIonInput={(event) =>
                       setPassword(event.detail.value ?? "")
                     }

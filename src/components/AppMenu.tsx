@@ -27,6 +27,8 @@ import {
   briefcaseOutline,
 } from "ionicons/icons";
 
+import { logout } from "../services/authService";
+
 import "./AppMenu.css";
 
 const patientItems = [
@@ -58,9 +60,20 @@ const adminItems = [
 
 const AppMenu: React.FC = () => {
   const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith("/admin");
 
+  const isAdminRoute = location.pathname.startsWith("/admin");
   const items = isAdminRoute ? adminItems : patientItems;
+
+  const handleLogout = () => {
+    const activeElement = document.activeElement as HTMLElement | null;
+    activeElement?.blur();
+
+    logout();
+
+    setTimeout(() => {
+      window.location.replace("/login");
+    }, 50);
+  };
 
   return (
     <IonMenu contentId="main-content" type="overlay">
@@ -106,8 +119,8 @@ const AppMenu: React.FC = () => {
         <div className="menu-footer">
           <IonMenuToggle autoHide={true}>
             <IonItem
-              routerLink="/login"
-              routerDirection="root"
+              button
+              onClick={handleLogout}
               lines="none"
               detail={false}
               className="menu-item logout"

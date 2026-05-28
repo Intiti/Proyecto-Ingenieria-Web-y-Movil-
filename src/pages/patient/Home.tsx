@@ -28,8 +28,19 @@ import {
 
 import "./Home.css";
 import NotificationBell from "../../components/NotificationBell";
+import { logout } from "../../services/authService";
 
 const Home: React.FC = () => {
+  const handleLogout = () => {
+    const activeElement = document.activeElement as HTMLElement | null;
+    activeElement?.blur();
+
+    logout();
+
+    setTimeout(() => {
+      window.location.replace("/login");
+    }, 50);
+  }; 
   return (
     <IonPage>
       <IonHeader className="app-header">
@@ -53,7 +64,7 @@ const Home: React.FC = () => {
 
             <IonButton
               fill="clear"
-              routerLink="/login"
+              onClick={handleLogout}
               className="app-header-btn"
             >
               <IonIcon icon={logOutOutline} slot="start" />

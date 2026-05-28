@@ -4,6 +4,7 @@ import cors from "cors";
 import authRoutes from "./routes/auth.routes";
 import pacientesRoutes from "./routes/pacientes.routes";
 import solicitudesRoutes from "./routes/solicitudes.routes";
+import citasRoutes from "./routes/citas.routes";
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.get("/api/health", (_req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/pacientes", pacientesRoutes);
 app.use("/api/solicitudes", solicitudesRoutes);
+app.use("/api/citas", citasRoutes);
 
 app.use((_req, res) => {
   res.status(404).json({
