@@ -99,28 +99,28 @@ const AdminLogin: React.FC = () => {
 
               <div className="admin-form">
                 <div className="admin-field-group">
-                  <label htmlFor="admin-email">Correo institucional</label>
+                  <p className="admin-field-label">Correo institucional</p>
 
                   <IonInput
-                    id="admin-email"
                     className="admin-input"
                     type="email"
                     placeholder="funcionario@santodomingo.cl"
                     aria-label="Correo institucional"
+                    autocomplete="email"
                     value={correo}
                     onIonInput={(event) => setCorreo(event.detail.value ?? "")}
                   />
                 </div>
 
                 <div className="admin-field-group">
-                  <label htmlFor="admin-password">Contraseña</label>
+                  <p className="admin-field-label">Contraseña</p>
 
                   <IonInput
-                    id="admin-password"
                     className="admin-input"
                     type="password"
                     placeholder="Ingrese su contraseña"
                     aria-label="Contraseña funcionario"
+                    autocomplete="current-password"
                     value={password}
                     onIonInput={(event) =>
                       setPassword(event.detail.value ?? "")
