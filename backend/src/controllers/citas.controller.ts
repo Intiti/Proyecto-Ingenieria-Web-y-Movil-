@@ -4,25 +4,29 @@ import { z } from "zod";
 import { prisma } from "../config/prisma";
 import { AuthRequest } from "../middlewares/auth.middleware";
 
-const createSolicitudSchema = z.object({
+const createCitaSchema = z.object({
   pacienteId: z.string().min(1, "El paciente es obligatorio."),
+  solicitudId: z.string().nullable().optional(),
+  centroSaludId: z.string().min(1, "El centro de salud es obligatorio."),
   especialidadId: z.string().min(1, "La especialidad es obligatoria."),
-  centroSaludId: z.string().optional(),
-  motivo: z.string().min(3, "El motivo debe tener al menos 3 caracteres."),
-  prioridad: z.enum(["BAJA", "MEDIA", "ALTA"]).optional(),
-  fechaEstimada: z.string().optional(),
+  fecha: z.string().min(1, "La fecha es obligatoria."),
+  hora: z.string().min(1, "La hora es obligatoria."),
+  box: z.string().optional(),
+  estado: z
+    .enum(["PROGRAMADA", "CONFIRMADA", "REALIZADA", "CANCELADA"])
+    .optional(),
 });
 
-const updateSolicitudSchema = z.object({
+const updateCitaSchema = z.object({
+  solicitudId: z.string().nullable().optional(),
+  centroSaludId: z.string().optional(),
   especialidadId: z.string().optional(),
-  centroSaludId: z.string().nullable().optional(),
-  motivo: z.string().min(3).optional(),
+  fecha: z.string().optional(),
+  hora: z.string().optional(),
+  box: z.string().nullable().optional(),
   estado: z
-    .enum(["EN_ESPERA", "AGENDADA", "FINALIZADA", "CANCELADA"])
+    .enum(["PROGRAMADA", "CONFIRMADA", "REALIZADA", "CANCELADA"])
     .optional(),
-  prioridad: z.enum(["BAJA", "MEDIA", "ALTA"]).optional(),
-  diasEspera: z.number().int().min(0).optional(),
-  fechaEstimada: z.string().nullable().optional(),
 });
 
 const getParamId = (req: AuthRequest) => {
@@ -35,9 +39,9 @@ const getParamId = (req: AuthRequest) => {
   return rawId;
 };
 
-export const getSolicitudes = async (_req: AuthRequest, res: Response) => {
+export const getCitas = async (_req: AuthRequest, res: Response) => {
   try {
-    const solicitudes = await prisma.solicitud.findMany({
+    const citas = await prisma.cita.findMany({
       include: {
         paciente: {
           include: {
@@ -52,21 +56,21 @@ export const getSolicitudes = async (_req: AuthRequest, res: Response) => {
             },
           },
         },
-        especialidad: true,
+        solicitud: true,
         centroSalud: true,
-        citas: true,
+        especialidad: true,
       },
       orderBy: {
-        fechaSolicitud: "desc",
+        fecha: "asc",
       },
     });
 
     return res.status(200).json({
       ok: true,
-      solicitudes,
+      citas,
     });
   } catch (error) {
-    console.error("Error obteniendo solicitudes:", error);
+    console.error("Error obteniendo citas:", error);
 
     return res.status(500).json({
       ok: false,
@@ -75,21 +79,19 @@ export const getSolicitudes = async (_req: AuthRequest, res: Response) => {
   }
 };
 
-export const getSolicitudById = async (req: AuthRequest, res: Response) => {
+export const getCitaById = async (req: AuthRequest, res: Response) => {
   try {
     const id = getParamId(req);
 
     if (!id) {
       return res.status(400).json({
         ok: false,
-        message: "ID de solicitud inválido.",
+        message: "ID de cita inválido.",
       });
     }
 
-    const solicitud = await prisma.solicitud.findUnique({
-      where: {
-        id,
-      },
+    const cita = await prisma.cita.findUnique({
+      where: { id },
       include: {
         paciente: {
           include: {
@@ -104,30 +106,25 @@ export const getSolicitudById = async (req: AuthRequest, res: Response) => {
             },
           },
         },
-        especialidad: true,
+        solicitud: true,
         centroSalud: true,
-        citas: {
-          include: {
-            centroSalud: true,
-            especialidad: true,
-          },
-        },
+        especialidad: true,
       },
     });
 
-    if (!solicitud) {
+    if (!cita) {
       return res.status(404).json({
         ok: false,
-        message: "Solicitud no encontrada.",
+        message: "Cita no encontrada.",
       });
     }
 
     return res.status(200).json({
       ok: true,
-      solicitud,
+      cita,
     });
   } catch (error) {
-    console.error("Error obteniendo solicitud:", error);
+    console.error("Error obteniendo cita:", error);
 
     return res.status(500).json({
       ok: false,
@@ -136,9 +133,9 @@ export const getSolicitudById = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const createSolicitud = async (req: AuthRequest, res: Response) => {
+export const createCita = async (req: AuthRequest, res: Response) => {
   try {
-    const result = createSolicitudSchema.safeParse(req.body);
+    const result = createCitaSchema.safeParse(req.body);
 
     if (!result.success) {
       return res.status(400).json({
@@ -150,17 +147,17 @@ export const createSolicitud = async (req: AuthRequest, res: Response) => {
 
     const {
       pacienteId,
-      especialidadId,
+      solicitudId,
       centroSaludId,
-      motivo,
-      prioridad,
-      fechaEstimada,
+      especialidadId,
+      fecha,
+      hora,
+      box,
+      estado,
     } = result.data;
 
     const pacienteExiste = await prisma.paciente.findUnique({
-      where: {
-        id: pacienteId,
-      },
+      where: { id: pacienteId },
     });
 
     if (!pacienteExiste) {
@@ -170,10 +167,19 @@ export const createSolicitud = async (req: AuthRequest, res: Response) => {
       });
     }
 
+    const centroExiste = await prisma.centroSalud.findUnique({
+      where: { id: centroSaludId },
+    });
+
+    if (!centroExiste) {
+      return res.status(404).json({
+        ok: false,
+        message: "Centro de salud no encontrado.",
+      });
+    }
+
     const especialidadExiste = await prisma.especialidad.findUnique({
-      where: {
-        id: especialidadId,
-      },
+      where: { id: especialidadId },
     });
 
     if (!especialidadExiste) {
@@ -183,29 +189,29 @@ export const createSolicitud = async (req: AuthRequest, res: Response) => {
       });
     }
 
-    if (centroSaludId) {
-      const centroExiste = await prisma.centroSalud.findUnique({
-        where: {
-          id: centroSaludId,
-        },
+    if (solicitudId) {
+      const solicitudExiste = await prisma.solicitud.findUnique({
+        where: { id: solicitudId },
       });
 
-      if (!centroExiste) {
+      if (!solicitudExiste) {
         return res.status(404).json({
           ok: false,
-          message: "Centro de salud no encontrado.",
+          message: "Solicitud no encontrada.",
         });
       }
     }
 
-    const nuevaSolicitud = await prisma.solicitud.create({
+    const nuevaCita = await prisma.cita.create({
       data: {
         pacienteId,
-        especialidadId,
+        solicitudId: solicitudId ?? null,
         centroSaludId,
-        motivo,
-        prioridad: prioridad ?? "MEDIA",
-        fechaEstimada: fechaEstimada ? new Date(fechaEstimada) : null,
+        especialidadId,
+        fecha: new Date(fecha),
+        hora,
+        box,
+        estado: estado ?? "PROGRAMADA",
       },
       include: {
         paciente: {
@@ -220,18 +226,28 @@ export const createSolicitud = async (req: AuthRequest, res: Response) => {
             },
           },
         },
-        especialidad: true,
+        solicitud: true,
         centroSalud: true,
+        especialidad: true,
       },
     });
 
+    if (solicitudId) {
+      await prisma.solicitud.update({
+        where: { id: solicitudId },
+        data: {
+          estado: "AGENDADA",
+        },
+      });
+    }
+
     return res.status(201).json({
       ok: true,
-      message: "Solicitud creada correctamente.",
-      solicitud: nuevaSolicitud,
+      message: "Cita creada correctamente.",
+      cita: nuevaCita,
     });
   } catch (error) {
-    console.error("Error creando solicitud:", error);
+    console.error("Error creando cita:", error);
 
     return res.status(500).json({
       ok: false,
@@ -240,18 +256,18 @@ export const createSolicitud = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const updateSolicitud = async (req: AuthRequest, res: Response) => {
+export const updateCita = async (req: AuthRequest, res: Response) => {
   try {
     const id = getParamId(req);
 
     if (!id) {
       return res.status(400).json({
         ok: false,
-        message: "ID de solicitud inválido.",
+        message: "ID de cita inválido.",
       });
     }
 
-    const result = updateSolicitudSchema.safeParse(req.body);
+    const result = updateCitaSchema.safeParse(req.body);
 
     if (!result.success) {
       return res.status(400).json({
@@ -261,38 +277,29 @@ export const updateSolicitud = async (req: AuthRequest, res: Response) => {
       });
     }
 
-    const solicitudExiste = await prisma.solicitud.findUnique({
-      where: {
-        id,
-      },
+    const citaExiste = await prisma.cita.findUnique({
+      where: { id },
     });
 
-    if (!solicitudExiste) {
+    if (!citaExiste) {
       return res.status(404).json({
         ok: false,
-        message: "Solicitud no encontrada.",
+        message: "Cita no encontrada.",
       });
     }
 
     const data = result.data;
 
-    const solicitudActualizada = await prisma.solicitud.update({
-      where: {
-        id,
-      },
+    const citaActualizada = await prisma.cita.update({
+      where: { id },
       data: {
-        especialidadId: data.especialidadId,
+        solicitudId: data.solicitudId,
         centroSaludId: data.centroSaludId,
-        motivo: data.motivo,
+        especialidadId: data.especialidadId,
+        fecha: data.fecha ? new Date(data.fecha) : undefined,
+        hora: data.hora,
+        box: data.box,
         estado: data.estado,
-        prioridad: data.prioridad,
-        diasEspera: data.diasEspera,
-        fechaEstimada:
-          data.fechaEstimada === undefined
-            ? undefined
-            : data.fechaEstimada === null
-              ? null
-              : new Date(data.fechaEstimada),
       },
       include: {
         paciente: {
@@ -307,18 +314,19 @@ export const updateSolicitud = async (req: AuthRequest, res: Response) => {
             },
           },
         },
-        especialidad: true,
+        solicitud: true,
         centroSalud: true,
+        especialidad: true,
       },
     });
 
     return res.status(200).json({
       ok: true,
-      message: "Solicitud actualizada correctamente.",
-      solicitud: solicitudActualizada,
+      message: "Cita actualizada correctamente.",
+      cita: citaActualizada,
     });
   } catch (error) {
-    console.error("Error actualizando solicitud:", error);
+    console.error("Error actualizando cita:", error);
 
     return res.status(500).json({
       ok: false,
@@ -327,56 +335,38 @@ export const updateSolicitud = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const deleteSolicitud = async (req: AuthRequest, res: Response) => {
+export const deleteCita = async (req: AuthRequest, res: Response) => {
   try {
     const id = getParamId(req);
 
     if (!id) {
       return res.status(400).json({
         ok: false,
-        message: "ID de solicitud inválido.",
+        message: "ID de cita inválido.",
       });
     }
 
-    const solicitudExiste = await prisma.solicitud.findUnique({
-      where: {
-        id,
-      },
-      include: {
-        citas: true,
-      },
+    const citaExiste = await prisma.cita.findUnique({
+      where: { id },
     });
 
-    if (!solicitudExiste) {
+    if (!citaExiste) {
       return res.status(404).json({
         ok: false,
-        message: "Solicitud no encontrada.",
+        message: "Cita no encontrada.",
       });
     }
 
-    if (solicitudExiste.citas.length > 0) {
-      await prisma.cita.updateMany({
-        where: {
-          solicitudId: id,
-        },
-        data: {
-          solicitudId: null,
-        },
-      });
-    }
-
-    await prisma.solicitud.delete({
-      where: {
-        id,
-      },
+    await prisma.cita.delete({
+      where: { id },
     });
 
     return res.status(200).json({
       ok: true,
-      message: "Solicitud eliminada correctamente.",
+      message: "Cita eliminada correctamente.",
     });
   } catch (error) {
-    console.error("Error eliminando solicitud:", error);
+    console.error("Error eliminando cita:", error);
 
     return res.status(500).json({
       ok: false,

@@ -21,6 +21,8 @@ import {
   logOutOutline,
 } from "ionicons/icons";
 
+import { logout } from "../services/authService";
+
 import "./PatientMenu.css";
 
 const menuItems = [
@@ -67,6 +69,17 @@ const menuItems = [
 ];
 
 const PatientMenu: React.FC = () => {
+  const handleLogout = () => {
+    const activeElement = document.activeElement as HTMLElement | null;
+    activeElement?.blur();
+
+    logout();
+
+    setTimeout(() => {
+      window.location.replace("/login");
+    }, 50);
+  };
+
   return (
     <IonMenu contentId="main-content" type="overlay">
       <IonContent className="patient-menu">
@@ -99,8 +112,8 @@ const PatientMenu: React.FC = () => {
         <div className="menu-footer">
           <IonMenuToggle autoHide={true}>
             <IonItem
-              routerLink="/login"
-              routerDirection="root"
+              button
+              onClick={handleLogout}
               lines="none"
               detail={false}
               className="menu-item logout"

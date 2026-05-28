@@ -17,17 +17,40 @@ import {
 } from "ionicons/icons";
 
 import { useState } from "react";
+
+import { registerRequest, logout } from "../../services/authService";
+
 import "./Login.css";
 import "./Register.css";
 
+const formatRut = (value: string) => {
+  const cleanValue = value.replace(/[^0-9kK]/g, "").toUpperCase();
+
+  if (cleanValue.length <= 1) {
+    return cleanValue;
+  }
+
+  const body = cleanValue.slice(0, -1);
+  const verifier = cleanValue.slice(-1);
+
+  const formattedBody = body.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+  return `${formattedBody}-${verifier}`;
+};
+
 const Register: React.FC = () => {
-
   const router = useIonRouter();
-  const handleRegister = () => {
-    router.push("/home", "forward", "push");
-  };
 
+  const [nombre, setNombre] = useState("");
+  const [rut, setRut] = useState("");
+  const [correo, setCorreo] = useState("");
   const [selectedRegion, setSelectedRegion] = useState("");
+  const [selectedComuna, setSelectedComuna] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const regiones = [
     { id: "coquimbo", name: "Región de Coquimbo" },
@@ -59,6 +82,65 @@ const Register: React.FC = () => {
     araucania: ["Temuco", "Padre Las Casas", "Villarrica", "Pucón"],
   };
 
+  const handleRegister = async () => {
+    try {
+      setErrorMessage("");
+      setIsLoading(true);
+
+      logout();
+
+      const regionName =
+        regiones.find((region) => region.id === selectedRegion)?.name ?? "";
+
+      if (
+        !nombre.trim() ||
+        !rut.trim() ||
+        !correo.trim() ||
+        !selectedRegion ||
+        !selectedComuna ||
+        !password ||
+        !confirmPassword
+      ) {
+        setErrorMessage("Debes completar todos los campos obligatorios.");
+        return;
+      }
+
+      if (!acceptTerms) {
+        setErrorMessage("Debes aceptar los términos y condiciones.");
+        return;
+      }
+
+      if (password.length < 6) {
+        setErrorMessage("La contraseña debe tener al menos 6 caracteres.");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        setErrorMessage("Las contraseñas no coinciden.");
+        return;
+      }
+
+      await registerRequest({
+        nombre: nombre.trim(),
+        rut: rut.trim(),
+        correo: correo.trim(),
+        password,
+        region: regionName,
+        comuna: selectedComuna,
+      });
+
+      router.push("/home", "root", "replace");
+    } catch (error) {
+      logout();
+
+      setErrorMessage(
+        error instanceof Error ? error.message : "No se pudo crear la cuenta.",
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <IonPage>
       <IonContent className="login-page" fullscreen>
@@ -78,6 +160,7 @@ const Register: React.FC = () => {
             <IonButton
               fill="clear"
               routerLink="/login"
+              routerDirection="root"
               className="staff-access"
             >
               Volver al inicio
@@ -111,54 +194,64 @@ const Register: React.FC = () => {
 
                 <div className="register-form-grid">
                   <div className="field-group">
-                    <label className="field-label" htmlFor="username">
-                      Nombre de usuario
-                    </label>
+                    <p className="field-label">Nombre de usuario</p>
 
                     <IonInput
-                      id="username"
                       className="clean-input"
                       placeholder="Ej: Juan Pérez"
+                      value={nombre}
+                      aria-label="Nombre de usuario"
+                      autocomplete="name"
+                      onIonInput={(event) =>
+                        setNombre(event.detail.value ?? "")
+                      }
                     />
                   </div>
 
                   <div className="field-group">
-                    <label className="field-label" htmlFor="rut">
-                      RUT
-                    </label>
+                    <p className="field-label">RUT</p>
 
                     <IonInput
-                      id="rut"
                       className="clean-input"
                       placeholder="12.345.678-9"
+                      value={rut}
+                      maxlength={12}
+                      inputMode="text"
+                      aria-label="RUT"
+                      autocomplete="username"
+                      onIonInput={(event) => {
+                        const value = event.detail.value ?? "";
+                        setRut(formatRut(value));
+                      }}
                     />
                   </div>
 
                   <div className="field-group field-full">
-                    <label className="field-label" htmlFor="email">
-                      Correo electrónico
-                    </label>
+                    <p className="field-label">Correo electrónico</p>
 
                     <IonInput
-                      id="email"
                       className="clean-input"
                       type="email"
                       placeholder="correo@ejemplo.com"
+                      value={correo}
+                      aria-label="Correo electrónico"
+                      autocomplete="email"
+                      onIonInput={(event) =>
+                        setCorreo(event.detail.value ?? "")
+                      }
                     />
                   </div>
 
                   <div className="field-group">
-                    <label className="field-label" htmlFor="region">
-                      Región
-                    </label>
+                    <p className="field-label">Región</p>
 
                     <select
-                      id="region"
                       className="native-select"
                       value={selectedRegion}
-                      onChange={(event) =>
-                        setSelectedRegion(event.target.value)
-                      }
+                      onChange={(event) => {
+                        setSelectedRegion(event.target.value);
+                        setSelectedComuna("");
+                      }}
                     >
                       <option value="" disabled>
                         Seleccione región
@@ -173,15 +266,15 @@ const Register: React.FC = () => {
                   </div>
 
                   <div className="field-group">
-                    <label className="field-label" htmlFor="comuna">
-                      Comuna
-                    </label>
+                    <p className="field-label">Comuna</p>
 
                     <select
-                      id="comuna"
                       className="native-select"
-                      defaultValue=""
+                      value={selectedComuna}
                       disabled={!selectedRegion}
+                      onChange={(event) =>
+                        setSelectedComuna(event.target.value)
+                      }
                     >
                       <option value="" disabled>
                         Seleccione comuna
@@ -197,43 +290,60 @@ const Register: React.FC = () => {
                   </div>
 
                   <div className="field-group">
-                    <label className="field-label" htmlFor="password">
-                      Contraseña
-                    </label>
+                    <p className="field-label">Contraseña</p>
 
                     <IonInput
-                      id="password"
                       className="clean-input"
                       type="password"
                       placeholder="••••••••"
+                      value={password}
+                      aria-label="Contraseña"
+                      autocomplete="new-password"
+                      onIonInput={(event) =>
+                        setPassword(event.detail.value ?? "")
+                      }
                     />
                   </div>
 
                   <div className="field-group">
-                    <label className="field-label" htmlFor="confirm-password">
-                      Confirmar contraseña
-                    </label>
+                    <p className="field-label">Confirmar contraseña</p>
 
                     <IonInput
-                      id="confirm-password"
                       className="clean-input"
                       type="password"
                       placeholder="••••••••"
+                      value={confirmPassword}
+                      aria-label="Confirmar contraseña"
+                      autocomplete="new-password"
+                      onIonInput={(event) =>
+                        setConfirmPassword(event.detail.value ?? "")
+                      }
                     />
                   </div>
 
                   <div className="terms-row field-full">
-                    <IonCheckbox mode="md" />
+                    <IonCheckbox
+                      mode="md"
+                      checked={acceptTerms}
+                      onIonChange={(event) =>
+                        setAcceptTerms(event.detail.checked)
+                      }
+                    />
                     <span>Acepto los términos y condiciones</span>
                   </div>
                 </div>
+
+                {errorMessage && (
+                  <p className="register-error">{errorMessage}</p>
+                )}
 
                 <IonButton
                   expand="block"
                   className="app-primary-btn register-main-btn"
                   onClick={handleRegister}
+                  disabled={isLoading}
                 >
-                  Registrarse
+                  {isLoading ? "Creando cuenta..." : "Registrarse"}
                 </IonButton>
 
                 <div className="security-note register-security-note">

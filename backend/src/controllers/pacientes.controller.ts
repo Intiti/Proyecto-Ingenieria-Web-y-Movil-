@@ -13,6 +13,16 @@ const updatePacienteSchema = z.object({
   contactoEmergenciaTelefono: z.string().optional(),
 });
 
+const getParamId = (req: AuthRequest) => {
+  const rawId = req.params.id;
+
+  if (!rawId || Array.isArray(rawId)) {
+    return null;
+  }
+
+  return rawId;
+};
+
 export const getPacientes = async (_req: AuthRequest, res: Response) => {
   try {
     const pacientes = await prisma.paciente.findMany({
@@ -61,7 +71,14 @@ export const getPacientes = async (_req: AuthRequest, res: Response) => {
 
 export const getPacienteById = async (req: AuthRequest, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = getParamId(req);
+
+    if (!id) {
+      return res.status(400).json({
+        ok: false,
+        message: "ID de paciente inválido.",
+      });
+    }
 
     const paciente = await prisma.paciente.findUnique({
       where: {
@@ -119,7 +136,14 @@ export const getPacienteById = async (req: AuthRequest, res: Response) => {
 
 export const updatePaciente = async (req: AuthRequest, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = getParamId(req);
+
+    if (!id) {
+      return res.status(400).json({
+        ok: false,
+        message: "ID de paciente inválido.",
+      });
+    }
 
     const result = updatePacienteSchema.safeParse(req.body);
 

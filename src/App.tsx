@@ -23,6 +23,7 @@ import AdminAgenda from "./pages/admin/AdminAgenda";
 import AdminListas from "./pages/admin/AdminListas";
 
 import AppMenu from "./components/AppMenu";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import "@ionic/react/css/core.css";
 import "@ionic/react/css/normalize.css";
@@ -39,7 +40,10 @@ export function App() {
         <AppMenu />
 
         <IonRouterOutlet id="main-content">
-          {/* Rutas públicas */}
+          {/* =========================
+              Rutas públicas
+          ========================= */}
+
           <Route exact path="/login">
             <Login />
           </Route>
@@ -52,7 +56,14 @@ export function App() {
             <ForgotPassword />
           </Route>
 
-          {/* Compatibilidad con rutas antiguas */}
+          <Route exact path="/admin/login">
+            <AdminLogin />
+          </Route>
+
+          {/* =========================
+              Compatibilidad con rutas antiguas
+          ========================= */}
+
           <Route exact path="/register">
             <Redirect to="/crear-cuenta" />
           </Route>
@@ -61,63 +72,93 @@ export function App() {
             <Redirect to="/recuperar-contrasena" />
           </Route>
 
-          {/* Rutas paciente */}
-          <Route exact path="/home">
+          {/* =========================
+              Rutas protegidas paciente
+          ========================= */}
+
+          <ProtectedRoute exact path="/home" allowedRoles={["PACIENTE"]}>
             <Home />
-          </Route>
+          </ProtectedRoute>
 
-          <Route exact path="/documentos">
+          <ProtectedRoute exact path="/documentos" allowedRoles={["PACIENTE"]}>
             <Documents />
-          </Route>
+          </ProtectedRoute>
 
-          <Route exact path="/solicitudes">
+          <ProtectedRoute exact path="/solicitudes" allowedRoles={["PACIENTE"]}>
             <Solicitudes />
-          </Route>
+          </ProtectedRoute>
 
-          <Route exact path="/agenda">
+          <ProtectedRoute exact path="/agenda" allowedRoles={["PACIENTE"]}>
             <Agenda />
-          </Route>
+          </ProtectedRoute>
 
-          <Route exact path="/examenes">
+          <ProtectedRoute exact path="/examenes" allowedRoles={["PACIENTE"]}>
             <Examenes />
-          </Route>
+          </ProtectedRoute>
 
-          <Route exact path="/notificaciones">
+          <ProtectedRoute
+            exact
+            path="/notificaciones"
+            allowedRoles={["PACIENTE"]}
+          >
             <Notificaciones />
-          </Route>
+          </ProtectedRoute>
 
-          <Route exact path="/perfil">
+          <ProtectedRoute exact path="/perfil" allowedRoles={["PACIENTE"]}>
             <Perfil />
-          </Route>
+          </ProtectedRoute>
 
-          <Route exact path="/ayuda">
+          <ProtectedRoute exact path="/ayuda" allowedRoles={["PACIENTE"]}>
             <Ayuda />
-          </Route>
+          </ProtectedRoute>
 
-          {/* Rutas funcionario */}
-          <Route exact path="/admin/login">
-            <AdminLogin />
-          </Route>
+          {/* =========================
+              Rutas protegidas funcionario
+          ========================= */}
 
-          <Route exact path="/admin/dashboard">
+          <ProtectedRoute
+            exact
+            path="/admin/dashboard"
+            allowedRoles={["FUNCIONARIO", "ADMIN"]}
+          >
             <AdminDashboard />
-          </Route>
+          </ProtectedRoute>
 
-          <Route exact path="/admin/pacientes">
+          <ProtectedRoute
+            exact
+            path="/admin/pacientes"
+            allowedRoles={["FUNCIONARIO", "ADMIN"]}
+          >
             <AdminPacientes />
-          </Route>
+          </ProtectedRoute>
 
-          <Route exact path="/admin/listas">
+          <ProtectedRoute
+            exact
+            path="/admin/listas"
+            allowedRoles={["FUNCIONARIO", "ADMIN"]}
+          >
             <AdminListas />
-          </Route>
+          </ProtectedRoute>
 
-          <Route exact path="/admin/reportes">
+          <ProtectedRoute
+            exact
+            path="/admin/reportes"
+            allowedRoles={["FUNCIONARIO", "ADMIN"]}
+          >
             <AdminReportes />
-          </Route>
+          </ProtectedRoute>
 
-          <Route exact path="/admin/agenda">
+          <ProtectedRoute
+            exact
+            path="/admin/agenda"
+            allowedRoles={["FUNCIONARIO", "ADMIN"]}
+          >
             <AdminAgenda />
-          </Route>
+          </ProtectedRoute>
+
+          {/* =========================
+              Ruta inicial
+          ========================= */}
 
           <Route exact path="/">
             <Redirect to="/login" />
