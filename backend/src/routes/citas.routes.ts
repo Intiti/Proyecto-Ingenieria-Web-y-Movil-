@@ -5,6 +5,7 @@ import {
   deleteCita,
   getCitaById,
   getCitas,
+  getMisCitas,
   updateCita,
 } from "../controllers/citas.controller";
 
@@ -13,6 +14,8 @@ import { authRequired, roleRequired } from "../middlewares/auth.middleware";
 const router = Router();
 
 router.get("/", authRequired, roleRequired("FUNCIONARIO", "ADMIN"), getCitas);
+
+router.get("/mis-citas", authRequired, getMisCitas);
 
 router.get("/:id", authRequired, getCitaById);
 

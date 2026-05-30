@@ -3,6 +3,7 @@ import { Router } from "express";
 import {
   createSolicitud,
   deleteSolicitud,
+  getMisSolicitudes,
   getSolicitudById,
   getSolicitudes,
   updateSolicitud,
@@ -18,6 +19,9 @@ router.get(
   roleRequired("FUNCIONARIO", "ADMIN"),
   getSolicitudes,
 );
+
+// ruta especifica antes de /:id para que no sea capturada como parametro
+router.get("/mis-solicitudes", authRequired, getMisSolicitudes);
 
 router.get("/:id", authRequired, getSolicitudById);
 
