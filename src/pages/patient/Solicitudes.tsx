@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   IonBadge,
   IonButton,
@@ -9,6 +10,7 @@ import {
   IonIcon,
   IonMenuButton,
   IonPage,
+  IonSpinner,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
@@ -17,13 +19,59 @@ import {
   calendarOutline,
   checkmarkCircleOutline,
   hourglassOutline,
-  informationCircleOutline,
   homeOutline,
 } from "ionicons/icons";
 
+import { apiRequest } from "../../services/api";
 import "./Solicitudes.css";
 
+type Especialidad = { id: string; nombre: string };
+type CentroSalud = { id: string; nombre: string; comuna: string };
+
+type Solicitud = {
+  id: string;
+  motivo: string;
+  estado: "EN_ESPERA" | "AGENDADA" | "FINALIZADA" | "CANCELADA";
+  prioridad: "BAJA" | "MEDIA" | "ALTA";
+  diasEspera: number;
+  fechaSolicitud: string;
+  fechaEstimada: string | null;
+  especialidad: Especialidad;
+  centroSalud: CentroSalud | null;
+};
+
+type SolicitudesResponse = { ok: boolean; solicitudes: Solicitud[] };
+
+const estadoLabel: Record<Solicitud["estado"], string> = {
+  EN_ESPERA: "En espera",
+  AGENDADA: "Agendada",
+  FINALIZADA: "Finalizada",
+  CANCELADA: "Cancelada",
+};
+
+const estadoBadgeClass: Record<Solicitud["estado"], string> = {
+  EN_ESPERA: "badge-warning",
+  AGENDADA: "badge-success",
+  FINALIZADA: "badge-info",
+  CANCELADA: "badge-danger",
+};
+
 const Solicitudes: React.FC = () => {
+  const [solicitudes, setSolicitudes] = useState<Solicitud[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    apiRequest<SolicitudesResponse>("/solicitudes/mis-solicitudes")
+      .then((data) => setSolicitudes(data.solicitudes))
+      .catch(() => setError("No se pudo cargar la lista de espera."))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const enEspera = solicitudes.filter((s) => s.estado === "EN_ESPERA").length;
+  const agendadas = solicitudes.filter((s) => s.estado === "AGENDADA").length;
+  const finalizadas = solicitudes.filter((s) => s.estado === "FINALIZADA").length;
+
   return (
     <IonPage>
       <IonHeader className="app-header">
@@ -31,15 +79,9 @@ const Solicitudes: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-
           <IonTitle>Lista de espera</IonTitle>
-
           <IonButtons slot="end">
-            <IonButton
-              routerLink="/home"
-              fill="clear"
-              className="app-header-btn"
-            >
+            <IonButton routerLink="/home" fill="clear" className="app-header-btn">
               <IonIcon icon={homeOutline} slot="icon-only" />
             </IonButton>
           </IonButtons>
@@ -52,10 +94,7 @@ const Solicitudes: React.FC = () => {
             <div>
               <p className="app-eyebrow">Estado de atención</p>
               <h1>Consulta tu lista de espera</h1>
-              <p>
-                Revisa el avance de tus solicitudes médicas y el estado actual
-                de tu atención municipal.
-              </p>
+              <p>Revisa el avance de tus solicitudes médicas.</p>
             </div>
           </section>
 
@@ -64,114 +103,93 @@ const Solicitudes: React.FC = () => {
               <IonCardContent>
                 <IonIcon icon={hourglassOutline} />
                 <div>
-                  <strong>2</strong>
-                  <span>Solicitudes en espera</span>
+                  <strong>{enEspera}</strong>
+                  <span>En espera</span>
                 </div>
               </IonCardContent>
             </IonCard>
-
             <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={calendarOutline} />
                 <div>
-                  <strong>1</strong>
-                  <span>Cita programada</span>
+                  <strong>{agendadas}</strong>
+                  <span>Agendadas</span>
                 </div>
               </IonCardContent>
             </IonCard>
-
             <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={checkmarkCircleOutline} />
                 <div>
-                  <strong>3</strong>
-                  <span>Atenciones finalizadas</span>
+                  <strong>{finalizadas}</strong>
+                  <span>Finalizadas</span>
                 </div>
               </IonCardContent>
             </IonCard>
           </section>
+
+          {loading && (
+            <div style={{ textAlign: "center", padding: "40px" }}>
+              <IonSpinner name="crescent" />
+            </div>
+          )}
+
+          {error && (
+            <IonCard className="app-card">
+              <IonCardContent>
+                <p style={{ color: "var(--ion-color-danger)" }}>{error}</p>
+              </IonCardContent>
+            </IonCard>
+          )}
+
+          {!loading && !error && solicitudes.length === 0 && (
+            <IonCard className="app-card">
+              <IonCardContent>
+                <p>No tienes solicitudes registradas.</p>
+              </IonCardContent>
+            </IonCard>
+          )}
 
           <section className="request-list">
-            <IonCard className="app-card request-card">
-              <IonCardContent>
-                <div className="request-top">
-                  <div>
-                    <h2>Consulta traumatología</h2>
-                    <p>Solicitud ingresada el 12/04/2026</p>
+            {solicitudes.map((sol) => (
+              <IonCard key={sol.id} className="app-card request-card">
+                <IonCardContent>
+                  <div className="request-top">
+                    <div>
+                      <h2>{sol.especialidad.nombre}</h2>
+                      <p>
+                        Ingresada el{" "}
+                        {new Date(sol.fechaSolicitud).toLocaleDateString("es-CL")}
+                      </p>
+                    </div>
+                    <IonBadge className={estadoBadgeClass[sol.estado]}>
+                      {estadoLabel[sol.estado]}
+                    </IonBadge>
                   </div>
 
-                  <IonBadge className="badge-warning">En espera</IonBadge>
-                </div>
-
-                <div className="request-info">
-                  <div>
-                    <span>Prioridad</span>
-                    <strong>Media</strong>
+                  <div className="request-info">
+                    <div>
+                      <span>Prioridad</span>
+                      <strong>{sol.prioridad}</strong>
+                    </div>
+                    <div>
+                      <span>Centro asignado</span>
+                      <strong>{sol.centroSalud?.nombre ?? "Sin asignar"}</strong>
+                    </div>
+                    <div>
+                      <span>Días en espera</span>
+                      <strong>{sol.diasEspera}</strong>
+                    </div>
                   </div>
 
-                  <div>
-                    <span>Centro asignado</span>
-                    <strong>CESFAM Santo Domingo</strong>
-                  </div>
-
-                  <div>
-                    <span>Última actualización</span>
-                    <strong>Hace 3 días</strong>
-                  </div>
-                </div>
-
-                <IonButton
-                  expand="block"
-                  fill="outline"
-                  className="app-outline-btn"
-                >
-                  Ver detalle
-                </IonButton>
-              </IonCardContent>
-            </IonCard>
-
-            <IonCard className="app-card request-card">
-              <IonCardContent>
-                <div className="request-top">
-                  <div>
-                    <h2>Examen de laboratorio</h2>
-                    <p>Solicitud ingresada el 08/04/2026</p>
-                  </div>
-
-                  <IonBadge className="badge-success">Agendada</IonBadge>
-                </div>
-
-                <div className="request-info">
-                  <div>
-                    <span>Fecha cita</span>
-                    <strong>20/05/2026</strong>
-                  </div>
-
-                  <div>
-                    <span>Hora</span>
-                    <strong>09:30</strong>
-                  </div>
-
-                  <div>
-                    <span>Lugar</span>
-                    <strong>Centro médico municipal</strong>
-                  </div>
-                </div>
-
-                <IonButton expand="block" className="app-primary-btn">
-                  Ver comprobante
-                </IonButton>
-              </IonCardContent>
-            </IonCard>
-          </section>
-
-          <section className="info-box">
-            <IonIcon icon={informationCircleOutline} />
-            <p>
-              La información mostrada es referencial para el prototipo. En una
-              versión real, estos datos serían obtenidos desde el sistema
-              municipal correspondiente.
-            </p>
+                  {sol.motivo && (
+                    <p style={{ marginTop: "8px", fontSize: "14px", color: "#555" }}>
+                      {sol.motivo}
+                    </p>
+                  )}
+                </IonCardContent>
+              </IonCard>
+            ))}
           </section>
         </main>
       </IonContent>

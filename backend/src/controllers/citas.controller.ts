@@ -39,6 +39,34 @@ const getParamId = (req: AuthRequest) => {
   return rawId;
 };
 
+// citas del paciente autenticado
+export const getMisCitas = async (req: AuthRequest, res: Response) => {
+  try {
+    const paciente = await prisma.paciente.findUnique({
+      where: { usuarioId: req.user!.userId },
+    });
+
+    if (!paciente) {
+      return res.status(404).json({ ok: false, message: "Perfil de paciente no encontrado." });
+    }
+
+    const citas = await prisma.cita.findMany({
+      where: { pacienteId: paciente.id },
+      include: {
+        centroSalud: true,
+        especialidad: true,
+        solicitud: true,
+      },
+      orderBy: { fecha: "asc" },
+    });
+
+    return res.status(200).json({ ok: true, citas });
+  } catch (error) {
+    console.error("Error obteniendo mis citas:", error);
+    return res.status(500).json({ ok: false, message: "Error interno del servidor." });
+  }
+};
+
 export const getCitas = async (_req: AuthRequest, res: Response) => {
   try {
     const citas = await prisma.cita.findMany({

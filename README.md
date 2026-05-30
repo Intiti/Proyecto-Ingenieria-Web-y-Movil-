@@ -18,7 +18,6 @@
 * [1. Justificación y problema](#1-justificación-y-problema)
 * [2. Análisis del usuario objetivo](#2-análisis-del-usuario-objetivo)
 * [3. Requerimientos del sistema](#3-requerimientos-del-sistema)
-
   * [3.1 Requerimientos funcionales](#31-requerimientos-funcionales)
   * [3.2 Requerimientos no funcionales](#32-requerimientos-no-funcionales)
 * [4. Arquitectura de navegación](#4-arquitectura-de-navegación)
@@ -57,8 +56,8 @@ En esta etapa se presenta:
 * Middleware de autenticación.
 * Middleware de autorización por roles.
 * Endpoints protegidos para pacientes, solicitudes y citas.
-* Integración inicial entre frontend y backend para inicio de sesión.
-* Evidencias de pruebas realizadas con Thunder Client.
+* Integración frontend-backend para inicio de sesión, lista de espera, agenda, gestión de pacientes y gestión de listas de espera.
+* Evidencias de pruebas realizadas con Insomnia y Thunder Client.
 
 ---
 
@@ -257,7 +256,7 @@ Base de datos relacional PostgreSQL, modelada con Prisma. Permite almacenar usua
 
 * Git
 * GitHub
-* Thunder Client
+* Insomnia y Thunder Client
 * Prisma Studio
 * Visual Studio Code
 * pgAdmin
@@ -367,10 +366,25 @@ Proyecto-Ingenieria-Web-y-Movil-/
   otros/
     EP1.4_Arquitectura_Navegacion_Experiencia_Usuario_MuniSalud.pdf
     EP2_Pruebas_API/
-      01_health_check.jpeg
+      01_health.jpeg
       02_login_paciente.jpeg
-      ...
+      03_login_funcionario.jpeg
+      04_auth_me.jpeg
+      05_get_pacientes.jpeg
+      06_get_paciente_ID.jpeg
+      07_put_paciente.jpeg
+      08_get_solicitudes.jpeg
+      09_get_solicitud_ID.jpeg
+      10_post_solicitud.jpeg
+      11_patch_solicitud.jpeg
+      12_get_citas.jpeg
+      13_get_cita_ID.jpeg
+      14_post_cita.jpeg
+      15_patch_cita.jpeg
+      16_delete_cita.jpeg
       17_delete_solicitud.jpeg
+      18_get_misCitas.png
+      19_get_misSolicitudes.png
 ```
 
 ---
@@ -455,15 +469,15 @@ Instalar dependencias:
 npm install
 ```
 
-Crear un archivo `.env` tomando como referencia `.env.example`.
-
-Ejemplo:
+Crear un archivo `.env` tomando como referencia `.env.example`:
 
 ```env
 DATABASE_URL="postgresql://postgres:TU_PASSWORD@localhost:5432/munisalud_db?schema=public"
 JWT_SECRET="munisalud_secret_desarrollo"
 PORT=4000
 ```
+
+Reemplazar `TU_PASSWORD` por la contraseña de PostgreSQL configurada en la instalación local.
 
 Ejecutar migraciones de Prisma:
 
@@ -569,23 +583,25 @@ Contraseña: admin123
 
 ### 10.3 Solicitudes / Listas de espera
 
-| Método | Ruta                   | Descripción                                      | Acceso            |
-| ------ | ---------------------- | ------------------------------------------------ | ----------------- |
-| GET    | `/api/solicitudes`     | Lista solicitudes médicas                        | Funcionario/Admin |
-| GET    | `/api/solicitudes/:id` | Obtiene detalle de solicitud                     | Autenticado       |
-| POST   | `/api/solicitudes`     | Crea una solicitud médica                        | Funcionario/Admin |
-| PATCH  | `/api/solicitudes/:id` | Actualiza estado, prioridad o datos de solicitud | Funcionario/Admin |
-| DELETE | `/api/solicitudes/:id` | Elimina solicitud de prueba                      | Funcionario/Admin |
+| Método | Ruta                                | Descripción                                      | Acceso            |
+| ------ | ----------------------------------- | ------------------------------------------------ | ----------------- |
+| GET    | `/api/solicitudes`                  | Lista todas las solicitudes médicas              | Funcionario/Admin |
+| GET    | `/api/solicitudes/mis-solicitudes`  | Lista solicitudes del paciente autenticado       | Paciente          |
+| GET    | `/api/solicitudes/:id`              | Obtiene detalle de una solicitud                 | Autenticado       |
+| POST   | `/api/solicitudes`                  | Crea una solicitud médica                        | Funcionario/Admin |
+| PATCH  | `/api/solicitudes/:id`              | Actualiza estado, prioridad o datos de solicitud | Funcionario/Admin |
+| DELETE | `/api/solicitudes/:id`              | Elimina solicitud de prueba                      | Funcionario/Admin |
 
 ### 10.4 Citas
 
-| Método | Ruta             | Descripción             | Acceso            |
-| ------ | ---------------- | ----------------------- | ----------------- |
-| GET    | `/api/citas`     | Lista citas médicas     | Funcionario/Admin |
-| GET    | `/api/citas/:id` | Obtiene detalle de cita | Autenticado       |
-| POST   | `/api/citas`     | Crea una cita médica    | Funcionario/Admin |
-| PATCH  | `/api/citas/:id` | Actualiza datos de cita | Funcionario/Admin |
-| DELETE | `/api/citas/:id` | Elimina cita de prueba  | Funcionario/Admin |
+| Método | Ruta                  | Descripción                             | Acceso            |
+| ------ | --------------------- | --------------------------------------- | ----------------- |
+| GET    | `/api/citas`          | Lista todas las citas médicas           | Funcionario/Admin |
+| GET    | `/api/citas/mis-citas`| Lista citas del paciente autenticado    | Paciente          |
+| GET    | `/api/citas/:id`      | Obtiene detalle de una cita             | Autenticado       |
+| POST   | `/api/citas`          | Crea una cita médica                    | Funcionario/Admin |
+| PATCH  | `/api/citas/:id`      | Actualiza datos de cita                 | Funcionario/Admin |
+| DELETE | `/api/citas/:id`      | Elimina cita de prueba                  | Funcionario/Admin |
 
 ---
 
@@ -637,26 +653,28 @@ Los documentos y evidencias complementarias se encuentran en la carpeta `/otros`
 otros/
   EP1.4_Arquitectura_Navegacion_Experiencia_Usuario_MuniSalud.pdf
   EP2_Pruebas_API/
-    01_health_check.jpeg
+    01_health.jpeg
     02_login_paciente.jpeg
     03_login_funcionario.jpeg
     04_auth_me.jpeg
     05_get_pacientes.jpeg
-    06_get_paciente_id.jpeg
+    06_get_paciente_ID.jpeg
     07_put_paciente.jpeg
     08_get_solicitudes.jpeg
-    09_get_solicitud_id.jpeg
+    09_get_solicitud_ID.jpeg
     10_post_solicitud.jpeg
     11_patch_solicitud.jpeg
     12_get_citas.jpeg
-    13_get_cita_id.jpeg
+    13_get_cita_ID.jpeg
     14_post_cita.jpeg
     15_patch_cita.jpeg
     16_delete_cita.jpeg
     17_delete_solicitud.jpeg
+    18_get_misCitas.png
+    19_get_misSolicitudes.png
 ```
 
-La carpeta `EP2_Pruebas_API` contiene evidencias de pruebas realizadas con Thunder Client para validar los endpoints principales de la API REST.
+La carpeta `EP2_Pruebas_API` contiene evidencias de pruebas realizadas con Insomnia y Thunder Client para validar los endpoints de la API REST, incluyendo los endpoints de solicitudes y citas filtrados por paciente autenticado.
 
 ---
 
@@ -697,10 +715,10 @@ En esta Entrega Parcial 2 se incluye:
 * Middleware de autorización por roles.
 * Endpoints para autenticación.
 * Endpoints para pacientes.
-* Endpoints para solicitudes/listas de espera.
-* Endpoints para citas.
-* Integración inicial frontend-backend para inicio de sesión.
-* Evidencias de pruebas con Thunder Client.
+* Endpoints para solicitudes/listas de espera (incluyendo filtrado por paciente autenticado).
+* Endpoints para citas (incluyendo filtrado por paciente autenticado).
+* Integración frontend-backend para inicio de sesión, lista de espera, agenda médica, gestión de pacientes y gestión de listas de espera.
+* Evidencias de pruebas con Insomnia y Thunder Client .
 * Build exitoso de frontend.
 * Build exitoso de backend.
 * Documentación técnica actualizada.
@@ -709,9 +727,9 @@ En esta Entrega Parcial 2 se incluye:
 
 ## 16. Consideraciones y trabajo futuro
 
-Aunque la Entrega Parcial 2 incorpora backend, base de datos, autenticación real e integración inicial, aún existen funcionalidades que pueden fortalecerse en futuras entregas:
+Aunque la Entrega Parcial 2 incorpora backend, base de datos, autenticación real e integración de las vistas principales, aún existen funcionalidades que pueden fortalecerse en futuras entregas:
 
-* Conectar todas las pantallas del frontend a datos reales del backend.
+* Conectar las pantallas de exámenes, documentos y notificaciones a datos reales del backend.
 * Implementar refresco o expiración controlada de sesión.
 * Mejorar la gestión de errores visuales en formularios.
 * Agregar validación avanzada de RUT chileno.

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   IonBadge,
@@ -13,6 +13,7 @@ import {
   IonPage,
   IonSelect,
   IonSelectOption,
+  IonSpinner,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
@@ -28,91 +29,64 @@ import {
   timeOutline,
 } from "ionicons/icons";
 
+import { apiRequest } from "../../services/api";
 import "./AdminListas.css";
 
-type WaitStatus = "todos" | "en-espera" | "prioritario" | "agendado";
-type PriorityStatus = "Alta" | "Media" | "Baja";
+type Solicitud = {
+  id: string;
+  motivo: string;
+  estado: "EN_ESPERA" | "AGENDADA" | "FINALIZADA" | "CANCELADA";
+  prioridad: "BAJA" | "MEDIA" | "ALTA";
+  diasEspera: number;
+  fechaSolicitud: string;
+  especialidad: { id: string; nombre: string };
+  centroSalud: { id: string; nombre: string } | null;
+  paciente: {
+    id: string;
+    usuario: { id: string; rut: string; nombre: string };
+  };
+};
 
-const waitlistRequests = [
-  {
-    id: "SOL-001",
-    patient: "María Muñoz Pérez",
-    rut: "12.345.678-9",
-    request: "Consulta traumatología",
-    specialty: "Traumatología",
-    center: "CESFAM Santo Domingo",
-    status: "prioritario",
-    statusLabel: "Prioritario",
-    priority: "Alta" as PriorityStatus,
-    waitingDays: 36,
-    enteredAt: "12/04/2026",
-  },
-  {
-    id: "SOL-002",
-    patient: "Carlos Rojas Díaz",
-    rut: "18.456.789-0",
-    request: "Evaluación cardiología",
-    specialty: "Cardiología",
-    center: "Centro Médico Municipal",
-    status: "en-espera",
-    statusLabel: "En espera",
-    priority: "Alta" as PriorityStatus,
-    waitingDays: 28,
-    enteredAt: "19/04/2026",
-  },
-  {
-    id: "SOL-003",
-    patient: "Ana Soto Vera",
-    rut: "16.234.987-1",
-    request: "Examen de laboratorio",
-    specialty: "Laboratorio",
-    center: "Unidad de Apoyo Clínico",
-    status: "agendado",
-    statusLabel: "Agendado",
-    priority: "Media" as PriorityStatus,
-    waitingDays: 12,
-    enteredAt: "04/05/2026",
-  },
-  {
-    id: "SOL-004",
-    patient: "Luis Herrera Núñez",
-    rut: "14.876.222-4",
-    request: "Medicina general",
-    specialty: "Medicina general",
-    center: "Posta Rural El Convento",
-    status: "en-espera",
-    statusLabel: "En espera",
-    priority: "Baja" as PriorityStatus,
-    waitingDays: 19,
-    enteredAt: "27/04/2026",
-  },
-];
+type SolicitudesResponse = { ok: boolean; solicitudes: Solicitud[] };
+
+type FiltroEstado = "todos" | "EN_ESPERA" | "AGENDADA" | "prioritario";
+
+const estadoLabel: Record<Solicitud["estado"], string> = {
+  EN_ESPERA: "En espera",
+  AGENDADA: "Agendada",
+  FINALIZADA: "Finalizada",
+  CANCELADA: "Cancelada",
+};
+
+const estadoBadge: Record<Solicitud["estado"], string> = {
+  EN_ESPERA: "badge-warning",
+  AGENDADA: "badge-success",
+  FINALIZADA: "badge-info",
+  CANCELADA: "badge-danger",
+};
 
 const AdminListas: React.FC = () => {
-  const [status, setStatus] = useState<WaitStatus>("todos");
-  const [priority, setPriority] = useState<"todas" | PriorityStatus>("todas");
+  const [solicitudes, setSolicitudes] = useState<Solicitud[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [filtro, setFiltro] = useState<FiltroEstado>("todos");
 
-  const filteredRequests = useMemo(() => {
-    return waitlistRequests.filter((request) => {
-      const matchesStatus = status === "todos" || request.status === status;
-      const matchesPriority =
-        priority === "todas" || request.priority === priority;
+  useEffect(() => {
+    apiRequest<SolicitudesResponse>("/solicitudes")
+      .then((data) => setSolicitudes(data.solicitudes))
+      .catch(() => setError("No se pudo cargar la lista de espera."))
+      .finally(() => setLoading(false));
+  }, []);
 
-      return matchesStatus && matchesPriority;
-    });
-  }, [status, priority]);
+  const filtered = useMemo(() => {
+    if (filtro === "todos") return solicitudes;
+    if (filtro === "prioritario") return solicitudes.filter((s) => s.prioridad === "ALTA");
+    return solicitudes.filter((s) => s.estado === filtro);
+  }, [solicitudes, filtro]);
 
-  const waitingCount = waitlistRequests.filter(
-    (request) => request.status === "en-espera",
-  ).length;
-
-  const priorityCount = waitlistRequests.filter(
-    (request) => request.status === "prioritario",
-  ).length;
-
-  const scheduledCount = waitlistRequests.filter(
-    (request) => request.status === "agendado",
-  ).length;
+  const enEspera = solicitudes.filter((s) => s.estado === "EN_ESPERA").length;
+  const agendadas = solicitudes.filter((s) => s.estado === "AGENDADA").length;
+  const alta = solicitudes.filter((s) => s.prioridad === "ALTA").length;
 
   return (
     <IonPage>
@@ -121,15 +95,9 @@ const AdminListas: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-
-          <IonTitle>Listas de espera</IonTitle>
-
+          <IonTitle>Lista de espera</IonTitle>
           <IonButtons slot="end">
-            <IonButton
-              routerLink="/admin/dashboard"
-              fill="clear"
-              className="app-header-btn"
-            >
+            <IonButton routerLink="/admin/dashboard" fill="clear" className="app-header-btn">
               <IonIcon icon={homeOutline} slot="icon-only" />
             </IonButton>
           </IonButtons>
@@ -140,12 +108,9 @@ const AdminListas: React.FC = () => {
         <main className="app-shell">
           <section className="app-hero">
             <div>
-              <p className="app-eyebrow">Priorización clínica</p>
+              <p className="app-eyebrow">Administración</p>
               <h1>Gestión de listas de espera</h1>
-              <p>
-                Revisa solicitudes pendientes, prioriza casos críticos y deriva
-                pacientes hacia agenda o centros con disponibilidad.
-              </p>
+              <p>Visualiza y gestiona las solicitudes médicas activas.</p>
             </div>
           </section>
 
@@ -153,153 +118,106 @@ const AdminListas: React.FC = () => {
             <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={peopleOutline} />
-                <div>
-                  <strong>{waitlistRequests.length}</strong>
-                  <span>Total solicitudes</span>
-                </div>
+                <div><strong>{solicitudes.length}</strong><span>Total solicitudes</span></div>
               </IonCardContent>
             </IonCard>
-
             <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={timeOutline} />
-                <div>
-                  <strong>{waitingCount}</strong>
-                  <span>En espera</span>
-                </div>
+                <div><strong>{enEspera}</strong><span>En espera</span></div>
               </IonCardContent>
             </IonCard>
-
+            <IonCard className="kpi-card">
+              <IonCardContent>
+                <IonIcon icon={checkmarkCircleOutline} />
+                <div><strong>{agendadas}</strong><span>Agendadas</span></div>
+              </IonCardContent>
+            </IonCard>
             <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={alertCircleOutline} />
-                <div>
-                  <strong>{priorityCount}</strong>
-                  <span>Prioritarios</span>
-                </div>
-              </IonCardContent>
-            </IonCard>
-
-            <IonCard className="kpi-card">
-              <IonCardContent>
-                <IonIcon icon={calendarOutline} />
-                <div>
-                  <strong>{scheduledCount}</strong>
-                  <span>Agendados</span>
-                </div>
+                <div><strong>{alta}</strong><span>Prioridad alta</span></div>
               </IonCardContent>
             </IonCard>
           </section>
 
-          <IonCard className="app-card admin-listas-filters">
+          <IonCard className="app-card">
             <IonCardContent>
               <IonSelect
-                value={status}
+                value={filtro}
                 interface="popover"
-                label="Estado"
+                label="Filtrar por"
                 labelPlacement="stacked"
-                className="admin-listas-select"
-                onIonChange={(event) =>
-                  setStatus(event.detail.value as WaitStatus)
-                }
+                onIonChange={(e) => setFiltro(e.detail.value as FiltroEstado)}
               >
                 <IonSelectOption value="todos">Todos</IonSelectOption>
-                <IonSelectOption value="en-espera">En espera</IonSelectOption>
-                <IonSelectOption value="prioritario">
-                  Prioritario
-                </IonSelectOption>
-                <IonSelectOption value="agendado">Agendado</IonSelectOption>
-              </IonSelect>
-
-              <IonSelect
-                value={priority}
-                interface="popover"
-                label="Prioridad"
-                labelPlacement="stacked"
-                className="admin-listas-select"
-                onIonChange={(event) =>
-                  setPriority(event.detail.value as "todas" | PriorityStatus)
-                }
-              >
-                <IonSelectOption value="todas">Todas</IonSelectOption>
-                <IonSelectOption value="Alta">Alta</IonSelectOption>
-                <IonSelectOption value="Media">Media</IonSelectOption>
-                <IonSelectOption value="Baja">Baja</IonSelectOption>
+                <IonSelectOption value="EN_ESPERA">En espera</IonSelectOption>
+                <IonSelectOption value="AGENDADA">Agendados</IonSelectOption>
+                <IonSelectOption value="prioritario">Prioridad alta</IonSelectOption>
               </IonSelect>
             </IonCardContent>
           </IonCard>
 
-          <section className="admin-listas-content">
-            <div className="admin-listas-list">
-              {filteredRequests.map((request) => (
-                <IonCard className="app-card waitlist-card" key={request.id}>
+          {loading && (
+            <div style={{ textAlign: "center", padding: "40px" }}>
+              <IonSpinner name="crescent" />
+            </div>
+          )}
+
+          {error && (
+            <IonCard className="app-card">
+              <IonCardContent>
+                <p style={{ color: "var(--ion-color-danger)" }}>{error}</p>
+              </IonCardContent>
+            </IonCard>
+          )}
+
+          <section className="admin-listas-layout">
+            <div className="waitlist-column">
+              {filtered.map((sol) => (
+                <IonCard key={sol.id} className="app-card waitlist-card">
                   <IonCardContent>
                     <div className="waitlist-top">
                       <div>
-                        <span className="request-id">{request.id}</span>
-                        <h2>{request.request}</h2>
-                        <p>
-                          {request.patient} · {request.rut}
-                        </p>
+                        <h2>{sol.especialidad.nombre}</h2>
+                        <p>{sol.paciente.usuario.nombre} · {sol.paciente.usuario.rut}</p>
                       </div>
-
-                      <IonBadge
-                        className={
-                          request.status === "prioritario"
-                            ? "badge-danger"
-                            : request.status === "agendado"
-                              ? "badge-success"
-                              : "badge-warning"
-                        }
-                      >
-                        {request.statusLabel}
+                      <IonBadge className={estadoBadge[sol.estado]}>
+                        {estadoLabel[sol.estado]}
                       </IonBadge>
                     </div>
 
                     <div className="waitlist-info">
                       <div>
-                        <span>Especialidad</span>
-                        <strong>{request.specialty}</strong>
-                      </div>
-
-                      <div>
-                        <span>Centro actual</span>
-                        <strong>{request.center}</strong>
-                      </div>
-
-                      <div>
-                        <span>Días en espera</span>
-                        <strong>{request.waitingDays} días</strong>
-                      </div>
-
-                      <div>
                         <span>Prioridad</span>
-                        <strong>{request.priority}</strong>
+                        <strong
+                          style={{ color: sol.prioridad === "ALTA" ? "var(--ion-color-danger)" : "inherit" }}
+                        >
+                          {sol.prioridad}
+                        </strong>
+                      </div>
+                      <div>
+                        <span>Centro</span>
+                        <strong>{sol.centroSalud?.nombre ?? "Sin asignar"}</strong>
+                      </div>
+                      <div>
+                        <span>Días espera</span>
+                        <strong>{sol.diasEspera}</strong>
+                      </div>
+                      <div>
+                        <span>Ingresada</span>
+                        <strong>{new Date(sol.fechaSolicitud).toLocaleDateString("es-CL")}</strong>
                       </div>
                     </div>
 
-                    <div className="waitlist-actions">
-                      <IonButton expand="block" className="app-primary-btn">
-                        <IonIcon icon={checkmarkCircleOutline} slot="start" />
-                        Marcar revisado
-                      </IonButton>
+                    <p style={{ fontSize: "14px", color: "#555", marginTop: "8px" }}>{sol.motivo}</p>
 
-                      <IonButton
-                        expand="block"
-                        fill="outline"
-                        routerLink="/admin/agenda"
-                        className="app-outline-btn"
-                      >
+                    <div className="waitlist-actions">
+                      <IonButton expand="block" fill="outline" routerLink="/admin/agenda" className="app-outline-btn">
                         <IonIcon icon={calendarOutline} slot="start" />
                         Agendar
                       </IonButton>
-
-                      <IonButton
-                        expand="block"
-                        fill="clear"
-                        routerLink="/admin/pacientes"
-                        className="waitlist-clear-btn"
-                      >
+                      <IonButton expand="block" fill="clear" routerLink="/admin/pacientes" className="waitlist-clear-btn">
                         <IonIcon icon={swapHorizontalOutline} slot="start" />
                         Reasignar
                       </IonButton>
@@ -313,22 +231,16 @@ const AdminListas: React.FC = () => {
               <IonCardContent>
                 <div className="section-title">
                   <h2>Criterios de priorización</h2>
-                  <p>
-                    Resumen para apoyar la toma de decisiones administrativas.
-                  </p>
+                  <p>Resumen para apoyar la toma de decisiones.</p>
                 </div>
-
                 <div className="criteria-list">
                   <div>
                     <IonIcon icon={alertCircleOutline} />
                     <div>
                       <strong>Prioridad alta</strong>
-                      <span>
-                        Pacientes con espera prolongada o derivación crítica.
-                      </span>
+                      <span>Pacientes con espera prolongada o derivación crítica.</span>
                     </div>
                   </div>
-
                   <div>
                     <IonIcon icon={timeOutline} />
                     <div>
@@ -336,23 +248,15 @@ const AdminListas: React.FC = () => {
                       <span>Casos con más de 30 días deben ser revisados.</span>
                     </div>
                   </div>
-
                   <div>
                     <IonIcon icon={medicalOutline} />
                     <div>
                       <strong>Especialidad saturada</strong>
-                      <span>
-                        Revisar disponibilidad de otros centros de atención.
-                      </span>
+                      <span>Revisar disponibilidad de otros centros.</span>
                     </div>
                   </div>
                 </div>
-
-                <IonButton
-                  expand="block"
-                  routerLink="/admin/reportes"
-                  className="app-primary-btn side-panel-action"
-                >
+                <IonButton expand="block" routerLink="/admin/reportes" className="app-primary-btn side-panel-action">
                   Ver reportes de saturación
                 </IonButton>
               </IonCardContent>

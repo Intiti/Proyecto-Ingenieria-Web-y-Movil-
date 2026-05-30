@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   IonBadge,
@@ -14,6 +14,7 @@ import {
   IonPage,
   IonSelect,
   IonSelectOption,
+  IonSpinner,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
@@ -29,90 +30,68 @@ import {
   timeOutline,
 } from "ionicons/icons";
 
+import { apiRequest } from "../../services/api";
 import "./AdminPacientes.css";
 
-type PatientStatus = "todos" | "en-espera" | "agendado" | "prioritario";
+type Solicitud = {
+  id: string;
+  estado: string;
+  prioridad: string;
+  diasEspera: number;
+  especialidad: { nombre: string };
+  centroSalud: { nombre: string } | null;
+};
 
-const patients = [
-  {
-    name: "María Muñoz Pérez",
-    rut: "12.345.678-9",
-    phone: "+56 9 8765 4321",
-    email: "maria.munoz@email.com",
-    commune: "Santo Domingo",
-    request: "Consulta traumatología",
-    status: "prioritario",
-    statusLabel: "Prioritario",
-    waitingDays: 36,
-    center: "CESFAM Santo Domingo",
-  },
-  {
-    name: "Carlos Rojas Díaz",
-    rut: "18.456.789-0",
-    phone: "+56 9 2222 3344",
-    email: "carlos.rojas@email.com",
-    commune: "San Antonio",
-    request: "Evaluación cardiología",
-    status: "en-espera",
-    statusLabel: "En espera",
-    waitingDays: 28,
-    center: "Centro Médico Municipal",
-  },
-  {
-    name: "Ana Soto Vera",
-    rut: "16.234.987-1",
-    phone: "+56 9 1111 2233",
-    email: "ana.soto@email.com",
-    commune: "Santo Domingo",
-    request: "Examen de laboratorio",
-    status: "agendado",
-    statusLabel: "Agendado",
-    waitingDays: 12,
-    center: "Unidad de Apoyo Clínico",
-  },
-  {
-    name: "Luis Herrera Núñez",
-    rut: "14.876.222-4",
-    phone: "+56 9 5555 6677",
-    email: "luis.herrera@email.com",
-    commune: "Santo Domingo",
-    request: "Medicina general",
-    status: "en-espera",
-    statusLabel: "En espera",
-    waitingDays: 19,
-    center: "Posta Rural El Convento",
-  },
-];
+type Paciente = {
+  id: string;
+  telefono: string | null;
+  comuna: string | null;
+  usuario: { id: string; rut: string; nombre: string; correo: string; activo: boolean };
+  solicitudes: Solicitud[];
+};
+
+type PacientesResponse = { ok: boolean; pacientes: Paciente[] };
+
+type FiltroEstado = "todos" | "EN_ESPERA" | "AGENDADA" | "prioritario";
 
 const AdminPacientes: React.FC = () => {
+  const [pacientes, setPacientes] = useState<Paciente[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState<PatientStatus>("todos");
+  const [filtro, setFiltro] = useState<FiltroEstado>("todos");
 
-  const filteredPatients = useMemo(() => {
-    const normalizedSearch = search.trim().toLowerCase();
+  useEffect(() => {
+    apiRequest<PacientesResponse>("/pacientes")
+      .then((data) => setPacientes(data.pacientes))
+      .catch(() => setError("No se pudo cargar la lista de pacientes."))
+      .finally(() => setLoading(false));
+  }, []);
 
-    return patients.filter((patient) => {
-      const matchesSearch =
-        patient.name.toLowerCase().includes(normalizedSearch) ||
-        patient.rut.toLowerCase().includes(normalizedSearch) ||
-        patient.request.toLowerCase().includes(normalizedSearch);
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return pacientes.filter((p) => {
+      const matchSearch =
+        p.usuario.nombre.toLowerCase().includes(q) ||
+        p.usuario.rut.toLowerCase().includes(q) ||
+        p.solicitudes.some((s) => s.especialidad.nombre.toLowerCase().includes(q));
 
-      const matchesStatus = status === "todos" || patient.status === status;
-
-      return matchesSearch && matchesStatus;
+      if (!matchSearch) return false;
+      if (filtro === "todos") return true;
+      if (filtro === "prioritario")
+        return p.solicitudes.some((s) => s.prioridad === "ALTA");
+      return p.solicitudes.some((s) => s.estado === filtro);
     });
-  }, [search, status]);
+  }, [pacientes, search, filtro]);
 
-  const priorityCount = patients.filter(
-    (patient) => patient.status === "prioritario",
+  const totalEspera = pacientes.filter((p) =>
+    p.solicitudes.some((s) => s.estado === "EN_ESPERA")
   ).length;
-
-  const waitingCount = patients.filter(
-    (patient) => patient.status === "en-espera",
+  const totalAgendados = pacientes.filter((p) =>
+    p.solicitudes.some((s) => s.estado === "AGENDADA")
   ).length;
-
-  const scheduledCount = patients.filter(
-    (patient) => patient.status === "agendado",
+  const totalPrioritarios = pacientes.filter((p) =>
+    p.solicitudes.some((s) => s.prioridad === "ALTA")
   ).length;
 
   return (
@@ -122,15 +101,9 @@ const AdminPacientes: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-
           <IonTitle>Gestión de pacientes</IonTitle>
-
           <IonButtons slot="end">
-            <IonButton
-              routerLink="/admin/dashboard"
-              fill="clear"
-              className="app-header-btn"
-            >
+            <IonButton routerLink="/admin/dashboard" fill="clear" className="app-header-btn">
               <IonIcon icon={homeOutline} slot="icon-only" />
             </IonButton>
           </IonButtons>
@@ -143,10 +116,7 @@ const AdminPacientes: React.FC = () => {
             <div>
               <p className="app-eyebrow">Administración</p>
               <h1>Gestionar pacientes</h1>
-              <p>
-                Busca pacientes, revisa solicitudes, detecta prioridades y
-                deriva casos según disponibilidad de atención.
-              </p>
+              <p>Busca pacientes, revisa solicitudes y detecta prioridades.</p>
             </div>
           </section>
 
@@ -154,40 +124,25 @@ const AdminPacientes: React.FC = () => {
             <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={peopleOutline} />
-                <div>
-                  <strong>{patients.length}</strong>
-                  <span>Total pacientes</span>
-                </div>
+                <div><strong>{pacientes.length}</strong><span>Total pacientes</span></div>
               </IonCardContent>
             </IonCard>
-
             <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={timeOutline} />
-                <div>
-                  <strong>{waitingCount}</strong>
-                  <span>En espera</span>
-                </div>
+                <div><strong>{totalEspera}</strong><span>En espera</span></div>
               </IonCardContent>
             </IonCard>
-
             <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={documentTextOutline} />
-                <div>
-                  <strong>{scheduledCount}</strong>
-                  <span>Agendados</span>
-                </div>
+                <div><strong>{totalAgendados}</strong><span>Agendados</span></div>
               </IonCardContent>
             </IonCard>
-
             <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={swapHorizontalOutline} />
-                <div>
-                  <strong>{priorityCount}</strong>
-                  <span>Prioritarios</span>
-                </div>
+                <div><strong>{totalPrioritarios}</strong><span>Prioritarios</span></div>
               </IonCardContent>
             </IonCard>
           </section>
@@ -200,113 +155,102 @@ const AdminPacientes: React.FC = () => {
                   value={search}
                   placeholder="Buscar por nombre, RUT o solicitud"
                   aria-label="Buscar paciente"
-                  onIonInput={(event) =>
-                    setSearch(event.detail.value?.toString() ?? "")
-                  }
+                  onIonInput={(e) => setSearch(e.detail.value?.toString() ?? "")}
                 />
               </div>
-
               <IonSelect
-                value={status}
+                value={filtro}
                 interface="popover"
                 label="Estado"
                 labelPlacement="stacked"
                 className="admin-patients-select"
-                onIonChange={(event) =>
-                  setStatus(event.detail.value as PatientStatus)
-                }
+                onIonChange={(e) => setFiltro(e.detail.value as FiltroEstado)}
               >
                 <IonSelectOption value="todos">Todos</IonSelectOption>
-                <IonSelectOption value="en-espera">En espera</IonSelectOption>
-                <IonSelectOption value="agendado">Agendado</IonSelectOption>
-                <IonSelectOption value="prioritario">
-                  Prioritario
-                </IonSelectOption>
+                <IonSelectOption value="EN_ESPERA">En espera</IonSelectOption>
+                <IonSelectOption value="AGENDADA">Agendado</IonSelectOption>
+                <IonSelectOption value="prioritario">Prioritario</IonSelectOption>
               </IonSelect>
             </IonCardContent>
           </IonCard>
 
+          {loading && (
+            <div style={{ textAlign: "center", padding: "40px" }}>
+              <IonSpinner name="crescent" />
+            </div>
+          )}
+
+          {error && (
+            <IonCard className="app-card">
+              <IonCardContent>
+                <p style={{ color: "var(--ion-color-danger)" }}>{error}</p>
+              </IonCardContent>
+            </IonCard>
+          )}
+
           <section className="admin-patients-list">
-            {filteredPatients.map((patient) => (
-              <IonCard
-                className="app-card admin-patient-card"
-                key={patient.rut}
-              >
-                <IonCardContent>
-                  <div className="admin-patient-top">
-                    <div>
-                      <h2>{patient.name}</h2>
-                      <p>{patient.rut}</p>
+            {filtered.map((p) => {
+              const sol = p.solicitudes[0];
+              const esPrioritario = p.solicitudes.some((s) => s.prioridad === "ALTA");
+              const estaAgendado = p.solicitudes.some((s) => s.estado === "AGENDADA");
+
+              return (
+                <IonCard className="app-card admin-patient-card" key={p.id}>
+                  <IonCardContent>
+                    <div className="admin-patient-top">
+                      <div>
+                        <h2>{p.usuario.nombre}</h2>
+                        <p>{p.usuario.rut}</p>
+                      </div>
+                      <IonBadge
+                        className={
+                          esPrioritario ? "badge-danger"
+                          : estaAgendado ? "badge-success"
+                          : "badge-warning"
+                        }
+                      >
+                        {esPrioritario ? "Prioritario" : estaAgendado ? "Agendado" : "En espera"}
+                      </IonBadge>
                     </div>
 
-                    <IonBadge
-                      className={
-                        patient.status === "prioritario"
-                          ? "badge-danger"
-                          : patient.status === "agendado"
-                            ? "badge-success"
-                            : "badge-warning"
-                      }
-                    >
-                      {patient.statusLabel}
-                    </IonBadge>
-                  </div>
-
-                  <div className="admin-patient-info">
-                    <div>
-                      <span>Solicitud</span>
-                      <strong>{patient.request}</strong>
+                    <div className="admin-patient-info">
+                      <div>
+                        <span>Solicitud</span>
+                        <strong>{sol?.especialidad.nombre ?? "Sin solicitudes"}</strong>
+                      </div>
+                      <div>
+                        <span>Centro asignado</span>
+                        <strong>{sol?.centroSalud?.nombre ?? "Sin asignar"}</strong>
+                      </div>
+                      <div>
+                        <span>Días en espera</span>
+                        <strong>{sol?.diasEspera ?? 0} días</strong>
+                      </div>
+                      <div>
+                        <span>Comuna</span>
+                        <strong>{p.comuna ?? "—"}</strong>
+                      </div>
                     </div>
 
-                    <div>
-                      <span>Centro asignado</span>
-                      <strong>{patient.center}</strong>
+                    <div className="admin-patient-contact">
+                      {p.telefono && (
+                        <p><IonIcon icon={callOutline} />{p.telefono}</p>
+                      )}
+                      <p><IonIcon icon={mailOutline} />{p.usuario.correo}</p>
                     </div>
 
-                    <div>
-                      <span>Días en espera</span>
-                      <strong>{patient.waitingDays} días</strong>
+                    <div className="admin-patient-actions">
+                      <IonButton expand="block" routerLink="/admin/listas" className="app-primary-btn">
+                        Revisar solicitud
+                      </IonButton>
+                      <IonButton expand="block" fill="outline" routerLink="/admin/agenda" className="app-outline-btn">
+                        Reasignar / agendar
+                      </IonButton>
                     </div>
-
-                    <div>
-                      <span>Comuna</span>
-                      <strong>{patient.commune}</strong>
-                    </div>
-                  </div>
-
-                  <div className="admin-patient-contact">
-                    <p>
-                      <IonIcon icon={callOutline} />
-                      {patient.phone}
-                    </p>
-
-                    <p>
-                      <IonIcon icon={mailOutline} />
-                      {patient.email}
-                    </p>
-                  </div>
-
-                  <div className="admin-patient-actions">
-                    <IonButton
-                      expand="block"
-                      routerLink="/admin/listas"
-                      className="app-primary-btn"
-                    >
-                      Revisar solicitud
-                    </IonButton>
-
-                    <IonButton
-                      expand="block"
-                      fill="outline"
-                      routerLink="/admin/agenda"
-                      className="app-outline-btn"
-                    >
-                      Reasignar / agendar
-                    </IonButton>
-                  </div>
-                </IonCardContent>
-              </IonCard>
-            ))}
+                  </IonCardContent>
+                </IonCard>
+              );
+            })}
           </section>
         </main>
       </IonContent>
