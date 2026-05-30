@@ -57,7 +57,7 @@ En esta etapa se presenta:
 * Middleware de autorización por roles.
 * Endpoints protegidos para pacientes, solicitudes y citas.
 * Integración frontend-backend para inicio de sesión, lista de espera, agenda, gestión de pacientes y gestión de listas de espera.
-* Evidencias de pruebas realizadas con Insomnia.
+* Evidencias de pruebas realizadas con Insomnia y Thunder Client.
 
 ---
 
@@ -256,7 +256,7 @@ Base de datos relacional PostgreSQL, modelada con Prisma. Permite almacenar usua
 
 * Git
 * GitHub
-* Insomnia
+* Insomnia y Thunder Client
 * Prisma Studio
 * Visual Studio Code
 * pgAdmin
@@ -674,7 +674,7 @@ otros/
     19_get_misSolicitudes.png
 ```
 
-La carpeta `EP2_Pruebas_API` contiene evidencias de pruebas realizadas con Insomnia para validar los endpoints de la API REST, incluyendo los endpoints de solicitudes y citas filtrados por paciente autenticado.
+La carpeta `EP2_Pruebas_API` contiene evidencias de pruebas realizadas con Insomnia y Thunder Client para validar los endpoints de la API REST, incluyendo los endpoints de solicitudes y citas filtrados por paciente autenticado.
 
 ---
 
@@ -718,7 +718,7 @@ En esta Entrega Parcial 2 se incluye:
 * Endpoints para solicitudes/listas de espera (incluyendo filtrado por paciente autenticado).
 * Endpoints para citas (incluyendo filtrado por paciente autenticado).
 * Integración frontend-backend para inicio de sesión, lista de espera, agenda médica, gestión de pacientes y gestión de listas de espera.
-* Evidencias de pruebas con Insomnia.
+* Evidencias de pruebas con Insomnia y Thunder Client .
 * Build exitoso de frontend.
 * Build exitoso de backend.
 * Documentación técnica actualizada.
