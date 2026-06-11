@@ -29,7 +29,7 @@ import {
   timeOutline,
 } from "ionicons/icons";
 
-import { apiRequest } from "../../services/api";
+import { apiRequest } from "../../../../services/api";
 import "./AdminListas.css";
 
 type Solicitud = {

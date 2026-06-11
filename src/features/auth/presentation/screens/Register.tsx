@@ -18,7 +18,7 @@ import {
 
 import { useState } from "react";
 
-import { registerRequest, logout } from "../../services/authService";
+import { registerRequest, logout } from "../../../../services/authService";
 
 import "./Login.css";
 import "./Register.css";

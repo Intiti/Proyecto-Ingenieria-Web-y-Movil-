@@ -27,8 +27,8 @@ import {
 } from "ionicons/icons";
 
 import "./Home.css";
-import NotificationBell from "../../components/NotificationBell";
-import { logout } from "../../services/authService";
+import NotificationBell from "../../../../core/presentation/components/NotificationBell";
+import { logout } from "../../../../services/authService";
 
 const Home: React.FC = () => {
   const handleLogout = () => {

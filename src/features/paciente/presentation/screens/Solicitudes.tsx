@@ -22,7 +22,7 @@ import {
   homeOutline,
 } from "ionicons/icons";
 
-import { apiRequest } from "../../services/api";
+import { apiRequest } from "../../../../services/api";
 import "./Solicitudes.css";
 
 type Especialidad = { id: string; nombre: string };

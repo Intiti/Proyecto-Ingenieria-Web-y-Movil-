@@ -12,7 +12,7 @@ import {
 import { briefcaseOutline, shieldCheckmarkOutline } from "ionicons/icons";
 
 import { useState } from "react";
-import { loginRequest, logout } from "../../services/authService";
+import { loginRequest, logout } from "../../../../services/authService";
 
 import "./AdminLogin.css";
 
