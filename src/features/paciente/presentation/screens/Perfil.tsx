@@ -27,8 +27,8 @@ import {
 
 import { useState } from "react";
 
-import { apiRequest } from "../../services/api";
-import { meRequest } from "../../services/authService";
+import { apiRequest } from "../../../../services/api";
+import { meRequest } from "../../../../services/authService";
 
 import "./Perfil.css";
 

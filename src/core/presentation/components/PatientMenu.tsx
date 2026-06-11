@@ -21,7 +21,7 @@ import {
   logOutOutline,
 } from "ionicons/icons";
 
-import { logout } from "../services/authService";
+import { logout } from "../../../services/authService";
 
 import "./PatientMenu.css";
 

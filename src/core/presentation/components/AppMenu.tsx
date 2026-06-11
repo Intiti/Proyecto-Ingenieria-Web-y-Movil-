@@ -27,7 +27,7 @@ import {
   briefcaseOutline,
 } from "ionicons/icons";
 
-import { logout } from "../services/authService";
+import { logout } from "../../../services/authService";
 
 import "./AppMenu.css";
 

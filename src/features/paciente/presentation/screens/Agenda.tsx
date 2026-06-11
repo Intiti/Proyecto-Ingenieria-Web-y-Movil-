@@ -25,7 +25,7 @@ import {
   alertCircleOutline,
 } from "ionicons/icons";
 
-import { apiRequest } from "../../services/api";
+import { apiRequest } from "../../../../services/api";
 import "./Agenda.css";
 
 type Cita = {

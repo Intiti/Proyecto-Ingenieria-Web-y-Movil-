@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useRevealOnScroll } from "../../hooks/useRevealOnScroll";
+import { useRevealOnScroll } from "../../../../core/presentation/hooks/useRevealOnScroll";
 
 import {
   IonBadge,

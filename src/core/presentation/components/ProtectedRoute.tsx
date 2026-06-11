@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Redirect, Route, RouteProps } from "react-router-dom";
 import { IonSpinner } from "@ionic/react";
-import { apiRequest } from "../services/api";
+import { apiRequest } from "../../../services/api";
 
 type UserRole = "PACIENTE" | "FUNCIONARIO" | "ADMIN";
 

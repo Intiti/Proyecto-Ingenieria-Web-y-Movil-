@@ -27,7 +27,7 @@ import {
 } from "ionicons/icons";
 
 import { useState } from "react";
-import { loginRequest, logout } from "../../services/authService";
+import { loginRequest, logout } from "../../../../services/authService";
 
 import "./Login.css";
 

@@ -2,34 +2,34 @@ import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { Route, Redirect } from "react-router-dom";
 
-import Login from "./pages/auth/Login";
-import Register from "./pages/auth/Register";
-import ForgotPassword from "./pages/auth/ForgotPassword";
-import AdminLogin from "./pages/auth/AdminLogin";
+import Login from "./features/auth/presentation/screens/Login";
+import Register from "./features/auth/presentation/screens/Register";
+import ForgotPassword from "./features/auth/presentation/screens/ForgotPassword";
+import AdminLogin from "./features/auth/presentation/screens/AdminLogin";
 
-import Home from "./pages/patient/Home";
-import Notificaciones from "./pages/patient/Notifications";
-import Documents from "./pages/patient/Documents";
-import Examenes from "./pages/patient/Examenes";
-import Solicitudes from "./pages/patient/Solicitudes";
-import Agenda from "./pages/patient/Agenda";
-import Perfil from "./pages/patient/Perfil";
-import Ayuda from "./pages/patient/Ayuda";
+import Home from "./features/paciente/presentation/screens/Home";
+import Notificaciones from "./features/paciente/presentation/screens/Notifications";
+import Documents from "./features/paciente/presentation/screens/Documents";
+import Examenes from "./features/paciente/presentation/screens/Examenes";
+import Solicitudes from "./features/paciente/presentation/screens/Solicitudes";
+import Agenda from "./features/paciente/presentation/screens/Agenda";
+import Perfil from "./features/paciente/presentation/screens/Perfil";
+import Ayuda from "./features/paciente/presentation/screens/Ayuda";
 
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminReportes from "./pages/admin/AdminReportes";
-import AdminPacientes from "./pages/admin/AdminPacientes";
-import AdminAgenda from "./pages/admin/AdminAgenda";
-import AdminListas from "./pages/admin/AdminListas";
+import AdminDashboard from "./features/admin/presentation/screens/AdminDashboard";
+import AdminReportes from "./features/admin/presentation/screens/AdminReportes";
+import AdminPacientes from "./features/admin/presentation/screens/AdminPacientes";
+import AdminAgenda from "./features/admin/presentation/screens/AdminAgenda";
+import AdminListas from "./features/admin/presentation/screens/AdminListas";
 
-import AppMenu from "./components/AppMenu";
-import ProtectedRoute from "./components/ProtectedRoute";
+import AppMenu from "./core/presentation/components/AppMenu";
+import ProtectedRoute from "./core/presentation/components/ProtectedRoute";
 
 import "@ionic/react/css/core.css";
 import "@ionic/react/css/normalize.css";
 import "@ionic/react/css/structure.css";
 import "@ionic/react/css/typography.css";
-import "./theme/app-theme.css";
+import "./core/theme/app-theme.css";
 
 setupIonicReact();
 
