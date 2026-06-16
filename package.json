@@ -1,43 +1,37 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "saludMunicipal",
+  "version": "0.0.1",
+  "private": true,
+  "description": "MuniSalud - Gestión de Listas de Espera",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "build": "tsc",
-    "start": "node dist/server.js",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio",
-    "prisma:seed": "ts-node-dev --transpile-only prisma/seed.ts"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "prisma": {
-    "seed": "ts-node --transpile-only prisma/seed.ts"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest"
   },
   "dependencies": {
-    "@prisma/client": "^6.19.3",
-    "bcrypt": "^6.0.0",
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
-    "express-rate-limit": "^7.5.0",
-    "helmet": "^8.1.0",
-    "jsonwebtoken": "^9.0.3",
-    "zod": "^4.4.3"
+    "@ionic/react": "^8.0.0",
+    "@ionic/react-router": "^8.0.0",
+    "ionicons": "^7.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router": "^5.3.4",
+    "react-router-dom": "^5.3.4"
   },
   "devDependencies": {
-    "@types/bcrypt": "^6.0.0",
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.6",
-    "@types/jsonwebtoken": "^9.0.10",
-    "@types/node": "^25.9.1",
-    "prisma": "^6.19.3",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.6.3"
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^15.0.6",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@types/react-router": "^5.1.20",
+    "@types/react-router-dom": "^5.3.3",
+    "@vitejs/plugin-legacy": "^5.4.1",
+    "@vitejs/plugin-react": "^4.2.1",
+    "jsdom": "^24.0.0",
+    "terser": "^5.29.1",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0",
+    "vitest": "^1.4.0"
   }
 }
