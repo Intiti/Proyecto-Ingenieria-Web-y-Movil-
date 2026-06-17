@@ -1,4 +1,4 @@
-# MuniSalud - Gestión de Listas de Espera 
+# MuniSalud - Gestión de Listas de Espera
 
 ## Integrantes
 
@@ -8,7 +8,7 @@
 
 **Asignatura:** Ingeniería Web y Móvil
 **Paralelo:** 2
-**Entrega:** Entrega Parcial 2 - Backend, API REST e integración inicial
+**Entrega:** Entrega Final
 
 ---
 
@@ -28,36 +28,29 @@
 * [9. Credenciales de prueba](#9-credenciales-de-prueba)
 * [10. API REST implementada](#10-api-rest-implementada)
 * [11. Base de datos](#11-base-de-datos)
-* [12. Prototipo UI/UX](#12-prototipo-uiux)
-* [13. Material complementario](#13-material-complementario)
-* [14. Gestión del proyecto](#14-gestión-del-proyecto)
-* [15. Estado de la entrega](#15-estado-de-la-entrega)
-* [16. Consideraciones y trabajo futuro](#16-consideraciones-y-trabajo-futuro)
+* [12. Seguridad implementada](#12-seguridad-implementada)
+* [13. Prototipo UI/UX](#13-prototipo-uiux)
+* [14. Material complementario](#14-material-complementario)
+* [15. Gestión del proyecto](#15-gestión-del-proyecto)
+* [16. Estado de la entrega](#16-estado-de-la-entrega)
+* [17. Consideraciones y trabajo futuro](#17-consideraciones-y-trabajo-futuro)
 
 ---
 
 ## Descripción de la entrega
 
-Esta entrega corresponde a la segunda etapa del proyecto **MuniSalud**, una aplicación orientada a mejorar la gestión de listas de espera y la comunicación entre pacientes y funcionarios municipales de salud.
+Esta es la entrega final del proyecto **MuniSalud**, una aplicación orientada a mejorar la gestión de listas de espera y la comunicación entre pacientes y funcionarios municipales de salud.
 
-En esta Entrega Parcial 2 se mantiene el frontend navegable construido en Ionic + React y se incorpora un backend funcional con Node.js, Express, TypeScript, PostgreSQL y Prisma ORM.
-
-En esta etapa se presenta:
+En esta entrega final se presenta:
 
 * Frontend navegable para paciente y funcionario.
-* Backend con API REST.
+* Backend con API REST completa.
 * Base de datos relacional en PostgreSQL.
-* Modelado de entidades con Prisma.
-* Migraciones de base de datos.
-* Seed con datos iniciales de prueba.
-* Autenticación real mediante JWT.
-* Hash de contraseñas con bcrypt.
-* Validación de datos con Zod.
-* Middleware de autenticación.
-* Middleware de autorización por roles.
-* Endpoints protegidos para pacientes, solicitudes y citas.
-* Integración frontend-backend para inicio de sesión, lista de espera, agenda, gestión de pacientes y gestión de listas de espera.
-* Evidencias de pruebas realizadas con Insomnia y Thunder Client.
+* Autenticación real mediante JWT con validación en backend.
+* Seguridad avanzada: helmet, rate limiting, sanitización XSS, CORS configurado por entorno.
+* Integración frontend-backend en las vistas principales.
+* Despliegue local completo mediante Docker y docker-compose.
+* Evidencias de pruebas con Insomnia.
 
 ---
 
@@ -137,7 +130,7 @@ Usuario encargado de revisar pacientes, gestionar listas de espera, coordinar ag
 ### 3.2 Requerimientos no funcionales
 
 1. **Seguridad:**
-   El sistema considera autenticación mediante JWT, contraseñas hasheadas con bcrypt y acceso diferenciado por roles.
+   El sistema considera autenticación mediante JWT con validación en backend, contraseñas hasheadas con bcrypt, rate limiting, sanitización XSS, headers seguros con helmet y CORS configurado por variable de entorno.
 
 2. **Usabilidad:**
    La interfaz debe ser clara, legible y accesible, considerando usuarios con distintos niveles de experiencia digital. Se priorizan botones grandes, textos claros y navegación simple.
@@ -200,9 +193,9 @@ La aplicación contempla dos roles principales:
 * **Paciente:** accede a módulos de consulta, seguimiento y autogestión.
 * **Funcionario:** accede a módulos de gestión, administración y reportes.
 
-En esta entrega, la diferenciación por roles se implementa tanto en frontend como en backend:
+La diferenciación por roles se implementa tanto en frontend como en backend:
 
-* En frontend se utilizan rutas protegidas mediante validación del token y rol guardado.
+* En frontend se utilizan rutas protegidas que validan el token contra el backend en cada navegación.
 * En backend se utilizan middlewares de autenticación y autorización.
 * Las rutas administrativas requieren rol `FUNCIONARIO` o `ADMIN`.
 * Las rutas del paciente requieren rol `PACIENTE`.
@@ -211,11 +204,11 @@ En esta entrega, la diferenciación por roles se implementa tanto en frontend co
 
 ## 5. Arquitectura técnica
 
-El sistema se organiza en dos capas principales:
+El sistema se organiza en tres capas:
 
 ### Frontend
 
-Aplicación web desarrollada con Ionic + React + TypeScript. Se encarga de presentar las vistas del sistema, administrar la navegación y consumir la API REST del backend.
+Aplicación web desarrollada con Ionic + React + TypeScript. Se encarga de presentar las vistas del sistema, administrar la navegación y consumir la API REST del backend. En producción se sirve mediante Nginx dentro de un contenedor Docker.
 
 ### Backend
 
@@ -223,7 +216,7 @@ API REST desarrollada con Node.js, Express y TypeScript. Se encarga de procesar 
 
 ### Base de datos
 
-Base de datos relacional PostgreSQL, modelada con Prisma. Permite almacenar usuarios, pacientes, funcionarios, centros de salud, especialidades, solicitudes, citas, exámenes, documentos y notificaciones.
+Base de datos relacional PostgreSQL, modelada con Prisma. En el entorno Docker se levanta como un servicio independiente con volumen persistente.
 
 ---
 
@@ -237,7 +230,7 @@ Base de datos relacional PostgreSQL, modelada con Prisma. Permite almacenar usua
 * React Router
 * CSS modular
 * Vite
-* LocalStorage para persistencia temporal del token
+* Nginx (producción / Docker)
 
 ### Backend
 
@@ -249,14 +242,21 @@ Base de datos relacional PostgreSQL, modelada con Prisma. Permite almacenar usua
 * JWT
 * bcrypt
 * Zod
+* helmet
+* express-rate-limit
 * CORS
 * dotenv
 
+### Infraestructura
+
+* Docker
+* docker-compose
+* Nginx
+
 ### Herramientas de desarrollo
 
-* Git
-* GitHub
-* Insomnia y Thunder Client
+* Git / GitHub
+* Insomnia
 * Prisma Studio
 * Visual Studio Code
 * pgAdmin
@@ -272,33 +272,29 @@ Proyecto-Ingenieria-Web-y-Movil-/
       migrations/
       schema.prisma
       seed.ts
-
     src/
       config/
         prisma.ts
-
       controllers/
         auth.controller.ts
         pacientes.controller.ts
         solicitudes.controller.ts
         citas.controller.ts
-
       middlewares/
         auth.middleware.ts
-
+        sanitize.middleware.ts
       routes/
         auth.routes.ts
         pacientes.routes.ts
         solicitudes.routes.ts
         citas.routes.ts
-
       utils/
         formatRut.ts
         jwt.ts
-
       app.ts
       server.ts
-
+    Dockerfile
+    docker-entrypoint.sh
     .env.example
     package.json
     tsconfig.json
@@ -306,110 +302,61 @@ Proyecto-Ingenieria-Web-y-Movil-/
   src/
     components/
       AppMenu.tsx
-      AppMenu.css
       NotificationBell.tsx
-      NotificationBell.css
       PatientMenu.tsx
-      PatientMenu.css
       ProtectedRoute.tsx
-
     pages/
       auth/
         Login.tsx
-        Login.css
         Register.tsx
-        Register.css
         ForgotPassword.tsx
-        ForgotPassword.css
         AdminLogin.tsx
-        AdminLogin.css
-
       patient/
         Home.tsx
-        Home.css
         Solicitudes.tsx
-        Solicitudes.css
         Agenda.tsx
-        Agenda.css
         Examenes.tsx
-        Examenes.css
         Documents.tsx
-        Documents.css
         Notifications.tsx
-        Notifications.css
         Perfil.tsx
-        Perfil.css
         Ayuda.tsx
-        Ayuda.css
-
       admin/
         AdminDashboard.tsx
-        AdminDashboard.css
         AdminPacientes.tsx
-        AdminPacientes.css
         AdminListas.tsx
-        AdminListas.css
         AdminAgenda.tsx
-        AdminAgenda.css
         AdminReportes.tsx
-        AdminReportes.css
-
     services/
       api.ts
       authService.ts
-
     theme/
       app-theme.css
-
     App.tsx
 
   otros/
     EP1.4_Arquitectura_Navegacion_Experiencia_Usuario_MuniSalud.pdf
     EP2_Pruebas_API/
       01_health.jpeg
-      02_login_paciente.jpeg
-      03_login_funcionario.jpeg
-      04_auth_me.jpeg
-      05_get_pacientes.jpeg
-      06_get_paciente_ID.jpeg
-      07_put_paciente.jpeg
-      08_get_solicitudes.jpeg
-      09_get_solicitud_ID.jpeg
-      10_post_solicitud.jpeg
-      11_patch_solicitud.jpeg
-      12_get_citas.jpeg
-      13_get_cita_ID.jpeg
-      14_post_cita.jpeg
-      15_patch_cita.jpeg
-      16_delete_cita.jpeg
-      17_delete_solicitud.jpeg
-      18_get_misCitas.png
+      ...
       19_get_misSolicitudes.png
+
+  Dockerfile
+  docker-compose.yml
+  nginx.conf
+  .env.example
 ```
 
 ---
 
 ## 8. Instalación y ejecución
 
-Esta sección describe el procedimiento completo para descargar, instalar y ejecutar el proyecto **MuniSalud** en un entorno local.
-
 ### 8.1 Requisitos previos
 
-Para ejecutar el proyecto correctamente, se debe contar con las siguientes herramientas instaladas:
-
 * Git
-* Node.js
-* npm
-* PostgreSQL
-* pgAdmin o herramienta equivalente para administrar PostgreSQL
+* Node.js y npm
+* PostgreSQL (ejecución local)
+* Docker y Docker Compose (ejecución con Docker)
 * Visual Studio Code
-
-Para verificar Node.js y npm:
-
-```bash
-node -v
-npm -v
-```
 
 ---
 
@@ -417,112 +364,106 @@ npm -v
 
 ```bash
 git clone https://github.com/Intiti/Proyecto-Ingenieria-Web-y-Movil-.git
-```
-
-Ingresar a la carpeta del proyecto:
-
-```bash
 cd Proyecto-Ingenieria-Web-y-Movil-
 ```
 
 ---
 
-### 8.3 Instalación del frontend
+### 8.3 Ejecución local (sin Docker)
 
-Desde la raíz del proyecto:
+#### Frontend
 
 ```bash
 npm install
-```
-
-Ejecutar frontend:
-
-```bash
 npm run dev
 ```
 
-La aplicación queda disponible en:
+Disponible en: `http://localhost:5173`
 
-```txt
-http://localhost:5173
-```
-
-Compilar frontend:
-
-```bash
-npm run build
-```
-
----
-
-### 8.4 Instalación del backend
-
-Ingresar a la carpeta del backend:
+#### Backend
 
 ```bash
 cd backend
-```
-
-Instalar dependencias:
-
-```bash
 npm install
 ```
 
-Crear un archivo `.env` tomando como referencia `.env.example`:
+Crear `backend/.env` basado en `backend/.env.example`:
 
 ```env
 DATABASE_URL="postgresql://postgres:TU_PASSWORD@localhost:5432/munisalud_db?schema=public"
 JWT_SECRET="munisalud_secret_desarrollo"
 PORT=4000
+CORS_ORIGIN="http://localhost:5173"
 ```
-
-Reemplazar `TU_PASSWORD` por la contraseña de PostgreSQL configurada en la instalación local.
-
-Ejecutar migraciones de Prisma:
 
 ```bash
 npx prisma migrate dev
-```
-
-Ejecutar seed con datos iniciales:
-
-```bash
 npm run prisma:seed
-```
-
-Ejecutar backend:
-
-```bash
 npm run dev
 ```
 
-La API queda disponible en:
+API disponible en: `http://localhost:4000/api`
 
-```txt
-http://localhost:4000/api
+---
+
+### 8.4 Ejecución con Docker
+
+#### Requisitos
+
+* Docker Desktop instalado y corriendo.
+
+#### Pasos
+
+Crear `.env` en la raíz del proyecto basado en `.env.example`:
+
+```env
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=munisalud_db
+JWT_SECRET=munisalud_secret_desarrollo
+RUN_SEED=true
+VITE_API_URL=http://localhost:4000/api
+CORS_ORIGIN=http://localhost:8080
 ```
 
-Compilar backend:
+Levantar todos los servicios:
 
 ```bash
-npm run build
+docker-compose up --build
+```
+
+| Servicio  | URL                          |
+| --------- | ---------------------------- |
+| Frontend  | http://localhost:8080        |
+| Backend   | http://localhost:4000/api    |
+| PostgreSQL| localhost:5432               |
+
+El backend aplica migraciones y seed automáticamente al iniciar.
+
+Para detener:
+
+```bash
+docker-compose down
+```
+
+Para eliminar también el volumen de la base de datos:
+
+```bash
+docker-compose down -v
 ```
 
 ---
 
-### 8.5 Ejecución simultánea
+### 8.5 Ejecución local simultánea (sin Docker)
 
-Para ejecutar el sistema completo se deben utilizar dos terminales.
-
-#### Terminal 1 - Backend
+Terminal 1 — backend:
 
 ```bash
 cd backend
 npm run dev
 ```
 
-#### Terminal 2 - Frontend
+Terminal 2 — frontend:
 
 ```bash
 npm run dev
@@ -532,7 +473,7 @@ npm run dev
 
 ## 9. Credenciales de prueba
 
-Las credenciales se encuentran cargadas mediante el seed de Prisma.
+Cargadas mediante el seed de Prisma.
 
 ### Paciente
 
@@ -541,17 +482,7 @@ RUT: 12.345.678-9
 Contraseña: paciente123
 ```
 
-También se puede ingresar el RUT sin puntos ni guion:
-
-```txt
-123456789
-```
-
-El sistema lo formatea automáticamente como:
-
-```txt
-12.345.678-9
-```
+El RUT también puede ingresarse sin puntos ni guion: `123456789`
 
 ### Funcionario
 
@@ -583,31 +514,31 @@ Contraseña: admin123
 
 ### 10.3 Solicitudes / Listas de espera
 
-| Método | Ruta                                | Descripción                                      | Acceso            |
-| ------ | ----------------------------------- | ------------------------------------------------ | ----------------- |
-| GET    | `/api/solicitudes`                  | Lista todas las solicitudes médicas              | Funcionario/Admin |
-| GET    | `/api/solicitudes/mis-solicitudes`  | Lista solicitudes del paciente autenticado       | Paciente          |
-| GET    | `/api/solicitudes/:id`              | Obtiene detalle de una solicitud                 | Autenticado       |
-| POST   | `/api/solicitudes`                  | Crea una solicitud médica                        | Funcionario/Admin |
-| PATCH  | `/api/solicitudes/:id`              | Actualiza estado, prioridad o datos de solicitud | Funcionario/Admin |
-| DELETE | `/api/solicitudes/:id`              | Elimina solicitud de prueba                      | Funcionario/Admin |
+| Método | Ruta                               | Descripción                                      | Acceso            |
+| ------ | ---------------------------------- | ------------------------------------------------ | ----------------- |
+| GET    | `/api/solicitudes`                 | Lista todas las solicitudes                      | Funcionario/Admin |
+| GET    | `/api/solicitudes/mis-solicitudes` | Lista solicitudes del paciente autenticado       | Paciente          |
+| GET    | `/api/solicitudes/:id`             | Obtiene detalle de una solicitud                 | Autenticado       |
+| POST   | `/api/solicitudes`                 | Crea una solicitud médica                        | Funcionario/Admin |
+| PATCH  | `/api/solicitudes/:id`             | Actualiza estado, prioridad o datos de solicitud | Funcionario/Admin |
+| DELETE | `/api/solicitudes/:id`             | Elimina solicitud                                | Funcionario/Admin |
 
 ### 10.4 Citas
 
-| Método | Ruta                  | Descripción                             | Acceso            |
-| ------ | --------------------- | --------------------------------------- | ----------------- |
-| GET    | `/api/citas`          | Lista todas las citas médicas           | Funcionario/Admin |
-| GET    | `/api/citas/mis-citas`| Lista citas del paciente autenticado    | Paciente          |
-| GET    | `/api/citas/:id`      | Obtiene detalle de una cita             | Autenticado       |
-| POST   | `/api/citas`          | Crea una cita médica                    | Funcionario/Admin |
-| PATCH  | `/api/citas/:id`      | Actualiza datos de cita                 | Funcionario/Admin |
-| DELETE | `/api/citas/:id`      | Elimina cita de prueba                  | Funcionario/Admin |
+| Método | Ruta                   | Descripción                          | Acceso            |
+| ------ | ---------------------- | ------------------------------------ | ----------------- |
+| GET    | `/api/citas`           | Lista todas las citas                | Funcionario/Admin |
+| GET    | `/api/citas/mis-citas` | Lista citas del paciente autenticado | Paciente          |
+| GET    | `/api/citas/:id`       | Obtiene detalle de una cita          | Autenticado       |
+| POST   | `/api/citas`           | Crea una cita médica                 | Funcionario/Admin |
+| PATCH  | `/api/citas/:id`       | Actualiza datos de cita              | Funcionario/Admin |
+| DELETE | `/api/citas/:id`       | Elimina cita                         | Funcionario/Admin |
 
 ---
 
 ## 11. Base de datos
 
-La base de datos fue modelada con Prisma ORM y PostgreSQL.
+Modelada con Prisma ORM sobre PostgreSQL.
 
 ### Entidades principales
 
@@ -624,30 +555,38 @@ La base de datos fue modelada con Prisma ORM y PostgreSQL.
 
 ### Relaciones principales
 
-* Un usuario puede tener perfil de paciente.
-* Un usuario puede tener perfil de funcionario.
-* Un paciente puede tener muchas solicitudes.
-* Un paciente puede tener muchas citas.
-* Una solicitud pertenece a una especialidad.
-* Una solicitud puede estar asociada a un centro de salud.
-* Una cita pertenece a un paciente, centro de salud y especialidad.
-* Una cita puede estar asociada a una solicitud.
+* Un usuario puede tener perfil de paciente o de funcionario.
+* Un paciente puede tener muchas solicitudes y muchas citas.
+* Una solicitud pertenece a una especialidad y puede estar asociada a un centro de salud.
+* Una cita pertenece a un paciente, centro de salud y especialidad, y puede estar asociada a una solicitud.
 
 ---
 
-## 12. Prototipo UI/UX
+## 12. Seguridad implementada
 
-El prototipo UI/UX del proyecto se encuentra disponible en Figma:
+| Mecanismo             | Descripción                                                                 |
+| --------------------- | --------------------------------------------------------------------------- |
+| JWT                   | Tokens con expiración de 2 horas. Validados en backend en cada ruta protegida. |
+| bcrypt                | Hash de contraseñas con salt 10.                                            |
+| helmet                | Cabeceras HTTP seguras (XSS protection, nosniff, frameguard, etc.).         |
+| express-rate-limit    | Límite global de 100 req/15min. Límite estricto de 10 req/15min en `/auth`. |
+| Sanitización XSS      | Middleware que escapa caracteres peligrosos en body y params.               |
+| CORS                  | Configurado mediante variable de entorno `CORS_ORIGIN`.                     |
+| Prisma ORM            | Previene inyección SQL mediante queries parametrizados.                     |
+| Zod                   | Validación de schema en todos los inputs de la API.                         |
+| Rutas protegidas      | Frontend valida el token contra `/api/auth/me` en cada ruta protegida.      |
+
+---
+
+## 13. Prototipo UI/UX
 
 [Prototipo MuniSalud en Figma](https://www.figma.com/proto/VZNDjyapyVvHnXxJKnnw4h/MuniSalud?node-id=26-99&p=f&t=CVmV1LAhO5alpUCW-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=26%3A99)
 
-El prototipo considera pantallas para los roles de paciente y funcionario municipal, contemplando vistas en formato web y móvil. Las pantallas fueron diseñadas considerando jerarquía visual, navegación clara, componentes de interacción y coherencia entre las funcionalidades principales del sistema.
+El prototipo considera pantallas para los roles de paciente y funcionario municipal, en versión web y móvil.
 
 ---
 
-## 13. Material complementario
-
-Los documentos y evidencias complementarias se encuentran en la carpeta `/otros`.
+## 14. Material complementario
 
 ```txt
 otros/
@@ -674,68 +613,44 @@ otros/
     19_get_misSolicitudes.png
 ```
 
-La carpeta `EP2_Pruebas_API` contiene evidencias de pruebas realizadas con Insomnia y Thunder Client para validar los endpoints de la API REST, incluyendo los endpoints de solicitudes y citas filtrados por paciente autenticado.
-
 ---
 
-## 14. Gestión del proyecto
+## 15. Gestión del proyecto
 
-El proyecto se gestiona mediante GitHub, aplicando buenas prácticas de control de versiones y organización del trabajo colaborativo.
-
-Durante el desarrollo se utilizaron las siguientes prácticas:
+El proyecto se gestiona mediante GitHub con las siguientes prácticas:
 
 * Commits descriptivos.
-* Ramas de trabajo para funcionalidades y refactorizaciones.
-* Pull Requests para revisión e integración de cambios.
+* Ramas de trabajo por funcionalidad.
+* Pull Requests para integración de cambios.
 * Issues para organización de tareas.
 * GitHub Projects para seguimiento del avance.
-* Separación de frontend y backend.
-* Evidencias de pruebas en carpeta complementaria.
 
 ---
 
-## 15. Estado de la entrega
+## 16. Estado de la entrega
 
-En esta Entrega Parcial 2 se incluye:
-
-* Frontend desarrollado con Ionic + React.
-* Aplicación navegable mediante React Router.
-* Separación de rutas según rol de usuario.
-* Rutas protegidas en frontend.
-* Backend desarrollado con Node.js + Express + TypeScript.
-* API REST funcional.
-* Base de datos PostgreSQL.
-* Modelos relacionales con Prisma.
-* Migraciones de base de datos.
-* Seed con datos de prueba.
-* Autenticación con JWT.
+* Frontend desarrollado con Ionic + React + TypeScript.
+* Rutas protegidas con validación de token contra backend.
+* Backend con Node.js + Express + TypeScript.
+* API REST con endpoints GET, POST, PUT/PATCH y DELETE.
+* Base de datos PostgreSQL con Prisma ORM.
+* Migraciones y seed incluidos.
+* Autenticación JWT con diferenciación por roles.
 * Hash de contraseñas con bcrypt.
-* Validación de datos con Zod.
-* Middleware de autenticación.
-* Middleware de autorización por roles.
-* Endpoints para autenticación.
-* Endpoints para pacientes.
-* Endpoints para solicitudes/listas de espera (incluyendo filtrado por paciente autenticado).
-* Endpoints para citas (incluyendo filtrado por paciente autenticado).
-* Integración frontend-backend para inicio de sesión, lista de espera, agenda médica, gestión de pacientes y gestión de listas de espera.
-* Evidencias de pruebas con Insomnia y Thunder Client .
-* Build exitoso de frontend.
-* Build exitoso de backend.
+* Validación de inputs con Zod.
+* Seguridad avanzada: helmet, rate limiting, sanitización XSS, CORS por entorno.
+* Integración frontend-backend en login, lista de espera, agenda, gestión de pacientes y listas.
+* Despliegue local con Docker y docker-compose (frontend + backend + PostgreSQL).
+* Evidencias de pruebas con Insomnia.
 * Documentación técnica actualizada.
 
 ---
 
-## 16. Consideraciones y trabajo futuro
+## 17. Consideraciones y trabajo futuro
 
-Aunque la Entrega Parcial 2 incorpora backend, base de datos, autenticación real e integración de las vistas principales, aún existen funcionalidades que pueden fortalecerse en futuras entregas:
-
-* Conectar las pantallas de exámenes, documentos y notificaciones a datos reales del backend.
-* Implementar refresco o expiración controlada de sesión.
-* Mejorar la gestión de errores visuales en formularios.
-* Agregar validación avanzada de RUT chileno.
+* Conectar exámenes, documentos y notificaciones a datos reales del backend.
 * Implementar recuperación real de contraseña.
-* Agregar carga real de documentos médicos.
+* Agregar validación avanzada de dígito verificador de RUT.
 * Implementar reportes administrativos con datos dinámicos.
-* Mejorar accesibilidad en formularios y navegación.
-* Desplegar frontend y backend en un entorno de producción.
-* Incorporar pruebas automatizadas.
+* Despliegue en entorno de producción en la nube.
+* Incorporar pruebas automatizadas (unitarias e integración).
