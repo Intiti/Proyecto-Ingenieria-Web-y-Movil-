@@ -1,4 +1,6 @@
-const API_URL = "http://localhost:4000/api";
+const API_URL = (
+  import.meta.env.VITE_API_URL ?? "http://localhost:4000/api"
+).replace(/\/$/, "");
 
 export const apiRequest = async <T>(
   endpoint: string,
@@ -15,11 +17,16 @@ export const apiRequest = async <T>(
     },
   });
 
-  const data = await response.json();
+  const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    throw new Error(data.message || "Error en la solicitud.");
+    const message =
+      data && typeof data === "object" && "message" in data
+        ? String(data.message)
+        : "Error en la solicitud.";
+
+    throw new Error(message);
   }
 
-  return data;
+  return data as T;
 };
