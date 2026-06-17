@@ -13,6 +13,36 @@ const updatePacienteSchema = z.object({
   contactoEmergenciaTelefono: z.string().optional(),
 });
 
+const isStaff = (req: AuthRequest) => {
+  return req.user?.rol === "FUNCIONARIO" || req.user?.rol === "ADMIN";
+};
+
+const getPacienteAutenticado = async (req: AuthRequest) => {
+  if (!req.user?.userId) {
+    return null;
+  }
+
+  return prisma.paciente.findUnique({
+    where: {
+      usuarioId: req.user.userId,
+    },
+  });
+};
+
+const puedeAccederPaciente = async (req: AuthRequest, pacienteId: string) => {
+  if (isStaff(req)) {
+    return true;
+  }
+
+  if (req.user?.rol !== "PACIENTE") {
+    return false;
+  }
+
+  const pacienteAutenticado = await getPacienteAutenticado(req);
+
+  return pacienteAutenticado?.id === pacienteId;
+};
+
 const getParamId = (req: AuthRequest) => {
   const rawId = req.params.id;
 
@@ -120,6 +150,15 @@ export const getPacienteById = async (req: AuthRequest, res: Response) => {
       });
     }
 
+    const tienePermiso = await puedeAccederPaciente(req, paciente.id);
+
+    if (!tienePermiso) {
+      return res.status(403).json({
+        ok: false,
+        message: "No tienes permisos para acceder a este paciente.",
+      });
+    }
+
     return res.status(200).json({
       ok: true,
       paciente,
@@ -165,6 +204,15 @@ export const updatePaciente = async (req: AuthRequest, res: Response) => {
       return res.status(404).json({
         ok: false,
         message: "Paciente no encontrado.",
+      });
+    }
+
+    const tienePermiso = await puedeAccederPaciente(req, pacienteExiste.id);
+
+    if (!tienePermiso) {
+      return res.status(403).json({
+        ok: false,
+        message: "No tienes permisos para modificar este paciente.",
       });
     }
 
