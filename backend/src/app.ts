@@ -8,6 +8,7 @@ import authRoutes from "./routes/auth.routes";
 import pacientesRoutes from "./routes/pacientes.routes";
 import solicitudesRoutes from "./routes/solicitudes.routes";
 import citasRoutes from "./routes/citas.routes";
+import notificacionesRoutes from "./routes/notificaciones.routes";
 
 const app = express();
 
@@ -85,6 +86,7 @@ app.use("/api/auth", authLimiter, authRoutes);
 app.use("/api/pacientes", pacientesRoutes);
 app.use("/api/solicitudes", solicitudesRoutes);
 app.use("/api/citas", citasRoutes);
+app.use("/api/notificaciones", notificacionesRoutes);
 
 app.use((_req, res) => {
   res.status(404).json({
