@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import {
   IonPage,
   IonHeader,
@@ -16,6 +18,7 @@ import {
 } from "@ionic/react";
 
 import {
+  alertCircleOutline,
   calendarOutline,
   documentTextOutline,
   flaskOutline,
@@ -29,8 +32,60 @@ import {
 import "./Home.css";
 import NotificationBell from "../../../../core/presentation/components/NotificationBell";
 import { logout } from "../../../../services/authService";
+import { apiRequest } from "../../../../services/api";
+
+type Feriado = {
+  fecha: string;
+  nombre: string;
+  nombreLocal: string;
+  pais: string;
+  global: boolean;
+  tipos: string[];
+};
+
+type FeriadosResponse = {
+  ok: boolean;
+  source: "cache" | "external-api";
+  year: number;
+  feriados: Feriado[];
+  proximoFeriado: Feriado | null;
+};
+
+const formatFeriadoDate = (fecha: string) => {
+  const date = new Date(`${fecha}T00:00:00`);
+
+  if (Number.isNaN(date.getTime())) {
+    return "Fecha no disponible";
+  }
+
+  return new Intl.DateTimeFormat("es-CL", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  }).format(date);
+};
 
 const Home: React.FC = () => {
+
+    const [proximoFeriado, setProximoFeriado] = useState<Feriado | null>(null);
+    const [feriadoError, setFeriadoError] = useState("");
+
+    useEffect(() => {
+      const loadFeriados = async () => {
+        try {
+          const response = await apiRequest<FeriadosResponse>(
+            "/servicios/feriados",
+          );
+
+          setProximoFeriado(response.proximoFeriado);
+        } catch {
+          setFeriadoError("No se pudo consultar el calendario de feriados.");
+        }
+      };
+
+      loadFeriados();
+    }, []);
+  
   const handleLogout = () => {
     const activeElement = document.activeElement as HTMLElement | null;
     activeElement?.blur();
@@ -94,6 +149,35 @@ const Home: React.FC = () => {
               </div>
             </div>
           </section>
+
+          <IonCard className="app-card holiday-card">
+            <IonCardContent>
+              <div className="holiday-card-content">
+                <div className="holiday-icon">
+                  <IonIcon icon={alertCircleOutline} />
+                </div>
+
+                <div>
+                  <h2>Calendario de atención municipal</h2>
+
+                  {proximoFeriado ? (
+                    <p>
+                      Próximo feriado:{" "}
+                      <strong>{proximoFeriado.nombreLocal}</strong>, el{" "}
+                      <strong>{formatFeriadoDate(proximoFeriado.fecha)}</strong>
+                      . Considera este día al revisar o solicitar atenciones
+                      médicas.
+                    </p>
+                  ) : (
+                    <p>
+                      {feriadoError ||
+                        "Consultando calendario externo de feriados..."}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </IonCardContent>
+          </IonCard>
 
           <IonGrid className="home-grid">
             <IonRow>

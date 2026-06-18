@@ -587,6 +587,38 @@
   line-height: 1.5;
 }
 
+.report-status-card {
+  margin-top: 24px;
+  border: 1px solid #dbeafe;
+}
+
+.report-status-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.report-status-content ion-icon {
+  min-width: 28px;
+  margin-top: 2px;
+  color: #0b72d9;
+  font-size: 28px;
+}
+
+.report-status-content h2 {
+  margin: 0;
+  color: #10233f;
+  font-size: 20px;
+  font-weight: 850;
+}
+
+.report-status-content p {
+  margin: 6px 0 0;
+  color: #526179;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
 
 /* =========================
    Animaciones
