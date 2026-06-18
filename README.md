@@ -33,7 +33,6 @@
 * [14. Material complementario](#14-material-complementario)
 * [15. Gestión del proyecto](#15-gestión-del-proyecto)
 * [16. Estado de la entrega](#16-estado-de-la-entrega)
-* [17. Consideraciones y trabajo futuro](#17-consideraciones-y-trabajo-futuro)
 
 ---
 
@@ -646,11 +645,4 @@ El proyecto se gestiona mediante GitHub con las siguientes prácticas:
 
 ---
 
-## 17. Consideraciones y trabajo futuro
 
-* Conectar exámenes, documentos y notificaciones a datos reales del backend.
-* Implementar recuperación real de contraseña.
-* Agregar validación avanzada de dígito verificador de RUT.
-* Implementar reportes administrativos con datos dinámicos.
-* Despliegue en entorno de producción en la nube.
-* Incorporar pruebas automatizadas (unitarias e integración).
