@@ -45,7 +45,20 @@ type Notificacion = {
   fecha: string;
 };
 
-type NotificacionesResponse = { ok: boolean; notificaciones: Notificacion[] };
+type NotificacionesResponse = {
+  ok: boolean;
+  notificaciones: Notificacion[];
+};
+
+type NotificacionUpdateResponse = {
+  ok: boolean;
+  notificacion: Notificacion;
+};
+
+type DeleteResponse = {
+  ok: boolean;
+  message: string;
+};
 
 const prioridadLabel: Record<Prioridad, string> = {
   ALTA: "Alta",
@@ -53,50 +66,155 @@ const prioridadLabel: Record<Prioridad, string> = {
   BAJA: "Baja",
 };
 
-const prioridadIcon: Record<Prioridad, string> = {
-  ALTA: trendingUpOutline,
-  MEDIA: calendarOutline,
-  BAJA: informationCircleOutline,
+const getNotificationIcon = (notificacion: Notificacion) => {
+  const text = `${notificacion.titulo} ${notificacion.mensaje}`.toLowerCase();
+
+  if (
+    text.includes("cita") ||
+    text.includes("cupo") ||
+    text.includes("agenda")
+  ) {
+    return calendarOutline;
+  }
+
+  if (text.includes("examen")) {
+    return flaskOutline;
+  }
+
+  if (
+    text.includes("lista") ||
+    text.includes("espera") ||
+    text.includes("avance")
+  ) {
+    return trendingUpOutline;
+  }
+
+  return informationCircleOutline;
+};
+
+const formatFecha = (fecha: string) => {
+  const date = new Date(fecha);
+
+  if (Number.isNaN(date.getTime())) {
+    return "Fecha no disponible";
+  }
+
+  return new Intl.DateTimeFormat("es-CL", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(date);
 };
 
 const Notifications: React.FC = () => {
   const [notificaciones, setNotificaciones] = useState<Notificacion[]>([]);
   const [loading, setLoading] = useState(true);
+  const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [filter, setFilter] = useState<NotificationFilter>("no-leidas");
 
+  const loadNotifications = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const data = await apiRequest<NotificacionesResponse>(
+        "/notificaciones/mis-notificaciones",
+      );
+
+      setNotificaciones(data.notificaciones);
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "No se pudo cargar las notificaciones.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    apiRequest<NotificacionesResponse>("/notificaciones/mis-notificaciones")
-      .then((data) => setNotificaciones(data.notificaciones))
-      .catch(() => setError("No se pudo cargar las notificaciones."))
-      .finally(() => setLoading(false));
+    loadNotifications();
   }, []);
 
   const markAsRead = async (id: string) => {
     try {
-      await apiRequest(`/notificaciones/${id}/leida`, {
-        method: "PATCH",
-        body: JSON.stringify({ leida: true }),
-      });
-      setNotificaciones((current) =>
-        current.map((n) => (n.id === id ? { ...n, leida: true } : n))
+      setActionLoadingId(id);
+
+      const response = await apiRequest<NotificacionUpdateResponse>(
+        `/notificaciones/${id}/leida`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({ leida: true }),
+        },
       );
-    } catch {
+
+      setNotificaciones((current) =>
+        current.map((notificacion) =>
+          notificacion.id === id ? response.notificacion : notificacion,
+        ),
+      );
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "No se pudo marcar la notificación como leída.",
+      );
+
+      await loadNotifications();
+    } finally {
+      setActionLoadingId(null);
     }
   };
 
-  const deleteLocal = (id: string) => {
-    setNotificaciones((current) => current.filter((n) => n.id !== id));
+  const deleteNotification = async (id: string) => {
+    const previousNotifications = notificaciones;
+
+    try {
+      setActionLoadingId(id);
+
+      setNotificaciones((current) =>
+        current.filter((notificacion) => notificacion.id !== id),
+      );
+
+      await apiRequest<DeleteResponse>(`/notificaciones/${id}`, {
+        method: "DELETE",
+      });
+    } catch (error) {
+      setNotificaciones(previousNotifications);
+
+      setError(
+        error instanceof Error
+          ? error.message
+          : "No se pudo eliminar la notificación.",
+      );
+    } finally {
+      setActionLoadingId(null);
+    }
   };
 
-  const filteredList = notificaciones.filter((n) => {
-    if (filter === "no-leidas") return !n.leida;
-    if (filter === "leidas") return n.leida;
+  const filteredList = notificaciones.filter((notificacion) => {
+    if (filter === "no-leidas") {
+      return !notificacion.leida;
+    }
+
+    if (filter === "leidas") {
+      return notificacion.leida;
+    }
+
     return true;
   });
 
-  const unreadCount = notificaciones.filter((n) => !n.leida).length;
-  const readCount = notificaciones.filter((n) => n.leida).length;
+  const unreadCount = notificaciones.filter(
+    (notificacion) => !notificacion.leida,
+  ).length;
+
+  const readCount = notificaciones.filter(
+    (notificacion) => notificacion.leida,
+  ).length;
 
   return (
     <IonPage>
@@ -109,7 +227,11 @@ const Notifications: React.FC = () => {
           <IonTitle>Notificaciones</IonTitle>
 
           <IonButtons slot="end">
-            <IonButton routerLink="/home" fill="clear" className="app-header-btn">
+            <IonButton
+              routerLink="/home"
+              fill="clear"
+              className="app-header-btn"
+            >
               <IonIcon icon={homeOutline} slot="icon-only" />
             </IonButton>
           </IonButtons>
@@ -140,32 +262,46 @@ const Notifications: React.FC = () => {
             value={filter}
             mode="md"
             className="notifications-segment"
-            onIonChange={(e) => setFilter(e.detail.value as NotificationFilter)}
+            onIonChange={(event) =>
+              setFilter(event.detail.value as NotificationFilter)
+            }
           >
             <IonSegmentButton value="no-leidas">
               <IonLabel>
                 No leídas{" "}
-                {unreadCount > 0 && <IonBadge color="danger">{unreadCount}</IonBadge>}
+                {unreadCount > 0 && (
+                  <IonBadge color="danger">{unreadCount}</IonBadge>
+                )}
               </IonLabel>
             </IonSegmentButton>
+
             <IonSegmentButton value="leidas">
               <IonLabel>Leídas ({readCount})</IonLabel>
             </IonSegmentButton>
+
             <IonSegmentButton value="todas">
               <IonLabel>Todas ({notificaciones.length})</IonLabel>
             </IonSegmentButton>
           </IonSegment>
 
           {loading && (
-            <div style={{ textAlign: "center", padding: "40px" }}>
+            <div className="notifications-loading">
               <IonSpinner name="crescent" />
             </div>
           )}
 
-          {error && (
+          {!loading && error && (
             <IonCard className="app-card">
               <IonCardContent>
-                <p style={{ color: "var(--ion-color-danger)" }}>{error}</p>
+                <p className="notifications-error">{error}</p>
+
+                <IonButton
+                  expand="block"
+                  className="app-primary-btn"
+                  onClick={loadNotifications}
+                >
+                  Reintentar
+                </IonButton>
               </IonCardContent>
             </IonCard>
           )}
@@ -177,46 +313,61 @@ const Notifications: React.FC = () => {
                   <p>No hay notificaciones para mostrar.</p>
                 </div>
               ) : (
-                filteredList.map((n) => (
+                filteredList.map((notificacion) => (
                   <article
-                    key={n.id}
+                    key={notificacion.id}
                     className={
-                      !n.leida
+                      !notificacion.leida
                         ? "app-card notifications-item-card unread-border"
                         : "app-card notifications-item-card"
                     }
                   >
                     <div className="notifications-card-header">
                       <div className="icon-title-group">
-                        <div className={`notifications-mini-icon ${prioridadLabel[n.prioridad].toLowerCase()}-bg`}>
-                          <IonIcon icon={prioridadIcon[n.prioridad]} />
+                        <div
+                          className={`notifications-mini-icon ${prioridadLabel[
+                            notificacion.prioridad
+                          ].toLowerCase()}-bg`}
+                        >
+                          <IonIcon icon={getNotificationIcon(notificacion)} />
                         </div>
-                        <h2>{n.titulo}</h2>
+
+                        <h2>{notificacion.titulo}</h2>
                       </div>
-                      <span className={`priority-badge badge-${prioridadLabel[n.prioridad].toLowerCase()}`}>
-                        {prioridadLabel[n.prioridad]}
+
+                      <span
+                        className={`priority-badge badge-${prioridadLabel[
+                          notificacion.prioridad
+                        ].toLowerCase()}`}
+                      >
+                        {prioridadLabel[notificacion.prioridad]}
                       </span>
                     </div>
 
-                    <p className="notifications-card-body">{n.mensaje}</p>
+                    <p className="notifications-card-body">
+                      {notificacion.mensaje}
+                    </p>
 
                     <div className="notifications-card-footer">
-                      <time>{new Date(n.fecha).toLocaleString("es-CL")}</time>
+                      <time>{formatFecha(notificacion.fecha)}</time>
 
                       <div className="action-buttons">
-                        {!n.leida && (
+                        {!notificacion.leida && (
                           <IonButton
                             fill="clear"
                             className="notification-page-action-btn"
-                            onClick={() => markAsRead(n.id)}
+                            disabled={actionLoadingId === notificacion.id}
+                            onClick={() => markAsRead(notificacion.id)}
                           >
                             <IonIcon icon={mailOpenOutline} slot="icon-only" />
                           </IonButton>
                         )}
+
                         <IonButton
                           fill="clear"
                           className="notification-page-action-btn danger"
-                          onClick={() => deleteLocal(n.id)}
+                          disabled={actionLoadingId === notificacion.id}
+                          onClick={() => deleteNotification(notificacion.id)}
                         >
                           <IonIcon icon={trashOutline} slot="icon-only" />
                         </IonButton>

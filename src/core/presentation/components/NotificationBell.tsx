@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   IonBadge,
@@ -18,13 +18,26 @@ import {
   flaskOutline,
 } from "ionicons/icons";
 
+import { apiRequest } from "../../../services/api";
+
 import "./NotificationBell.css";
+
+type ApiNotificationPriority = "ALTA" | "MEDIA" | "BAJA";
+
+type ApiNotification = {
+  id: string;
+  titulo: string;
+  mensaje: string;
+  prioridad: ApiNotificationPriority;
+  leida: boolean;
+  fecha: string;
+};
 
 type NotificationPriority = "Alta" | "Media" | "Baja";
 type NotificationStatus = "unread" | "read";
 
 type AppNotification = {
-  id: number;
+  id: string;
   title: string;
   description: string;
   status: NotificationStatus;
@@ -33,78 +46,147 @@ type AppNotification = {
   date: string;
 };
 
-const initialNotifications: AppNotification[] = [
-  {
-    id: 1,
-    title: "Avance en Lista de Espera",
-    description:
-      "Has avanzado 3 posiciones en la lista de espera de Cardiología. Posición actual: 8 de 45.",
-    status: "unread",
-    priority: "Alta",
-    icon: trendingUpOutline,
-    date: "2 mayo 2026",
-  },
-  {
-    id: 2,
-    title: "Nuevo Cupo Disponible",
-    description:
-      "Se ha liberado un cupo para Cardiología el 20 de Junio a las 10:30.",
-    status: "unread",
-    priority: "Alta",
-    icon: calendarOutline,
-    date: "1 mayo 2026",
-  },
-  {
-    id: 3,
-    title: "Recordatorio de Examen",
-    description: "Tienes un Electrocardiograma programado para el 15 de Mayo.",
-    status: "read",
-    priority: "Media",
-    icon: flaskOutline,
-    date: "30 abril 2026",
-  },
-  {
-    id: 4,
-    title: "Actualización del Sistema",
-    description:
-      "El sistema estará en mantenimiento el próximo domingo de 02:00 a 06:00 hrs.",
-    status: "read",
-    priority: "Baja",
-    icon: informationCircleOutline,
-    date: "27 abril 2026",
-  },
-];
+type NotificationsResponse = {
+  ok: boolean;
+  notificaciones: ApiNotification[];
+};
+
+const priorityLabel: Record<ApiNotificationPriority, NotificationPriority> = {
+  ALTA: "Alta",
+  MEDIA: "Media",
+  BAJA: "Baja",
+};
+
+const getNotificationIcon = (notification: ApiNotification) => {
+  const text = `${notification.titulo} ${notification.mensaje}`.toLowerCase();
+
+  if (text.includes("cita") || text.includes("cupo")) {
+    return calendarOutline;
+  }
+
+  if (text.includes("examen")) {
+    return flaskOutline;
+  }
+
+  if (text.includes("lista") || text.includes("espera")) {
+    return trendingUpOutline;
+  }
+
+  return informationCircleOutline;
+};
+
+const formatNotificationDate = (value: string) => {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return "Fecha no disponible";
+  }
+
+  return new Intl.DateTimeFormat("es-CL", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(date);
+};
+
+const mapNotification = (notification: ApiNotification): AppNotification => {
+  return {
+    id: notification.id,
+    title: notification.titulo,
+    description: notification.mensaje,
+    status: notification.leida ? "read" : "unread",
+    priority: priorityLabel[notification.prioridad],
+    icon: getNotificationIcon(notification),
+    date: formatNotificationDate(notification.fecha),
+  };
+};
 
 const NotificationBell: React.FC = () => {
-  const [notifications, setNotifications] =
-    useState<AppNotification[]>(initialNotifications);
+  const [triggerId] = useState(
+    () => `notification-trigger-${Math.random().toString(36).slice(2)}`,
+  );
+
+  const [notifications, setNotifications] = useState<AppNotification[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const unreadCount = notifications.filter(
     (notification) => notification.status === "unread",
   ).length;
 
-  const markAsRead = (id: number) => {
-    setNotifications((current) =>
-      current.map((notification) =>
-        notification.id === id
-          ? { ...notification, status: "read" }
-          : notification,
-      ),
-    );
+  const loadNotifications = async () => {
+    try {
+      const token = localStorage.getItem("munisalud_token");
+
+      if (!token) {
+        setNotifications([]);
+        return;
+      }
+
+      setIsLoading(true);
+      setErrorMessage("");
+
+      const response = await apiRequest<NotificationsResponse>(
+        "/notificaciones/mis-notificaciones",
+      );
+
+      setNotifications(response.notificaciones.map(mapNotification));
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "No se pudieron cargar las notificaciones.",
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const deleteNotification = (id: number) => {
-    setNotifications((current) =>
-      current.filter((notification) => notification.id !== id),
-    );
+  useEffect(() => {
+    loadNotifications();
+  }, []);
+
+  const markAsRead = async (id: string) => {
+    try {
+      setNotifications((current) =>
+        current.map((notification) =>
+          notification.id === id
+            ? { ...notification, status: "read" }
+            : notification,
+        ),
+      );
+
+      await apiRequest(`/notificaciones/${id}/leida`, {
+        method: "PATCH",
+      });
+    } catch {
+      await loadNotifications();
+    }
+  };
+
+  const deleteNotification = async (id: string) => {
+    const previousNotifications = notifications;
+
+    try {
+      setNotifications((current) =>
+        current.filter((notification) => notification.id !== id),
+      );
+
+      await apiRequest(`/notificaciones/${id}`, {
+        method: "DELETE",
+      });
+    } catch {
+      setNotifications(previousNotifications);
+    }
   };
 
   return (
     <>
       <IonButton
-        id="notification-trigger"
+        id={triggerId}
         fill="clear"
         className="notification-bell-btn app-header-btn"
+        onClick={loadNotifications}
       >
         <IonIcon icon={notificationsOutline} slot="icon-only" />
 
@@ -116,7 +198,7 @@ const NotificationBell: React.FC = () => {
       </IonButton>
 
       <IonPopover
-        trigger="notification-trigger"
+        trigger={triggerId}
         triggerAction="click"
         className="notification-popover"
       >
@@ -146,62 +228,79 @@ const NotificationBell: React.FC = () => {
             </div>
 
             <div className="notification-panel-list">
-              {notifications.slice(0, 4).map((notification) => (
-                <article
-                  key={notification.id}
-                  className={
-                    notification.status === "unread"
-                      ? "notification-panel-item unread"
-                      : "notification-panel-item"
-                  }
-                >
-                  <div
-                    className={`notification-panel-icon ${notification.priority.toLowerCase()}`}
+              {isLoading && (
+                <div className="notification-empty">
+                  <p>Cargando notificaciones...</p>
+                </div>
+              )}
+
+              {!isLoading && errorMessage && (
+                <div className="notification-empty">
+                  <p>{errorMessage}</p>
+                </div>
+              )}
+
+              {!isLoading &&
+                !errorMessage &&
+                notifications.slice(0, 4).map((notification) => (
+                  <article
+                    key={notification.id}
+                    className={
+                      notification.status === "unread"
+                        ? "notification-panel-item unread"
+                        : "notification-panel-item"
+                    }
                   >
-                    <IonIcon icon={notification.icon} />
-                  </div>
-
-                  <div className="notification-panel-body">
-                    <div className="notification-panel-top">
-                      <h3>{notification.title}</h3>
-
-                      <span
-                        className={`notification-priority ${notification.priority.toLowerCase()}`}
-                      >
-                        {notification.priority}
-                      </span>
+                    <div
+                      className={`notification-panel-icon ${notification.priority.toLowerCase()}`}
+                    >
+                      <IonIcon icon={notification.icon} />
                     </div>
 
-                    <p>{notification.description}</p>
+                    <div className="notification-panel-body">
+                      <div className="notification-panel-top">
+                        <h3>{notification.title}</h3>
 
-                    <div className="notification-panel-footer">
-                      <time>{notification.date}</time>
+                        <span
+                          className={`notification-priority ${notification.priority.toLowerCase()}`}
+                        >
+                          {notification.priority}
+                        </span>
+                      </div>
 
-                      <div>
-                        {notification.status === "unread" && (
+                      <p>{notification.description}</p>
+
+                      <div className="notification-panel-footer">
+                        <time>{notification.date}</time>
+
+                        <div>
+                          {notification.status === "unread" && (
+                            <IonButton
+                              fill="clear"
+                              className="notification-action-btn"
+                              onClick={() => markAsRead(notification.id)}
+                            >
+                              <IonIcon
+                                icon={mailOpenOutline}
+                                slot="icon-only"
+                              />
+                            </IonButton>
+                          )}
+
                           <IonButton
                             fill="clear"
-                            className="notification-action-btn"
-                            onClick={() => markAsRead(notification.id)}
+                            className="notification-action-btn danger"
+                            onClick={() => deleteNotification(notification.id)}
                           >
-                            <IonIcon icon={mailOpenOutline} slot="icon-only" />
+                            <IonIcon icon={trashOutline} slot="icon-only" />
                           </IonButton>
-                        )}
-
-                        <IonButton
-                          fill="clear"
-                          className="notification-action-btn danger"
-                          onClick={() => deleteNotification(notification.id)}
-                        >
-                          <IonIcon icon={trashOutline} slot="icon-only" />
-                        </IonButton>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                ))}
 
-              {notifications.length === 0 && (
+              {!isLoading && !errorMessage && notifications.length === 0 && (
                 <div className="notification-empty">
                   <p>No hay notificaciones para mostrar.</p>
                 </div>
