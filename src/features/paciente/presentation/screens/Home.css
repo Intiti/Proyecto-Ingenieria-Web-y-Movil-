@@ -84,6 +84,50 @@
   border: 1px solid #dbeafe;
 }
 
+.holiday-card {
+  margin-bottom: 24px;
+  border: 1px solid rgba(11, 114, 217, 0.16);
+}
+
+.holiday-card-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.holiday-icon {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: #eef7ff;
+  color: #0b5cad;
+}
+
+.holiday-icon ion-icon {
+  font-size: 26px;
+}
+
+.holiday-card h2 {
+  margin: 0;
+  color: #10233f;
+  font-size: 20px;
+  font-weight: 850;
+}
+
+.holiday-card p {
+  margin: 8px 0 0;
+  color: #526179;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.holiday-card strong {
+  color: #0757a5;
+}
+
 @media (max-width: 760px) {
   .home-welcome {
     flex-direction: column;

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRevealOnScroll } from "../../../../core/presentation/hooks/useRevealOnScroll";
 
 import {
@@ -34,12 +34,38 @@ import {
   trendingUpOutline,
 } from "ionicons/icons";
 
+import { apiRequest } from "../../../../services/api";
 import "./AdminReportes.css";
 
 type ReportFilters = {
   year: "2025" | "2026";
   commune: "todos" | "santo-domingo" | "san-antonio";
   specialty: "todas" | "traumatologia" | "laboratorio" | "medicina-general";
+};
+
+type RankingItem = {
+  nombre: string;
+  total: number;
+};
+
+type ReportesResumen = {
+  totalPacientes: number;
+  totalSolicitudes: number;
+  solicitudesEnEspera: number;
+  solicitudesAltaPrioridad: number;
+  citasProgramadas: number;
+  citasProximos7Dias: number;
+  examenesPendientes: number;
+  notificacionesNoLeidas: number;
+};
+
+type ReportesResponse = {
+  ok: boolean;
+  resumen: ReportesResumen;
+  rankings: {
+    especialidadesMasSolicitadas: RankingItem[];
+    centrosConMasCitas: RankingItem[];
+  };
 };
 
 const reportData = {
@@ -182,6 +208,33 @@ const AdminReportes: React.FC = () => {
   });
 
   const [selectedCenterIndex, setSelectedCenterIndex] = useState(0);
+  const [reportes, setReportes] = useState<ReportesResponse | null>(null);
+  const [isLoadingReportes, setIsLoadingReportes] = useState(true);
+  const [reportesError, setReportesError] = useState("");
+
+  useEffect(() => {
+    const loadReportes = async () => {
+      try {
+        setIsLoadingReportes(true);
+        setReportesError("");
+
+        const response =
+          await apiRequest<ReportesResponse>("/reportes/resumen");
+
+        setReportes(response);
+      } catch (error) {
+        setReportesError(
+          error instanceof Error
+            ? error.message
+            : "No se pudieron cargar los reportes dinámicos.",
+        );
+      } finally {
+        setIsLoadingReportes(false);
+      }
+    };
+
+    loadReportes();
+  }, []);
 
   const filtersReveal = useRevealOnScroll<HTMLElement>();
   const summaryReveal = useRevealOnScroll<HTMLElement>();
@@ -196,45 +249,113 @@ const AdminReportes: React.FC = () => {
     const factor =
       communeFactor[filters.commune] * specialtyFactor[filters.specialty];
 
+    const resumen = reportes?.resumen;
+
     const monthlyRequests = base.monthlyRequests.map((item) => ({
       ...item,
       value: Math.max(1, Math.round(item.value * factor)),
     }));
 
-    const statusDistribution = base.statusDistribution.map((item) => ({
-      ...item,
-      value: Math.max(1, Math.round(item.value * factor)),
-    }));
+    const statusDistribution = resumen
+      ? [
+          {
+            label: "En espera",
+            value: resumen.solicitudesEnEspera,
+            className: "status-waiting",
+          },
+          {
+            label: "Citas programadas",
+            value: resumen.citasProgramadas,
+            className: "status-scheduled",
+          },
+          {
+            label: "Exámenes pendientes",
+            value: resumen.examenesPendientes,
+            className: "status-done",
+          },
+          {
+            label: "Prioritarias",
+            value: resumen.solicitudesAltaPrioridad,
+            className: "status-priority",
+          },
+        ].map((item) => ({
+          ...item,
+          value: Math.max(1, Math.round(item.value * factor)),
+        }))
+      : base.statusDistribution.map((item) => ({
+          ...item,
+          value: Math.max(1, Math.round(item.value * factor)),
+        }));
 
-    const specialties = base.specialties.map((item) => ({
-      ...item,
-      value: Math.max(
-        1,
-        Math.round(item.value * communeFactor[filters.commune]),
-      ),
-    }));
+    const specialties = reportes?.rankings.especialidadesMasSolicitadas.length
+      ? reportes.rankings.especialidadesMasSolicitadas.map((item) => ({
+          name: item.nombre,
+          value: Math.max(
+            1,
+            Math.round(item.total * communeFactor[filters.commune]),
+          ),
+        }))
+      : base.specialties.map((item) => ({
+          ...item,
+          value: Math.max(
+            1,
+            Math.round(item.value * communeFactor[filters.commune]),
+          ),
+        }));
 
-    const kpis = {
-      patients: Math.round(base.kpis.patients * communeFactor[filters.commune]),
-      waiting: Math.round(base.kpis.waiting * factor),
-      appointments: Math.round(base.kpis.appointments * factor),
-      growth: base.kpis.growth,
-    };
+    const kpis = resumen
+      ? {
+          patients: Math.round(
+            resumen.totalPacientes * communeFactor[filters.commune],
+          ),
+          waiting: Math.round(resumen.solicitudesEnEspera * factor),
+          appointments: Math.round(resumen.citasProgramadas * factor),
+          growth: `${resumen.citasProximos7Dias} próximas`,
+        }
+      : {
+          patients: Math.round(
+            base.kpis.patients * communeFactor[filters.commune],
+          ),
+          waiting: Math.round(base.kpis.waiting * factor),
+          appointments: Math.round(base.kpis.appointments * factor),
+          growth: base.kpis.growth,
+        };
 
-    const centers = centerCapacity.map((center) => ({
-      ...center,
-      occupation: Math.min(
-        100,
-        Math.max(
-          15,
-          Math.round(center.occupation * communeFactor[filters.commune]),
-        ),
-      ),
-      waiting: Math.max(
-        1,
-        Math.round(center.waiting * communeFactor[filters.commune]),
-      ),
-    }));
+    const centers = reportes?.rankings.centrosConMasCitas.length
+      ? reportes.rankings.centrosConMasCitas.map((center, index) => ({
+          center: center.nombre,
+          occupation: Math.min(100, Math.max(15, 45 + center.total * 8)),
+          waiting: Math.max(1, center.total),
+          specialty: "Agenda médica",
+          status:
+            center.total >= 8
+              ? "Saturado"
+              : center.total >= 4
+                ? "Alta demanda"
+                : "Disponible",
+          action:
+            center.total >= 8
+              ? "Revisar cupos y posible reasignación"
+              : center.total >= 4
+                ? "Coordinar bloques de atención"
+                : "Puede recibir nuevas atenciones",
+          id: `${center.nombre}-${index}`,
+        }))
+      : centerCapacity.map((center) => ({
+          ...center,
+          id: center.center,
+          occupation: Math.min(
+            100,
+            Math.max(
+              15,
+              Math.round(center.occupation * communeFactor[filters.commune]),
+            ),
+          ),
+          waiting: Math.max(
+            1,
+            Math.round(center.waiting * communeFactor[filters.commune]),
+          ),
+        }));
 
     return {
       monthlyRequests,
@@ -243,7 +364,7 @@ const AdminReportes: React.FC = () => {
       kpis,
       centers,
     };
-  }, [filters]);
+  }, [filters, reportes]);
 
   const selectedCenter =
     filteredData.centers[selectedCenterIndex % filteredData.centers.length];
@@ -313,6 +434,36 @@ const AdminReportes: React.FC = () => {
               Exportar reporte
             </IonButton>
           </section>
+
+          <IonCard className="app-card report-status-card">
+            <IonCardContent>
+              <div className="report-status-content">
+                <IonIcon icon={analyticsOutline} />
+
+                <div>
+                  <h2>Fuente de datos</h2>
+
+                  {isLoadingReportes && (
+                    <p>Cargando indicadores dinámicos desde el backend...</p>
+                  )}
+
+                  {!isLoadingReportes && reportes && (
+                    <p>
+                      Indicadores conectados a la API REST del sistema. Los KPIs
+                      y rankings se calculan desde pacientes, solicitudes,
+                      citas, exámenes y notificaciones registradas.
+                    </p>
+                  )}
+
+                  {!isLoadingReportes && reportesError && (
+                    <p>
+                      {reportesError} Se mostrarán datos locales de respaldo.
+                    </p>
+                  )}
+                </div>
+              </div>
+            </IonCardContent>
+          </IonCard>
 
           <section ref={filtersReveal.ref} className={filtersReveal.className}>
             <IonCard className="app-card filters-card">
@@ -551,7 +702,7 @@ const AdminReportes: React.FC = () => {
                     <div className="capacity-dots">
                       {filteredData.centers.map((center, index) => (
                         <button
-                          key={center.center}
+                          key={center.id}
                           type="button"
                           className={
                             index === selectedCenterIndex
@@ -804,9 +955,9 @@ const AdminReportes: React.FC = () => {
           <section className="reports-note">
             <IonIcon icon={analyticsOutline} />
             <p>
-              Los gráficos se renderizan desde datos definidos en el componente.
-              Al cambiar los filtros, los indicadores se recalculan y las barras
-              se actualizan visualmente.
+              Los indicadores principales se obtienen desde el backend mediante
+              /api/reportes/resumen. Los filtros visuales permiten recalcular la
+              presentación de los datos para apoyar la revisión administrativa.
             </p>
           </section>
         </main>
