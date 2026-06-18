@@ -33,7 +33,6 @@
 * [14. Material complementario](#14-material-complementario)
 * [15. Gestión del proyecto](#15-gestión-del-proyecto)
 * [16. Estado de la entrega](#16-estado-de-la-entrega)
-* [17. Consideraciones y trabajo futuro](#17-consideraciones-y-trabajo-futuro)
 
 ---
 
@@ -58,9 +57,11 @@ En esta entrega final se presenta:
 
 En Chile, las listas de espera en el área de salud representan un problema estructural del sistema público. En muchos casos, el paciente recibe una interconsulta o solicitud médica y luego pierde visibilidad sobre el estado de su proceso, su prioridad, los tiempos estimados o la disponibilidad de atención.
 
-El proyecto **MuniSalud** busca reducir esa incertidumbre mediante una plataforma que permita al paciente consultar su estado de atención, revisar su agenda médica, recibir notificaciones, acceder a documentos y mantener actualizados sus datos personales.
+Este problema es especialmente relevante en comunas con alta densidad poblacional y recursos limitados. La Municipalidad de Santo Domingo busca mejorar la gestión sanitaria de sus habitantes mediante herramientas digitales que acerquen los servicios de salud a la comunidad de manera accesible y cómoda.
 
-Desde el punto de vista administrativo, la aplicación busca apoyar a funcionarios municipales o de centros de salud en la gestión de pacientes, listas de espera, agenda médica y reportes para la toma de decisiones.
+El proyecto MuniSalud nace como respuesta a esa necesidad, desarrollado específicamente para el contexto de la red de salud municipal de Santo Domingo. La plataforma permite al paciente consultar su estado de atención, revisar su agenda médica, recibir notificaciones, acceder a documentos y mantener actualizados sus datos personales.
+
+Desde el punto de vista administrativo, la aplicación busca apoyar a los funcionarios del CESFAM y centros de salud de la comuna en la gestión de pacientes, listas de espera, agenda médica y reportes para la toma de decisiones.
 
 ---
 
@@ -646,11 +647,4 @@ El proyecto se gestiona mediante GitHub con las siguientes prácticas:
 
 ---
 
-## 17. Consideraciones y trabajo futuro
 
-* Conectar exámenes, documentos y notificaciones a datos reales del backend.
-* Implementar recuperación real de contraseña.
-* Agregar validación avanzada de dígito verificador de RUT.
-* Implementar reportes administrativos con datos dinámicos.
-* Despliegue en entorno de producción en la nube.
-* Incorporar pruebas automatizadas (unitarias e integración).
