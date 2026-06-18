@@ -33,6 +33,56 @@
 
 
 /* =========================
+   Tarjeta feriados
+========================= */
+
+.admin-agenda-holiday-card {
+  margin-top: 24px;
+  margin-bottom: 24px;
+  border: 1px solid rgba(11, 114, 217, 0.16);
+}
+
+.admin-agenda-holiday-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.admin-agenda-holiday-icon {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: #eef7ff;
+  color: #0b5cad;
+}
+
+.admin-agenda-holiday-icon ion-icon {
+  font-size: 26px;
+}
+
+.admin-agenda-holiday-card h2 {
+  margin: 0;
+  color: #10233f;
+  font-size: 20px;
+  font-weight: 850;
+}
+
+.admin-agenda-holiday-card p {
+  margin: 8px 0 0;
+  color: #526179;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.admin-agenda-holiday-card strong {
+  color: #0757a5;
+}
+
+
+/* =========================
    Layout agenda
 ========================= */
 
@@ -43,7 +93,8 @@
   margin-top: 28px;
 }
 
-.admin-agenda-list {
+.admin-agenda-list,
+.admin-appointments-list {
   display: grid;
   gap: 18px;
 }
@@ -108,6 +159,29 @@
   font-size: 20px;
 }
 
+.admin-appointment-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #fff7ed;
+  color: #9a3412;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.admin-appointment-warning ion-icon {
+  min-width: 20px;
+  margin-top: 1px;
+  font-size: 20px;
+}
+
+.admin-appointment-warning strong {
+  color: #7c2d12;
+}
+
 .admin-appointment-actions {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -124,6 +198,10 @@
   text-transform: none;
 }
 
+.agenda-clear-btn.danger {
+  --color: #b42318;
+}
+
 
 /* =========================
    Disponibilidad
@@ -133,14 +211,14 @@
   padding: 26px;
 }
 
-.section-title h2 {
+.admin-agenda-page .section-title h2 {
   margin: 0;
   color: #10233f;
   font-size: 23px;
   font-weight: 850;
 }
 
-.section-title p {
+.admin-agenda-page .section-title p {
   margin: 8px 0 0;
   color: #64748b;
   font-size: 15px;
@@ -179,6 +257,40 @@
 
 
 /* =========================
+   Estados, carga y mensajes
+========================= */
+
+.admin-agenda-loading {
+  display: grid;
+  place-items: center;
+  padding: 40px;
+}
+
+.admin-agenda-error {
+  margin: 0 0 16px;
+  color: var(--ion-color-danger);
+  font-weight: 750;
+}
+
+.admin-agenda-muted {
+  margin: 0;
+  color: #777;
+}
+
+.admin-agenda-action-message {
+  margin-top: 16px;
+  border: 1px solid #bbf7d0;
+  background: #f0fdf4;
+}
+
+.admin-agenda-action-message p {
+  margin: 0;
+  color: #166534;
+  font-weight: 800;
+}
+
+
+/* =========================
    Responsive
 ========================= */
 
@@ -205,6 +317,10 @@
   }
 
   .admin-appointment-top {
+    flex-direction: column;
+  }
+
+  .admin-agenda-holiday-content {
     flex-direction: column;
   }
 }

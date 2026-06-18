@@ -11,8 +11,6 @@ import {
   IonToolbar,
   IonTitle,
   IonButtons,
-  useIonRouter,
-  useIonViewWillEnter,
 } from "@ionic/react";
 
 import {
@@ -26,7 +24,7 @@ import {
   eyeOutline,
 } from "ionicons/icons";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { loginRequest, logout } from "../../../../services/authService";
 
 import "./Login.css";
@@ -47,36 +45,41 @@ const formatRut = (value: string) => {
 };
 
 const Login: React.FC = () => {
-  const router = useIonRouter();
-
   const [showModal, setShowModal] = useState(false);
   const [rut, setRut] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  useIonViewWillEnter(() => {
+  useEffect(() => {
     logout();
     setRut("");
     setPassword("");
     setErrorMessage("");
     setIsLoading(false);
-  });
+  }, []);
 
   const handleLogin = async () => {
+    if (isLoading) {
+      return;
+    }
+
+    const activeElement = document.activeElement as HTMLElement | null;
+    activeElement?.blur();
+
+    const rutValue = rut.trim();
+    const passwordValue = password.trim();
+
+    if (!rutValue || !passwordValue) {
+      setErrorMessage("Debes ingresar RUT y contraseña.");
+      return;
+    }
+
     try {
       setErrorMessage("");
       setIsLoading(true);
 
       logout();
-
-      const rutValue = rut.trim();
-      const passwordValue = password.trim();
-
-      if (!rutValue || !passwordValue) {
-        setErrorMessage("Debes ingresar RUT y contraseña.");
-        return;
-      }
 
       const response = await loginRequest({
         identificador: rutValue,
@@ -87,11 +90,11 @@ const Login: React.FC = () => {
         response.user.rol === "FUNCIONARIO" ||
         response.user.rol === "ADMIN"
       ) {
-        router.push("/admin/dashboard", "root", "replace");
+        window.location.replace("/admin/dashboard");
         return;
       }
 
-      router.push("/home", "root", "replace");
+      window.location.replace("/home");
     } catch (error) {
       logout();
 
@@ -105,7 +108,7 @@ const Login: React.FC = () => {
 
   const handleClaveUnicaLogin = () => {
     setShowModal(false);
-    router.push("/home", "root", "replace");
+    window.location.replace("/home");
   };
 
   return (
@@ -127,7 +130,7 @@ const Login: React.FC = () => {
             <IonButton
               fill="clear"
               className="staff-access"
-              routerLink="/admin/login"
+              onClick={() => window.location.replace("/admin/login")}
             >
               <IonIcon icon={briefcaseOutline} slot="start" />
               Acceso funcionarios
