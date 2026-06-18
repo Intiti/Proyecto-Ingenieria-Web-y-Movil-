@@ -204,7 +204,7 @@ const AdminDashboard: React.FC = () => {
                     className="app-primary-btn"
                   >
                     <IonIcon icon={calendarOutline} slot="start" />
-                    Revisar agenda
+                    Gestionar agenda
                   </IonButton>
                 </div>
               </IonCardContent>
