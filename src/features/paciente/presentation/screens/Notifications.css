@@ -90,6 +90,18 @@
   background: #fffafa;
 }
 
+.notifications-loading {
+  display: grid;
+  place-items: center;
+  padding: 40px;
+}
+
+.notifications-error {
+  margin: 0 0 16px;
+  color: var(--ion-color-danger);
+  font-weight: 750;
+}
+
 
 /* =========================
    Header card
