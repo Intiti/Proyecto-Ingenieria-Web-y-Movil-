@@ -36,7 +36,6 @@
 * [16. Prototipo UI/UX](#16-prototipo-uiux)
 * [17. Gestión del proyecto](#17-gestión-del-proyecto)
 * [18. Estado final de la entrega](#18-estado-final-de-la-entrega)
-* [19. Consideraciones y trabajo futuro](#19-consideraciones-y-trabajo-futuro)
 
 ---
 
@@ -819,6 +818,59 @@ GET /api/servicios/feriados
 
 En un sistema de salud municipal, los feriados son relevantes para la planificación de atenciones, disponibilidad de centros y coordinación de citas.
 
+
+---
+## 13. Integración con servicio externo
+
+MuniSalud integra la API pública Nager.Date para la consulta de feriados nacionales de Chile en tiempo real. Esta integración es pertinente al dominio del sistema dado que los feriados afectan directamente la disponibilidad de citas médicas y el funcionamiento de los centros de salud de la comuna.
+
+Servicio integrado
+
+CampoDetalleAPINager.Date Public Holiday APIEndpointhttps://date.nager.at/api/v3/PublicHolidays/{year}/CLTipoAPI REST pública, sin autenticación requeridaUsoConsulta de feriados nacionales chilenos para el año en curso
+
+Endpoint expuesto
+
+MétodoRutaDescripciónAccesoGET/api/servicios/feriadosRetorna los feriados nacionales del año actual y el próximo feriadoAutenticado
+
+Ejemplo de respuesta
+
+json{
+  "ok": true,
+  "source": "external-api",
+  "year": 2026,
+  "proximoFeriado": {
+    "fecha": "2026-06-29",
+    "nombre": "Saints Peter and Paul",
+    "nombreLocal": "San Pedro y San Pablo",
+    "pais": "CL",
+    "global": true,
+    "tipos": ["Public"]
+  },
+  "feriados": [
+    {
+      "fecha": "2026-01-01",
+      "nombre": "New Year's Day",
+      "nombreLocal": "Año Nuevo",
+      "pais": "CL",
+      "global": true,
+      "tipos": ["Public"]
+    }
+  ]
+}
+
+Implementación técnica
+
+La integración implementa un sistema de caché en memoria con duración de 6 horas (CACHE_DURATION_MS = 6 * 60 * 60 * 1000) para evitar llamadas innecesarias al servicio externo en cada solicitud. La respuesta indica si los datos provienen de la API externa (source: "external-api") o del caché local (source: "cache").
+
+El manejo de errores contempla dos escenarios: fallo del servicio externo (responde con HTTP 502) y error interno del servidor (responde con HTTP 500), en ambos casos con mensajes descriptivos sin exponer detalles internos.
+
+La ruta está protegida con el middleware authRequired, por lo que solo usuarios autenticados (pacientes o funcionarios) pueden consultarla.
+
+Justificación
+
+El calendario de feriados impacta directamente la operación del sistema: permite al funcionario identificar días no hábiles al gestionar la agenda, evitar agendar citas en fechas inapropiadas y ofrecer al paciente información contextual sobre posibles interrupciones del servicio. La API Nager.Date es mantenida activamente, cubre Chile con datos precisos y no requiere registro ni credenciales, lo que simplifica la gestión de secretos en el entorno de producción.
+
+
 ---
 
 ## 15. Docker
@@ -921,17 +973,3 @@ Estado actual:
 * README actualizado para entrega final.
 
 ---
-
-## 19. Consideraciones y trabajo futuro
-
-Aunque la entrega final incluye las funcionalidades principales, existen mejoras posibles:
-
-* Implementar recuperación real de contraseña con token seguro y envío de correo.
-* Integrar Google Calendar para sincronización opcional de citas.
-* Implementar envío real de correos transaccionales.
-* Agregar validación completa de dígito verificador de RUT.
-* Incorporar tests unitarios e integración.
-* Mejorar exportación de reportes en PDF o Excel.
-* Desplegar en nube.
-* Agregar auditoría de acciones administrativas.
-* Implementar historial detallado de cambios en solicitudes y citas.
