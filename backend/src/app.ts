@@ -8,91 +8,46 @@ import authRoutes from "./routes/auth.routes";
 import pacientesRoutes from "./routes/pacientes.routes";
 import solicitudesRoutes from "./routes/solicitudes.routes";
 import citasRoutes from "./routes/citas.routes";
+import examenesRoutes from "./routes/examenes.routes";
 import notificacionesRoutes from "./routes/notificaciones.routes";
 
 const app = express();
 
-// ──────────────────────────────────────────────
-// 1. Helmet: cabeceras HTTP seguras
-// ──────────────────────────────────────────────
 app.use(helmet());
 
-// ──────────────────────────────────────────────
-// 2. CORS
-// ──────────────────────────────────────────────
 const allowedOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(",")
   : ["http://localhost:5173"];
 
-app.use(
-  cors({
-    origin: allowedOrigins,
-    credentials: true,
-  }),
-);
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 
-// ──────────────────────────────────────────────
-// 3. Rate limiting global (100 req / 15 min)
-// ──────────────────────────────────────────────
+// Rate limiting global aumentado para no interferir con la navegación normal
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
+  max: 300,
   standardHeaders: true,
   legacyHeaders: false,
-  message: {
-    ok: false,
-    message: "Demasiadas solicitudes. Por favor intenta más tarde.",
-  },
+  message: { ok: false, message: "Demasiadas solicitudes. Por favor intenta mas tarde." },
 });
 
 app.use(globalLimiter);
-
-// ──────────────────────────────────────────────
-// 4. Rate limiting estricto para auth (10 / 15 min)
-// ──────────────────────────────────────────────
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 10,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: {
-    ok: false,
-    message:
-      "Demasiados intentos de autenticación. Por favor intenta en 15 minutos.",
-  },
-});
-
-// ──────────────────────────────────────────────
-// 5. Body parser con límite de tamaño
-// ──────────────────────────────────────────────
 app.use(express.json({ limit: "10kb" }));
-
-// ──────────────────────────────────────────────
-// 6. Sanitización de inputs contra XSS
-// ──────────────────────────────────────────────
 app.use(sanitizeInputs);
 
-// ──────────────────────────────────────────────
-// Rutas
-// ──────────────────────────────────────────────
 app.get("/api/health", (_req, res) => {
-  res.status(200).json({
-    ok: true,
-    message: "API MuniSalud funcionando correctamente",
-  });
+  res.status(200).json({ ok: true, message: "API MuniSalud funcionando correctamente" });
 });
 
-app.use("/api/auth", authLimiter, authRoutes);
+// El loginLimiter ahora vive dentro de auth.routes.ts, aplicado solo a /login y /register
+app.use("/api/auth", authRoutes);
 app.use("/api/pacientes", pacientesRoutes);
 app.use("/api/solicitudes", solicitudesRoutes);
 app.use("/api/citas", citasRoutes);
+app.use("/api/examenes", examenesRoutes);
 app.use("/api/notificaciones", notificacionesRoutes);
 
 app.use((_req, res) => {
-  res.status(404).json({
-    ok: false,
-    message: "Ruta no encontrada.",
-  });
+  res.status(404).json({ ok: false, message: "Ruta no encontrada." });
 });
 
 export default app;

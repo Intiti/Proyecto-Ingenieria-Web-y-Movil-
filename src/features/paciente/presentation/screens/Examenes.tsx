@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   IonButton,
@@ -11,6 +11,7 @@ import {
   IonIcon,
   IonMenuButton,
   IonPage,
+  IonSpinner,
   IonTitle,
   IonToolbar,
   IonRow,
@@ -26,58 +27,57 @@ import {
   homeOutline,
 } from "ionicons/icons";
 
+import { apiRequest } from "../../../../services/api";
 import "./Examenes.css";
 
+type EstadoExamen = "PENDIENTE" | "EN_PROCESO" | "COMPLETADO";
+
+type Examen = {
+  id: string;
+  nombre: string;
+  estado: EstadoExamen;
+  fecha: string | null;
+  instrucciones: string | null;
+};
+
+type ExamenesResponse = { ok: boolean; examenes: Examen[] };
+
+const estadoLabel: Record<EstadoExamen, string> = {
+  PENDIENTE: "Pendiente",
+  EN_PROCESO: "En proceso",
+  COMPLETADO: "Completado",
+};
+
+const estadoVariant: Record<EstadoExamen, string> = {
+  PENDIENTE: "orange",
+  EN_PROCESO: "blue",
+  COMPLETADO: "green",
+};
+
+const estadoIcon: Record<EstadoExamen, string> = {
+  PENDIENTE: alertCircleOutline,
+  EN_PROCESO: timeOutline,
+  COMPLETADO: checkmarkCircleOutline,
+};
+
+type FiltroExamen = "Todos" | "Pendiente" | "En proceso" | "Completado";
+
 const Examenes: React.FC = () => {
-  const [filter, setFilter] = useState("Todos");
+  const [examenes, setExamenes] = useState<Examen[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [filter, setFilter] = useState<FiltroExamen>("Todos");
 
-  const examenesList = [
-    {
-      id: 1,
-      name: "Perfil Bioquímico y Hemograma",
-      status: "Pendiente",
-      date: "2026-05-12",
-      location: "Hospital Claudio Vicuña, San Antonio",
-      schedule: "08:00 - 09:30",
-      instructions:
-        "Ayuno estricto de 12 horas. Beber solo agua. No suspender tratamiento para la presión.",
-      icon: alertCircleOutline,
-      doctor: "Dra. Ana Pérez",
-      size: "150 KB",
-      variant: "orange",
-    },
-    {
-      id: 2,
-      name: "Radiografía de Tórax",
-      status: "En proceso",
-      date: "2026-05-05",
-      location: "Hospital Carlos van Buren, Viña del Mar",
-      schedule: "-",
-      instructions:
-        "Procedimiento realizado. Las imágenes se encuentran en etapa de análisis por el médico radiólogo.",
-      icon: timeOutline,
-      doctor: "Dr. Juan Gómez",
-      size: "420 KB",
-      variant: "blue",
-    },
-    {
-      id: 3,
-      name: "Examen_Sangre_Completo.pdf",
-      status: "Completado",
-      date: "2026-02-18",
-      location: "CESFAM, Santo Domingo",
-      schedule: "-",
-      instructions: "Resultados validados y disponibles para el paciente.",
-      icon: checkmarkCircleOutline,
-      doctor: "CESFAM, Santo Domingo",
-      size: "1.2 MB",
-      variant: "green",
-    },
-  ];
+  useEffect(() => {
+    apiRequest<ExamenesResponse>("/examenes/mis-examenes")
+      .then((data) => setExamenes(data.examenes))
+      .catch(() => setError("No se pudo cargar los exámenes."))
+      .finally(() => setLoading(false));
+  }, []);
 
-  const filteredList = examenesList.filter((examen) => {
+  const filteredList = examenes.filter((e) => {
     if (filter === "Todos") return true;
-    return examen.status === filter;
+    return estadoLabel[e.estado] === filter;
   });
 
   return (
@@ -91,11 +91,7 @@ const Examenes: React.FC = () => {
           <IonTitle>Exámenes</IonTitle>
 
           <IonButtons slot="end">
-            <IonButton
-              routerLink="/home"
-              fill="clear"
-              className="app-header-btn"
-            >
+            <IonButton routerLink="/home" fill="clear" className="app-header-btn">
               <IonIcon icon={homeOutline} slot="icon-only" />
             </IonButton>
           </IonButtons>
@@ -120,127 +116,106 @@ const Examenes: React.FC = () => {
           </section>
 
           <section className="examenes-filters">
-            <IonButton
-              fill={filter === "Todos" ? "solid" : "outline"}
-              className={
-                filter === "Todos"
-                  ? "examenes-filter-btn active"
-                  : "examenes-filter-btn"
-              }
-              onClick={() => setFilter("Todos")}
-            >
-              Todos
-            </IonButton>
-
-            <IonButton
-              fill={filter === "Pendiente" ? "solid" : "outline"}
-              className={
-                filter === "Pendiente"
-                  ? "examenes-filter-btn active"
-                  : "examenes-filter-btn"
-              }
-              onClick={() => setFilter("Pendiente")}
-            >
-              Pendientes
-            </IonButton>
-
-            <IonButton
-              fill={filter === "En proceso" ? "solid" : "outline"}
-              className={
-                filter === "En proceso"
-                  ? "examenes-filter-btn active"
-                  : "examenes-filter-btn"
-              }
-              onClick={() => setFilter("En proceso")}
-            >
-              En proceso
-            </IonButton>
-
-            <IonButton
-              fill={filter === "Completado" ? "solid" : "outline"}
-              className={
-                filter === "Completado"
-                  ? "examenes-filter-btn active"
-                  : "examenes-filter-btn"
-              }
-              onClick={() => setFilter("Completado")}
-            >
-              Completados
-            </IonButton>
+            {(["Todos", "Pendiente", "En proceso", "Completado"] as FiltroExamen[]).map((f) => (
+              <IonButton
+                key={f}
+                fill={filter === f ? "solid" : "outline"}
+                className={filter === f ? "examenes-filter-btn active" : "examenes-filter-btn"}
+                onClick={() => setFilter(f)}
+              >
+                {f === "Todos" ? "Todos" : f + "s"}
+              </IonButton>
+            ))}
           </section>
 
-          <IonGrid className="examenes-grid">
-            <IonRow>
-              {filteredList.map((examen) => (
-                <IonCol size="12" sizeMd="6" sizeLg="4" key={examen.id}>
-                  <IonCard className="app-card examen-card">
-                    <IonCardContent>
-                      <div className="examen-card-header">
-                        <div className={`examen-icon ${examen.variant}`}>
-                          <IonIcon icon={examen.icon} />
-                        </div>
+          {loading && (
+            <div style={{ textAlign: "center", padding: "40px" }}>
+              <IonSpinner name="crescent" />
+            </div>
+          )}
 
-                        <div>
-                          <span className={`examen-status ${examen.variant}`}>
-                            {examen.status}
-                          </span>
+          {error && (
+            <IonCard className="app-card">
+              <IonCardContent>
+                <p style={{ color: "var(--ion-color-danger)" }}>{error}</p>
+              </IonCardContent>
+            </IonCard>
+          )}
 
-                          <h2>{examen.name}</h2>
-                        </div>
-                      </div>
+          {!loading && !error && (
+            <IonGrid className="examenes-grid">
+              <IonRow>
+                {filteredList.length === 0 ? (
+                  <IonCol size="12">
+                    <IonCard className="app-card">
+                      <IonCardContent>
+                        <p style={{ color: "#777" }}>No hay exámenes para mostrar.</p>
+                      </IonCardContent>
+                    </IonCard>
+                  </IonCol>
+                ) : (
+                  filteredList.map((examen) => {
+                    const variant = estadoVariant[examen.estado];
+                    return (
+                      <IonCol size="12" sizeMd="6" sizeLg="4" key={examen.id}>
+                        <IonCard className="app-card examen-card">
+                          <IonCardContent>
+                            <div className="examen-card-header">
+                              <div className={`examen-icon ${variant}`}>
+                                <IonIcon icon={estadoIcon[examen.estado]} />
+                              </div>
 
-                      <div className="examen-meta">
-                        <p>
-                          <strong>Fecha:</strong> {examen.date}
-                        </p>
+                              <div>
+                                <span className={`examen-status ${variant}`}>
+                                  {estadoLabel[examen.estado]}
+                                </span>
+                                <h2>{examen.nombre}</h2>
+                              </div>
+                            </div>
 
-                        <p>
-                          <strong>Emitido por:</strong> {examen.doctor}
-                        </p>
+                            <div className="examen-meta">
+                              {examen.fecha && (
+                                <p>
+                                  <strong>Fecha:</strong>{" "}
+                                  {new Date(examen.fecha).toLocaleDateString("es-CL")}
+                                </p>
+                              )}
+                              {examen.instrucciones && (
+                                <p>
+                                  <strong>Indicaciones:</strong> {examen.instrucciones}
+                                </p>
+                              )}
+                            </div>
 
-                        <p>
-                          <strong>Lugar:</strong> {examen.location}
-                        </p>
-
-                        <p>
-                          <strong>Horario:</strong> {examen.schedule}
-                        </p>
-
-                        <p>
-                          <strong>Indicaciones:</strong> {examen.instructions}
-                        </p>
-
-                        <p>
-                          <strong>Tamaño:</strong> {examen.size}
-                        </p>
-                      </div>
-
-                      <div className="examen-actions">
-                        {examen.status === "Completado" ? (
-                          <IonButton
-                            expand="block"
-                            routerLink="/documentos"
-                            className="app-primary-btn examen-action-btn"
-                          >
-                            <IonIcon icon={documentTextOutline} slot="start" />
-                            Ver en documentos
-                          </IonButton>
-                        ) : (
-                          <IonButton
-                            expand="block"
-                            disabled
-                            className="examen-disabled-btn"
-                          >
-                            Resultados pendientes
-                          </IonButton>
-                        )}
-                      </div>
-                    </IonCardContent>
-                  </IonCard>
-                </IonCol>
-              ))}
-            </IonRow>
-          </IonGrid>
+                            <div className="examen-actions">
+                              {examen.estado === "COMPLETADO" ? (
+                                <IonButton
+                                  expand="block"
+                                  routerLink="/documentos"
+                                  className="app-primary-btn examen-action-btn"
+                                >
+                                  <IonIcon icon={documentTextOutline} slot="start" />
+                                  Ver en documentos
+                                </IonButton>
+                              ) : (
+                                <IonButton
+                                  expand="block"
+                                  disabled
+                                  className="examen-disabled-btn"
+                                >
+                                  Resultados pendientes
+                                </IonButton>
+                              )}
+                            </div>
+                          </IonCardContent>
+                        </IonCard>
+                      </IonCol>
+                    );
+                  })
+                )}
+              </IonRow>
+            </IonGrid>
+          )}
         </main>
       </IonContent>
     </IonPage>
