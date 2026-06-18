@@ -57,7 +57,7 @@ En esta entrega final se presenta:
 
 En Chile, las listas de espera en el área de salud representan un problema estructural del sistema público. En muchos casos, el paciente recibe una interconsulta o solicitud médica y luego pierde visibilidad sobre el estado de su proceso, su prioridad, los tiempos estimados o la disponibilidad de atención.
 
-Este problema es especialmente relevante en comunas con alta densidad poblacional y recursos limitados. La Municipalidad de Santo Domingo, consciente de esta realidad, busca mejorar la gestión sanitaria de sus habitantes mediante herramientas digitales que acerquen los servicios de salud a la comunidad.
+Este problema es especialmente relevante en comunas con alta densidad poblacional y recursos limitados. La Municipalidad de Santo Domingo busca mejorar la gestión sanitaria de sus habitantes mediante herramientas digitales que acerquen los servicios de salud a la comunidad de manera accesible y cómoda.
 
 El proyecto MuniSalud nace como respuesta a esa necesidad, desarrollado específicamente para el contexto de la red de salud municipal de Santo Domingo. La plataforma permite al paciente consultar su estado de atención, revisar su agenda médica, recibir notificaciones, acceder a documentos y mantener actualizados sus datos personales.
 
