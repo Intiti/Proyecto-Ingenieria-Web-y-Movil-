@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   IonBadge,
@@ -13,6 +13,7 @@ import {
   IonPage,
   IonSelect,
   IonSelectOption,
+  IonSpinner,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
@@ -26,81 +27,73 @@ import {
   timeOutline,
 } from "ionicons/icons";
 
+import { apiRequest } from "../../../../services/api";
 import "./AdminAgenda.css";
 
-type AgendaStatus = "todos" | "confirmada" | "pendiente" | "realizada";
+type EstadoCita = "PROGRAMADA" | "CONFIRMADA" | "REALIZADA" | "CANCELADA";
 
-const appointments = [
-  {
-    patient: "María Muñoz Pérez",
-    service: "Control médico general",
-    date: "20 mayo 2026",
-    time: "09:30",
-    center: "CESFAM Santo Domingo",
-    box: "Box 4",
-    professional: "Dra. Carolina Pérez",
-    status: "confirmada",
-    statusLabel: "Confirmada",
-  },
-  {
-    patient: "Carlos Rojas Díaz",
-    service: "Evaluación cardiología",
-    date: "20 mayo 2026",
-    time: "10:15",
-    center: "Centro Médico Municipal",
-    box: "Box 2",
-    professional: "Dr. Felipe Araya",
-    status: "pendiente",
-    statusLabel: "Pendiente",
-  },
-  {
-    patient: "Ana Soto Vera",
-    service: "Examen de laboratorio",
-    date: "20 mayo 2026",
-    time: "08:20",
-    center: "Unidad de Apoyo Clínico",
-    box: "Laboratorio",
-    professional: "TENS Marcela Ruiz",
-    status: "realizada",
-    statusLabel: "Realizada",
-  },
-  {
-    patient: "Luis Herrera Núñez",
-    service: "Medicina general",
-    date: "21 mayo 2026",
-    time: "11:00",
-    center: "Posta Rural El Convento",
-    box: "Box 1",
-    professional: "Dr. Ignacio Morales",
-    status: "confirmada",
-    statusLabel: "Confirmada",
-  },
-];
+type Cita = {
+  id: string;
+  fecha: string;
+  hora: string;
+  box: string | null;
+  estado: EstadoCita;
+  centroSalud: { id: string; nombre: string; comuna: string };
+  especialidad: { id: string; nombre: string };
+  paciente: {
+    id: string;
+    usuario: { id: string; nombre: string; rut: string };
+  };
+};
+
+type CitasResponse = { ok: boolean; citas: Cita[] };
+
+const estadoLabel: Record<EstadoCita, string> = {
+  PROGRAMADA: "Pendiente",
+  CONFIRMADA: "Confirmada",
+  REALIZADA: "Realizada",
+  CANCELADA: "Cancelada",
+};
+
+const estadoBadge: Record<EstadoCita, string> = {
+  PROGRAMADA: "badge-warning",
+  CONFIRMADA: "badge-success",
+  REALIZADA: "badge-info",
+  CANCELADA: "badge-danger",
+};
+
+type FiltroEstado = "todos" | "PROGRAMADA" | "CONFIRMADA" | "REALIZADA";
 
 const AdminAgenda: React.FC = () => {
-  const [status, setStatus] = useState<AgendaStatus>("todos");
-  const [center, setCenter] = useState("todos");
+  const [citas, setCitas] = useState<Cita[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [filtroEstado, setFiltroEstado] = useState<FiltroEstado>("todos");
+  const [filtroCentro, setFiltroCentro] = useState("todos");
 
-  const filteredAppointments = useMemo(() => {
-    return appointments.filter((appointment) => {
-      const matchesStatus = status === "todos" || appointment.status === status;
-      const matchesCenter = center === "todos" || appointment.center === center;
+  useEffect(() => {
+    apiRequest<CitasResponse>("/citas")
+      .then((data) => setCitas(data.citas))
+      .catch(() => setError("No se pudo cargar la agenda."))
+      .finally(() => setLoading(false));
+  }, []);
 
-      return matchesStatus && matchesCenter;
+  const centros = useMemo(() => {
+    const nombres = [...new Set(citas.map((c) => c.centroSalud.nombre))];
+    return nombres;
+  }, [citas]);
+
+  const filtradas = useMemo(() => {
+    return citas.filter((c) => {
+      const okEstado = filtroEstado === "todos" || c.estado === filtroEstado;
+      const okCentro = filtroCentro === "todos" || c.centroSalud.nombre === filtroCentro;
+      return okEstado && okCentro;
     });
-  }, [status, center]);
+  }, [citas, filtroEstado, filtroCentro]);
 
-  const confirmedCount = appointments.filter(
-    (appointment) => appointment.status === "confirmada",
-  ).length;
-
-  const pendingCount = appointments.filter(
-    (appointment) => appointment.status === "pendiente",
-  ).length;
-
-  const doneCount = appointments.filter(
-    (appointment) => appointment.status === "realizada",
-  ).length;
+  const confirmedCount = citas.filter((c) => c.estado === "CONFIRMADA").length;
+  const pendingCount = citas.filter((c) => c.estado === "PROGRAMADA").length;
+  const doneCount = citas.filter((c) => c.estado === "REALIZADA").length;
 
   return (
     <IonPage>
@@ -113,11 +106,7 @@ const AdminAgenda: React.FC = () => {
           <IonTitle>Agenda administrativa</IonTitle>
 
           <IonButtons slot="end">
-            <IonButton
-              routerLink="/admin/dashboard"
-              fill="clear"
-              className="app-header-btn"
-            >
+            <IonButton routerLink="/admin/dashboard" fill="clear" className="app-header-btn">
               <IonIcon icon={homeOutline} slot="icon-only" />
             </IonButton>
           </IonButtons>
@@ -129,25 +118,12 @@ const AdminAgenda: React.FC = () => {
           <section className="app-hero">
             <div>
               <p className="app-eyebrow">Coordinación diaria</p>
-              <h1>Revisar agenda médica</h1>
-              <p>
-                Coordina citas, revisa disponibilidad, confirma atenciones y
-                detecta horarios pendientes de gestión.
-              </p>
+              <h1>Agenda administrativa</h1>
+              <p>Gestiona las citas médicas del día, confirma asistencias y coordina disponibilidad.</p>
             </div>
           </section>
 
           <section className="kpi-grid">
-            <IonCard className="kpi-card">
-              <IonCardContent>
-                <IonIcon icon={calendarOutline} />
-                <div>
-                  <strong>{appointments.length}</strong>
-                  <span>Citas totales</span>
-                </div>
-              </IonCardContent>
-            </IonCard>
-
             <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={checkmarkCircleOutline} />
@@ -157,7 +133,6 @@ const AdminAgenda: React.FC = () => {
                 </div>
               </IonCardContent>
             </IonCard>
-
             <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={timeOutline} />
@@ -167,13 +142,21 @@ const AdminAgenda: React.FC = () => {
                 </div>
               </IonCardContent>
             </IonCard>
-
+            <IonCard className="kpi-card">
+              <IonCardContent>
+                <IonIcon icon={calendarOutline} />
+                <div>
+                  <strong>{doneCount}</strong>
+                  <span>Realizadas</span>
+                </div>
+              </IonCardContent>
+            </IonCard>
             <IonCard className="kpi-card">
               <IonCardContent>
                 <IonIcon icon={peopleOutline} />
                 <div>
-                  <strong>{doneCount}</strong>
-                  <span>Realizadas</span>
+                  <strong>{citas.length}</strong>
+                  <span>Total citas</span>
                 </div>
               </IonCardContent>
             </IonCard>
@@ -182,163 +165,143 @@ const AdminAgenda: React.FC = () => {
           <IonCard className="app-card admin-agenda-filters">
             <IonCardContent>
               <IonSelect
-                value={status}
-                interface="popover"
-                label="Estado"
-                labelPlacement="stacked"
+                value={filtroEstado}
+                placeholder="Estado"
                 className="admin-agenda-select"
-                onIonChange={(event) =>
-                  setStatus(event.detail.value as AgendaStatus)
-                }
+                onIonChange={(e) => setFiltroEstado(e.detail.value)}
               >
-                <IonSelectOption value="todos">Todos</IonSelectOption>
-                <IonSelectOption value="confirmada">Confirmada</IonSelectOption>
-                <IonSelectOption value="pendiente">Pendiente</IonSelectOption>
-                <IonSelectOption value="realizada">Realizada</IonSelectOption>
+                <IonSelectOption value="todos">Todos los estados</IonSelectOption>
+                <IonSelectOption value="PROGRAMADA">Pendiente</IonSelectOption>
+                <IonSelectOption value="CONFIRMADA">Confirmada</IonSelectOption>
+                <IonSelectOption value="REALIZADA">Realizada</IonSelectOption>
               </IonSelect>
 
               <IonSelect
-                value={center}
-                interface="popover"
-                label="Centro"
-                labelPlacement="stacked"
+                value={filtroCentro}
+                placeholder="Centro"
                 className="admin-agenda-select"
-                onIonChange={(event) =>
-                  setCenter(event.detail.value?.toString() ?? "todos")
-                }
+                onIonChange={(e) => setFiltroCentro(e.detail.value)}
               >
-                <IonSelectOption value="todos">Todos</IonSelectOption>
-                <IonSelectOption value="CESFAM Santo Domingo">
-                  CESFAM Santo Domingo
-                </IonSelectOption>
-                <IonSelectOption value="Centro Médico Municipal">
-                  Centro Médico Municipal
-                </IonSelectOption>
-                <IonSelectOption value="Unidad de Apoyo Clínico">
-                  Unidad de Apoyo Clínico
-                </IonSelectOption>
-                <IonSelectOption value="Posta Rural El Convento">
-                  Posta Rural El Convento
-                </IonSelectOption>
+                <IonSelectOption value="todos">Todos los centros</IonSelectOption>
+                {centros.map((c) => (
+                  <IonSelectOption key={c} value={c}>{c}</IonSelectOption>
+                ))}
               </IonSelect>
             </IonCardContent>
           </IonCard>
 
-          <section className="admin-agenda-layout">
-            <div className="admin-agenda-list">
-              {filteredAppointments.map((appointment) => (
-                <IonCard
-                  className="app-card admin-appointment-card"
-                  key={`${appointment.patient}-${appointment.time}`}
-                >
-                  <IonCardContent>
-                    <div className="admin-appointment-top">
-                      <div className="admin-appointment-date">
-                        <strong>{appointment.time}</strong>
-                        <span>{appointment.date}</span>
-                      </div>
-
-                      <IonBadge
-                        className={
-                          appointment.status === "confirmada"
-                            ? "badge-success"
-                            : appointment.status === "realizada"
-                              ? "badge-info"
-                              : "badge-warning"
-                        }
-                      >
-                        {appointment.statusLabel}
-                      </IonBadge>
-                    </div>
-
-                    <h2>{appointment.service}</h2>
-
-                    <p className="admin-appointment-patient">
-                      {appointment.patient}
-                    </p>
-
-                    <div className="admin-appointment-info">
-                      <div>
-                        <IonIcon icon={locationOutline} />
-                        <span>{appointment.center}</span>
-                      </div>
-
-                      <div>
-                        <IonIcon icon={calendarOutline} />
-                        <span>{appointment.box}</span>
-                      </div>
-
-                      <div>
-                        <IonIcon icon={peopleOutline} />
-                        <span>{appointment.professional}</span>
-                      </div>
-                    </div>
-
-                    <div className="admin-appointment-actions">
-                      <IonButton expand="block" className="app-primary-btn">
-                        Confirmar
-                      </IonButton>
-
-                      <IonButton
-                        expand="block"
-                        fill="outline"
-                        className="app-outline-btn"
-                      >
-                        Reagendar
-                      </IonButton>
-
-                      <IonButton
-                        expand="block"
-                        fill="clear"
-                        className="agenda-clear-btn"
-                      >
-                        Marcar asistencia
-                      </IonButton>
-                    </div>
-                  </IonCardContent>
-                </IonCard>
-              ))}
+          {loading && (
+            <div style={{ textAlign: "center", padding: "40px" }}>
+              <IonSpinner name="crescent" />
             </div>
+          )}
 
-            <IonCard className="app-card admin-agenda-availability">
+          {error && (
+            <IonCard className="app-card">
               <IonCardContent>
-                <div className="section-title">
-                  <h2>Disponibilidad del día</h2>
-                  <p>Resumen operativo de bloques disponibles.</p>
-                </div>
-
-                <div className="availability-list">
-                  <div>
-                    <span>CESFAM Santo Domingo</span>
-                    <strong>3 cupos libres</strong>
-                  </div>
-
-                  <div>
-                    <span>Centro Médico Municipal</span>
-                    <strong>1 cupo libre</strong>
-                  </div>
-
-                  <div>
-                    <span>Unidad de Apoyo Clínico</span>
-                    <strong>5 cupos libres</strong>
-                  </div>
-
-                  <div>
-                    <span>Posta Rural El Convento</span>
-                    <strong>2 cupos libres</strong>
-                  </div>
-                </div>
-
-                <IonButton
-                  expand="block"
-                  routerLink="/admin/listas"
-                  className="app-primary-btn availability-action"
-                >
-                  Asignar pacientes desde lista de espera
-                </IonButton>
+                <p style={{ color: "var(--ion-color-danger)" }}>{error}</p>
               </IonCardContent>
             </IonCard>
-          </section>
+          )}
+
+          {!loading && !error && (
+            <section className="admin-agenda-layout">
+              <div className="admin-appointments-list">
+                {filtradas.length === 0 ? (
+                  <IonCard className="app-card">
+                    <IonCardContent>
+                      <p style={{ color: "#777" }}>No hay citas para mostrar.</p>
+                    </IonCardContent>
+                  </IonCard>
+                ) : (
+                  filtradas.map((cita) => (
+                    <IonCard key={cita.id} className="app-card admin-appointment-card">
+                      <IonCardContent>
+                        <div className="admin-appointment-top">
+                          <div className="admin-appointment-date">
+                            <strong>{cita.hora}</strong>
+                            <span>{new Date(cita.fecha).toLocaleDateString("es-CL")}</span>
+                          </div>
+
+                          <IonBadge className={estadoBadge[cita.estado]}>
+                            {estadoLabel[cita.estado]}
+                          </IonBadge>
+                        </div>
+
+                        <h2>{cita.especialidad.nombre}</h2>
+
+                        <p className="admin-appointment-patient">
+                          {cita.paciente.usuario.nombre}
+                        </p>
+
+                        <div className="admin-appointment-info">
+                          <div>
+                            <IonIcon icon={locationOutline} />
+                            <span>{cita.centroSalud.nombre}</span>
+                          </div>
+                          <div>
+                            <IonIcon icon={calendarOutline} />
+                            <span>{cita.box ? `Box ${cita.box}` : "Sin box asignado"}</span>
+                          </div>
+                          <div>
+                            <IonIcon icon={peopleOutline} />
+                            <span>{cita.paciente.usuario.rut}</span>
+                          </div>
+                        </div>
+
+                        <div className="admin-appointment-actions">
+                          <IonButton expand="block" className="app-primary-btn">
+                            Confirmar
+                          </IonButton>
+                          <IonButton expand="block" fill="outline" className="app-outline-btn">
+                            Reagendar
+                          </IonButton>
+                          <IonButton expand="block" fill="clear" className="agenda-clear-btn">
+                            Marcar asistencia
+                          </IonButton>
+                        </div>
+                      </IonCardContent>
+                    </IonCard>
+                  ))
+                )}
+              </div>
+
+              <IonCard className="app-card admin-agenda-availability">
+                <IonCardContent>
+                  <div className="section-title">
+                    <h2>Disponibilidad del día</h2>
+                    <p>Resumen operativo de bloques disponibles.</p>
+                  </div>
+
+                  <div className="availability-list">
+                    {centros.length === 0 ? (
+                      <p style={{ color: "#777" }}>Sin datos disponibles.</p>
+                    ) : (
+                      centros.map((centro) => {
+                        const libres = citas.filter(
+                          (c) => c.centroSalud.nombre === centro && c.estado === "PROGRAMADA"
+                        ).length;
+                        return (
+                          <div key={centro}>
+                            <span>{centro}</span>
+                            <strong>{libres} cita{libres !== 1 ? "s" : ""} pendiente{libres !== 1 ? "s" : ""}</strong>
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+
+                  <IonButton
+                    expand="block"
+                    routerLink="/admin/listas"
+                    className="app-primary-btn availability-action"
+                  >
+                    Asignar pacientes desde lista de espera
+                  </IonButton>
+                </IonCardContent>
+              </IonCard>
+            </section>
+          )}
         </main>
       </IonContent>
     </IonPage>
