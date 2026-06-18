@@ -10,6 +10,8 @@ import solicitudesRoutes from "./routes/solicitudes.routes";
 import citasRoutes from "./routes/citas.routes";
 import examenesRoutes from "./routes/examenes.routes";
 import notificacionesRoutes from "./routes/notificaciones.routes";
+import serviciosRoutes from "./routes/servicios.routes";
+import reportesRoutes from "./routes/reportes.routes";
 
 const app = express();
 
@@ -45,7 +47,8 @@ app.use("/api/solicitudes", solicitudesRoutes);
 app.use("/api/citas", citasRoutes);
 app.use("/api/examenes", examenesRoutes);
 app.use("/api/notificaciones", notificacionesRoutes);
-
+app.use("/api/servicios", serviciosRoutes);
+app.use("/api/reportes", reportesRoutes);
 app.use((_req, res) => {
   res.status(404).json({ ok: false, message: "Ruta no encontrada." });
 });
