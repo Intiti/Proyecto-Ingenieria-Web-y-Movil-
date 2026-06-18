@@ -1,4 +1,5 @@
 import { Response } from "express";
+import { z } from "zod";
 
 import { prisma } from "../config/prisma";
 import { AuthRequest } from "../middlewares/auth.middleware";
@@ -25,6 +26,10 @@ const getPacienteAutenticado = async (req: AuthRequest) => {
   });
 };
 
+const marcarLeidaSchema = z.object({
+  leida: z.boolean().optional(),
+});
+
 export const getMisNotificaciones = async (req: AuthRequest, res: Response) => {
   try {
     if (req.user?.rol !== "PACIENTE") {
@@ -39,7 +44,7 @@ export const getMisNotificaciones = async (req: AuthRequest, res: Response) => {
     if (!paciente) {
       return res.status(404).json({
         ok: false,
-        message: "No se encontró el paciente autenticado.",
+        message: "Paciente no encontrado.",
       });
     }
 
@@ -63,19 +68,16 @@ export const getMisNotificaciones = async (req: AuthRequest, res: Response) => {
       notificaciones,
     });
   } catch (error) {
-    console.error("Error al obtener notificaciones:", error);
+    console.error("Error obteniendo notificaciones:", error);
 
     return res.status(500).json({
       ok: false,
-      message: "No se pudieron obtener las notificaciones.",
+      message: "Error interno del servidor.",
     });
   }
 };
 
-export const marcarNotificacionLeida = async (
-  req: AuthRequest,
-  res: Response,
-) => {
+export const marcarLeida = async (req: AuthRequest, res: Response) => {
   try {
     if (req.user?.rol !== "PACIENTE") {
       return res.status(403).json({
@@ -93,12 +95,21 @@ export const marcarNotificacionLeida = async (
       });
     }
 
+    const parsed = marcarLeidaSchema.safeParse(req.body ?? {});
+
+    if (!parsed.success) {
+      return res.status(400).json({
+        ok: false,
+        errors: parsed.error.flatten().fieldErrors,
+      });
+    }
+
     const paciente = await getPacienteAutenticado(req);
 
     if (!paciente) {
       return res.status(404).json({
         ok: false,
-        message: "No se encontró el paciente autenticado.",
+        message: "Paciente no encontrado.",
       });
     }
 
@@ -116,26 +127,26 @@ export const marcarNotificacionLeida = async (
       });
     }
 
-    const notificacionActualizada = await prisma.notificacion.update({
+    const updated = await prisma.notificacion.update({
       where: {
         id,
       },
       data: {
-        leida: true,
+        leida: parsed.data.leida ?? true,
       },
     });
 
     return res.status(200).json({
       ok: true,
-      message: "Notificación marcada como leída.",
-      notificacion: notificacionActualizada,
+      message: "Notificación actualizada correctamente.",
+      notificacion: updated,
     });
   } catch (error) {
-    console.error("Error al marcar notificación:", error);
+    console.error("Error actualizando notificación:", error);
 
     return res.status(500).json({
       ok: false,
-      message: "No se pudo actualizar la notificación.",
+      message: "Error interno del servidor.",
     });
   }
 };
@@ -163,7 +174,7 @@ export const eliminarNotificacion = async (req: AuthRequest, res: Response) => {
     if (!paciente) {
       return res.status(404).json({
         ok: false,
-        message: "No se encontró el paciente autenticado.",
+        message: "Paciente no encontrado.",
       });
     }
 
@@ -192,11 +203,11 @@ export const eliminarNotificacion = async (req: AuthRequest, res: Response) => {
       message: "Notificación eliminada correctamente.",
     });
   } catch (error) {
-    console.error("Error al eliminar notificación:", error);
+    console.error("Error eliminando notificación:", error);
 
     return res.status(500).json({
       ok: false,
-      message: "No se pudo eliminar la notificación.",
+      message: "Error interno del servidor.",
     });
   }
 };
