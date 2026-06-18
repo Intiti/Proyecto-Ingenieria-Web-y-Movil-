@@ -35,6 +35,25 @@ const getParamId = (req: AuthRequest) => {
   return rawId;
 };
 
+const isStaff = (req: AuthRequest) => {
+  return req.user?.rol === "FUNCIONARIO" || req.user?.rol === "ADMIN";
+};
+
+const puedeAccederSolicitud = async (
+  req: AuthRequest,
+  pacienteUsuarioId?: string,
+) => {
+  if (isStaff(req)) {
+    return true;
+  }
+
+  if (req.user?.rol !== "PACIENTE") {
+    return false;
+  }
+
+  return pacienteUsuarioId === req.user?.userId;
+};
+
 // solicitudes del paciente autenticado
 export const getMisSolicitudes = async (req: AuthRequest, res: Response) => {
   try {
@@ -147,6 +166,18 @@ export const getSolicitudById = async (req: AuthRequest, res: Response) => {
       return res.status(404).json({
         ok: false,
         message: "Solicitud no encontrada.",
+      });
+    }
+
+    const tienePermiso = await puedeAccederSolicitud(
+      req,
+      solicitud.paciente.usuario.id,
+    );
+
+    if (!tienePermiso) {
+      return res.status(403).json({
+        ok: false,
+        message: "No tienes permisos para acceder a esta solicitud.",
       });
     }
 

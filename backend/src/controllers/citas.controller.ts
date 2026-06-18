@@ -39,6 +39,25 @@ const getParamId = (req: AuthRequest) => {
   return rawId;
 };
 
+const isStaff = (req: AuthRequest) => {
+  return req.user?.rol === "FUNCIONARIO" || req.user?.rol === "ADMIN";
+};
+
+const puedeAccederCita = async (
+  req: AuthRequest,
+  pacienteUsuarioId?: string,
+) => {
+  if (isStaff(req)) {
+    return true;
+  }
+
+  if (req.user?.rol !== "PACIENTE") {
+    return false;
+  }
+
+  return pacienteUsuarioId === req.user?.userId;
+};
+
 // citas del paciente autenticado
 export const getMisCitas = async (req: AuthRequest, res: Response) => {
   try {
@@ -144,6 +163,15 @@ export const getCitaById = async (req: AuthRequest, res: Response) => {
       return res.status(404).json({
         ok: false,
         message: "Cita no encontrada.",
+      });
+    }
+
+    const tienePermiso = await puedeAccederCita(req, cita.paciente.usuario.id);
+
+    if (!tienePermiso) {
+      return res.status(403).json({
+        ok: false,
+        message: "No tienes permisos para acceder a esta cita.",
       });
     }
 
